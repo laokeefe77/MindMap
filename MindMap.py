@@ -1,7 +1,7 @@
 import streamlit as st
 
 # 1. Page Config
-st.set_page_config(page_title="MindMa | Deep Space", layout="wide")
+st.set_page_config(page_title="MindMappp | Deep Space", layout="wide")
 
 # 2. Starfield & Nebula CSS
 st.markdown("""
