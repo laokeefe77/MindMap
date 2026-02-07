@@ -13,7 +13,7 @@ st.set_page_config(
 # =================================================
 # SPACE BACKGROUND (STARS + ORBS)
 # =================================================
-st.markdown("""
+st.markdown(
 <style>
 
 /* =================================================
@@ -231,7 +231,7 @@ div.stButton > button:hover {
 
 </div>
 
-""", unsafe_allow_html=True)
+'', unsafe_allow_html=True)
 
 
 
