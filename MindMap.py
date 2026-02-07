@@ -1,314 +1,244 @@
-import streamlit as st
+﻿import streamlit as st
+import random
 
-# -------------------------------------------------
+# --------------------
 # Page Config
-# -------------------------------------------------
+# --------------------
 st.set_page_config(
-    page_title="MindMap | Deep Space",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    page_title="MindMap Journey",
+    page_icon="🧠",
+    layout="wide"
 )
 
-# -------------------------------------------------
-# Space Background + Effects
-# -------------------------------------------------
-st.markdown("""
-<style>
-
-/* ================================
-   Main Background
-================================ */
-.stApp {
-    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-    color: white;
-    overflow-x: hidden;
-}
-
-
-/* ================================
-   Space Layer (Orbs)
-================================ */
-.space-layer {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-/* Floating Orbs */
-.orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(40px);
-    opacity: 0.6;
-
-    background: radial-gradient(circle,
-        rgba(100,255,218,0.8),
-        rgba(100,255,218,0.25),
-        transparent 70%);
-
-    animation:
-        float 30s infinite alternate ease-in-out,
-        pulse 7s infinite ease-in-out;
-}
-
-/* Individual Orbs */
-.o1 { width: 280px; height: 280px; top: 10%; left: 5%; }
-.o2 { width: 180px; height: 180px; top: 70%; left: 15%; }
-.o3 { width: 350px; height: 350px; top: 25%; right: 5%; }
-.o4 { width: 220px; height: 220px; bottom: 15%; right: 15%; }
-.o5 { width: 160px; height: 160px; top: 50%; left: 45%; }
-.o6 { width: 260px; height: 260px; bottom: 35%; left: 65%; }
-
-
-/* Floating Motion */
-@keyframes float {
-    from { transform: translate(0, 0); }
-    to   { transform: translate(120px, -150px); }
-}
-
-/* Glow Pulse */
-@keyframes pulse {
-    0%, 100% { opacity: 0.4; }
-    50%      { opacity: 0.85; }
-}
-
-
-/* ================================
-   Typography
-================================ */
-.hero-text {
-    font-size: clamp(4rem, 12vw, 8rem) !important;
-    font-weight: 900;
-    text-align: center;
-    letter-spacing: 15px;
-
-    background: linear-gradient(to bottom,
-        #ffffff 30%,
-        #64ffda 100%);
-
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
-    padding-top: 15vh;
-    margin-bottom: 0;
-}
-
-.slogan {
-    text-align: center;
-    font-size: 1rem;
-    letter-spacing: 8px;
-    text-transform: uppercase;
-    color: #8892b0;
-    opacity: 0.8;
-}
-
-
-/* ================================
-   Glass Panels
-================================ */
-.glass-card {
-    background: rgba(255,255,255,0.02);
-    backdrop-filter: blur(20px);
-
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 0px;
-
-    padding: 40px;
-    margin-top: 20px;
-
-    transition: 0.3s;
-}
-
-.glass-card:hover {
-    border: 1px solid rgba(100,255,218,0.3);
-}
-
-
-/* ================================
-   Inputs
-================================ */
-.stTextInput input {
-    background-color: rgba(255,255,255,0.05) !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
-    color: white !important;
-}
-
-
-/* ================================
-   Buttons
-================================ */
-div.stButton > button {
-
-    width: 100%;
-
-    background: transparent;
-    color: white !important;
-
-    border: 1px solid white;
-
-    padding: 20px;
-
-    text-transform: uppercase;
-    letter-spacing: 3px;
-
-    transition: 0.5s;
-}
-
-div.stButton > button:hover {
-
-    background: white;
-    color: black !important;
-
-    box-shadow: 0 0 50px rgba(255,255,255,0.2);
-}
-
-</style>
-
-
-<!-- Space Orbs -->
-<div class="space-layer">
-
-    <span class="orb o1"></span>
-    <span class="orb o2"></span>
-    <span class="orb o3"></span>
-    <span class="orb o4"></span>
-    <span class="orb o5"></span>
-    <span class="orb o6"></span>
-
-</div>
-
-""", unsafe_allow_html=True)
-
-
-# -------------------------------------------------
-# Page State
-# -------------------------------------------------
+# --------------------
+# Session State
+# --------------------
 if "page" not in st.session_state:
-    st.session_state.page = "landing"
+    st.session_state.page = "home"
 
-
-# -------------------------------------------------
-# Landing Page
-# -------------------------------------------------
-if st.session_state.page == "landing":
-
-    st.markdown('<h1 class="hero-text">MindMap</h1>', unsafe_allow_html=True)
-
+# --------------------
+# Custom CSS
+# --------------------
+def load_css():
     st.markdown(
-        '<p class="slogan">Navigating the infinite expanse of thought.</p>',
-        unsafe_allow_html=True
+        """
+        <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+        }
+
+        .main-title {
+            text-align: center;
+            font-size: 64px;
+            font-weight: bold;
+            margin-top: 80px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 20px;
+            opacity: 0.8;
+            margin-bottom: 60px;
+        }
+
+        .bubble {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.25;
+            animation: float 20s infinite linear;
+            background: radial-gradient(circle, #6dd5ed, #2193b0);
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(100vh);
+            }
+            to {
+                transform: translateY(-120vh);
+            }
+        }
+
+        .center-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 80px;
+        }
+
+        .stButton > button {
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 20px;
+            border-radius: 50px;
+            transition: 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .stButton > button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, #0072ff, #00c6ff);
+        }
+
+        .form-card {
+            background: rgba(255,255,255,0.08);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
     )
 
-    st.write("##")
+# --------------------
+# Floating Bubbles
+# --------------------
+def render_bubbles(n=20):
+    html = ""
+    for i in range(n):
+        size = random.randint(40, 120)
+        left = random.randint(0, 100)
+        duration = random.randint(15, 35)
+        delay = random.randint(0, 20)
 
-    col1, col2, col3 = st.columns([1, 1.2, 1])
+        html += f"""
+        <div class="bubble" style="
+            width:{size}px;
+            height:{size}px;
+            left:{left}vw;
+            animation-duration:{duration}s;
+            animation-delay:{delay}s;
+        "></div>
+        """
 
-    with col2:
+    st.markdown(html, unsafe_allow_html=True)
 
-        if st.button("Start Your Learning Journey"):
+# --------------------
+# Navigation
+# --------------------
+def go_to(page):
+    st.session_state.page = page
+    st.rerun()
 
-            st.session_state.page = "auth"
-            st.rerun()
+# --------------------
+# Home Page
+# --------------------
+def home_page():
+    render_bubbles(25)
 
+    st.markdown("<div class='main-title'>MindMap</div>", unsafe_allow_html=True)
+    st.markdown(
+        "<div class='subtitle'>Organize your thoughts. Build your future.</div>",
+        unsafe_allow_html=True,
+    )
 
-    st.write("##")
-    st.write("##")
-    st.write("---")
+    st.markdown("<div class='center-btn'>", unsafe_allow_html=True)
+    if st.button("🚀 Start Your Journey"):
+        go_to("signup")
+    st.markdown("</div>", unsafe_allow_html=True)
 
+# --------------------
+# Signup Page
+# --------------------
+def signup_page():
+    st.markdown("<h1 style='text-align:center;'>Create Your Account</h1>", unsafe_allow_html=True)
 
-    c1, c2 = st.columns(2)
+    st.markdown("<div class='form-card'>", unsafe_allow_html=True)
 
-    with c1:
+    with st.form("signup_form"):
+        name = st.text_input("Full Name")
+        email = st.text_input("Email")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        confirm = st.text_input("Confirm Password", type="password")
 
-        st.markdown("""
-        <div class="glass-card">
-
-            <h3 style="letter-spacing:2px;">
-                Orbital Organization
-            </h3>
-
-            <p style="color:#8892b0;">
-                Your data points aren't just entries;
-                they are nodes in a constellation.
-                Experience a workspace that mimics
-                natural clustering of the universe.
-            </p>
-
-        </div>
-        """, unsafe_allow_html=True)
-
-
-    with c2:
-
-        st.markdown("""
-        <div class="glass-card">
-
-            <h3 style="letter-spacing:2px;">
-                Deep Discovery
-            </h3>
-
-            <p style="color:#8892b0;">
-                Navigate through layers of complexity
-                with fluid transitions. Our engine
-                handles massive datasets with the
-                grace of silent orbit.
-            </p>
-
-        </div>
-        """, unsafe_allow_html=True)
-
-
-
-# -------------------------------------------------
-# Auth Page
-# -------------------------------------------------
-elif st.session_state.page == "auth":
-
-    if st.button("Return to Void"):
-
-        st.session_state.page = "landing"
-        st.rerun()
-
-
-    c1, c2, c3 = st.columns([1, 2, 1])
-
-
-    with c2:
-
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-
-        st.markdown("""
-        <h2 style="
-            text-align:center;
-            letter-spacing:5px;
-        ">
-            PROTOCOL
-        </h2>
-        """, unsafe_allow_html=True)
-
-
-        tab_in, tab_up = st.tabs(
-            ["Initialize Session", "New Sequence"]
+        age = st.number_input("Age", min_value=1, max_value=120, step=1)
+        interest = st.selectbox(
+            "Main Interest",
+            ["Study", "Business", "Programming", "Design", "Other"],
         )
 
+        submit = st.form_submit_button("Sign Up")
 
-        with tab_in:
+    if submit:
+        if not name or not email or not username or not password:
+            st.error("Please fill in all required fields.")
+        elif password != confirm:
+            st.error("Passwords do not match.")
+        else:
+            # Example: Store in session (replace with database later)
+            st.session_state.user = {
+                "name": name,
+                "email": email,
+                "username": username,
+                "age": age,
+                "interest": interest,
+            }
 
-            st.text_input("User Key")
-            st.text_input("Passcode", type="password")
+            st.success("Account created successfully!")
+            st.info("Welcome to MindMap 🎉")
 
-            st.button("Authenticate")
+            if st.button("Go to Dashboard"):
+                go_to("dashboard")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if st.button("⬅ Back to Home"):
+        go_to("home")
+
+# --------------------
+# Dashboard Page
+# --------------------
+def dashboard_page():
+    user = st.session_state.get("user", {})
+
+    st.markdown("<h1>📊 Dashboard</h1>", unsafe_allow_html=True)
+
+    if not user:
+        st.warning("Please sign up first.")
+        if st.button("Go to Signup"):
+            go_to("signup")
+        return
+
+    st.success(f"Welcome, {user.get('name', 'User')} 👋")
+
+    st.markdown("---")
+
+    st.subheader("Your Profile")
+    st.write("**Username:**", user.get("username"))
+    st.write("**Email:**", user.get("email"))
+    st.write("**Age:**", user.get("age"))
+    st.write("**Interest:**", user.get("interest"))
+
+    st.markdown("---")
+
+    st.subheader("Your MindMap (Coming Soon 🚧)")
+    st.info("Here you will be able to create and manage your mind maps.")
+
+    if st.button("Log Out"):
+        st.session_state.clear()
+        go_to("home")
+
+# --------------------
+# Main App
+# --------------------
+def main():
+    load_css()
+
+    page = st.session_state.page
+
+    if page == "home":
+        home_page()
+    elif page == "signup":
+        signup_page()
+    elif page == "dashboard":
+        dashboard_page()
 
 
-        with tab_up:
-
-            st.text_input("Assigned Name")
-            st.text_input("Registry Email")
-            st.text_input("New Passcode", type="password")
-
-            st.button("Register Identity")
-
-
-        st.markdown('</div>', unsafe_allow_html=True)
+if __name__ == "__main__":
+    main()
