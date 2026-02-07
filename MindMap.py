@@ -3,163 +3,177 @@ import streamlit as st
 # 1. Page Config
 st.set_page_config(page_title="MindMap | Neural Workspace", layout="wide")
 
-# 2. Futuristic CSS (No Emojis)
+# 2. Advanced CSS for Dynamic Bulbs
 st.markdown("""
     <style>
     /* Main Background */
     .stApp {
-        background: radial-gradient(circle at center, #0a192f 0%, #020c1b 100%);
+        background-color: #020c1b;
         color: #e6f1ff;
+        overflow-x: hidden;
     }
 
-    /* Animated Blobs */
-    .blob {
+    /* Dynamic Bulb Container */
+    .bg-container {
         position: fixed;
-        width: 400px;
-        height: 400px;
-        background: linear-gradient(135deg, #64ffda22 0%, #48cae422 100%);
-        filter: blur(100px);
-        border-radius: 50%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         z-index: -1;
-        animation: float 25s infinite alternate ease-in-out;
-    }
-    
-    @keyframes float {
-        0% { transform: translate(-5%, -5%) scale(1); }
-        100% { transform: translate(10%, 15%) scale(1.1); }
+        overflow: hidden;
     }
 
-    /* Hero Section */
+    .bulb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.4;
+        animation: move 20s infinite alternate ease-in-out;
+    }
+
+    /* Different sizes and starting positions for the bulbs */
+    .bulb-1 { width: 300px; height: 300px; background: #64ffda; top: 10%; left: 10%; animation-duration: 25s; }
+    .bulb-2 { width: 450px; height: 450px; background: #48cae4; bottom: 5%; right: 15%; animation-duration: 30s; animation-delay: -5s; }
+    .bulb-3 { width: 200px; height: 200px; background: #0077b6; top: 40%; left: 50%; animation-duration: 20s; animation-delay: -2s; }
+
+    @keyframes move {
+        0% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(30px, 50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0, 0) scale(1); }
+    }
+
+    /* Typography & UI */
     .hero-text {
-        font-size: 5rem !important;
+        font-size: clamp(3rem, 10vw, 6rem) !important;
         font-weight: 800;
         text-align: center;
         letter-spacing: -2px;
-        background: -webkit-linear-gradient(#ffffff, #64ffda);
+        background: linear-gradient(to bottom, #ffffff, #64ffda);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-top: 5rem;
+        padding-top: 10vh;
     }
 
     .slogan {
         text-align: center;
         font-size: 1.2rem;
-        letter-spacing: 4px;
+        letter-spacing: 5px;
         text-transform: uppercase;
         color: #8892b0;
-        margin-bottom: 4rem;
+        margin-bottom: 5vh;
     }
 
-    /* Glassmorphism Card */
-    .glass-card {
+    /* Dynamic Description Cards */
+    .desc-card {
         background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 4px;
-        padding: 50px;
-        margin-top: 20px;
+        backdrop-filter: blur(10px);
+        border-left: 2px solid #64ffda;
+        padding: 25px;
+        border-radius: 0 10px 10px 0;
+        transition: 0.5s;
+    }
+    .desc-card:hover {
+        background: rgba(100, 255, 218, 0.05);
+        transform: translateX(10px);
     }
 
-    /* Refined Button */
+    /* Auth Card */
+    .glass-card {
+        background: rgba(10, 25, 47, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(100, 255, 218, 0.2);
+        padding: 40px;
+        border-radius: 15px;
+    }
+
+    /* Button Styling */
     div.stButton > button {
         width: 100%;
         background: transparent;
         color: #64ffda !important;
         border: 1px solid #64ffda;
-        padding: 18px;
-        border-radius: 2px;
+        padding: 15px;
+        font-size: 1rem;
         letter-spacing: 2px;
-        text-transform: uppercase;
-        transition: 0.4s all;
+        transition: 0.3s;
     }
-    
     div.stButton > button:hover {
-        background: rgba(100, 255, 218, 0.1);
-        border: 1px solid #ffffff;
-        color: #ffffff !important;
-        box-shadow: 0 0 30px rgba(100, 255, 218, 0.2);
-    }
-
-    /* Tab Styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 24px;
-        background-color: transparent;
-    }
-
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        background-color: transparent;
-        color: #8892b0;
-    }
-
-    .stTabs [aria-selected="true"] {
-        color: #64ffda !important;
+        background: #64ffda;
+        color: #020c1b !important;
     }
     </style>
-    
-    <div class="blob" style="top: -10%; left: -10%;"></div>
-    <div class="blob" style="bottom: -10%; right: -10%; animation-delay: -7s;"></div>
+
+    <div class="bg-container">
+        <div class="bulb bulb-1"></div>
+        <div class="bulb bulb-2"></div>
+        <div class="bulb bulb-3"></div>
+    </div>
     """, unsafe_allow_html=True)
 
-# 3. Application Flow
+# 3. App Logic
 if 'page' not in st.session_state:
     st.session_state.page = 'landing'
 
-# --- PAGE 1: LANDING ---
+# --- LANDING PAGE ---
 if st.session_state.page == 'landing':
     st.markdown('<h1 class="hero-text">MINDMAP</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="slogan">The visual workspace where ideas come to life.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="slogan">Cognitive architecture for the next era.</p>', unsafe_allow_html=True)
     
-    # Empty space for scroll effect
-    st.write("##")
-    
-    col1, col2, col3 = st.columns([1, 1.5, 1])
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         if st.button("Start Your Learning Journey"):
             st.session_state.page = 'auth'
             st.rerun()
 
-    # Detailed Descriptions (The "Scroll Down" content)
+    # Dynamic Description Section (Scroll down content)
     st.write("##")
     st.write("##")
-    st.markdown("---")
+    st.write("---")
     
-    desc_col1, desc_col2 = st.columns(2)
-    with desc_col1:
-        st.markdown("### Structural Intelligence")
-        st.write("Transform fragmented thoughts into a cohesive neural network. Our engine maps relationships between concepts automatically, allowing for non-linear knowledge acquisition.")
+    st.markdown("### System Specifications")
+    d1, d2, d3 = st.columns(3)
     
-    with desc_col2:
-        st.markdown("### Cognitive Synchrony")
-        st.write("Collaborate within a shared mental model. Real-time updates ensure that every contributor stays aligned with the evolving architecture of the project.")
+    with d1:
+        st.markdown("""<div class="desc-card">
+            <h4>Neural Synthesis</h4>
+            <p>Automatically bridges disparate data points into a cohesive mental framework.</p>
+        </div>""", unsafe_allow_html=True)
+    
+    with d2:
+        st.markdown("""<div class="desc-card">
+            <h4>Real-time Logic</h4>
+            <p>Collaborative mapping that updates across the network with zero latency.</p>
+        </div>""", unsafe_allow_html=True)
+        
+    with d3:
+        st.markdown("""<div class="desc-card">
+            <h4>Visual Intelligence</h4>
+            <p>Advanced spatial rendering of complex hierarchies and relationships.</p>
+        </div>""", unsafe_allow_html=True)
 
-# --- PAGE 2: AUTHENTICATION ---
+# --- AUTHENTICATION PAGE ---
 elif st.session_state.page == 'auth':
-    # Back button at top left
     if st.button("Back"):
         st.session_state.page = 'landing'
         st.rerun()
 
-    col1, col2, col3 = st.columns([1, 2, 1])
-    
-    with col2:
+    c1, c2, c3 = st.columns([1, 1.8, 1])
+    with c2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("<h2 style='text-align: center; letter-spacing: 2px;'>SYSTEM ACCESS</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: center;'>IDENTIFICATION</h2>", unsafe_allow_html=True)
         
-        tab1, tab2 = st.tabs(["Sign In", "Register"])
+        mode = st.radio("Select Action", ["Sign In", "Register"], label_visibility="collapsed")
         
-        with tab1:
-            st.text_input("User Identification")
-            st.text_input("Security Key", type="password")
-            if st.button("Initialize Session"):
-                st.success("Authorization successful.")
-                
-        with tab2:
-            st.text_input("Full Legal Name")
-            st.text_input("Email Address")
-            st.text_input("New Security Key", type="password")
-            st.text_input("Confirm Security Key", type="password")
-            if st.button("Create Account"):
-                st.toast("Profile synchronized.")
-        
+        if mode == "Sign In":
+            st.text_input("User ID")
+            st.text_input("Access Code", type="password")
+            st.button("Authorize Access")
+        else:
+            st.text_input("Name")
+            st.text_input("Registration Email")
+            st.text_input("New Access Code", type="password")
+            st.button("Create Profile")
+            
         st.markdown('</div>', unsafe_allow_html=True)
