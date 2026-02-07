@@ -1,119 +1,174 @@
 import streamlit as st
 
-# -------------------------------------------------
-# Page Config
-# -------------------------------------------------
+
+# =================================================
+# PAGE CONFIG
+# =================================================
 st.set_page_config(
     page_title="MindMap | Deep Space",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    layout="wide"
 )
 
-# -------------------------------------------------
-# Space Background + Effects
-# -------------------------------------------------
+
+# =================================================
+# SPACE BACKGROUND (STARS + ORBS)
+# =================================================
 st.markdown("""
 <style>
 
-/* ================================
-   Main Background
-================================ */
+/* =================================================
+   MAIN BACKGROUND
+================================================= */
 .stApp {
-    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+    background: radial-gradient(ellipse at bottom, #0f1c2e 0%, #050608 100%);
     color: white;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 
-/* ================================
-   Space Layer (Orbs)
-================================ */
-.space-layer {
+/* =================================================
+   STARFIELD SYSTEM
+================================================= */
+
+.starfield {
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Base star layer */
+.stars {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+
+    box-shadow:
+    50px 100px white, 120px 400px white, 300px 800px white,
+    500px 200px white, 700px 900px white, 900px 100px white,
+    1100px 600px white, 1300px 300px white, 1500px 800px white,
+    1700px 200px white, 1900px 500px white,
+    200px 700px white, 400px 500px white, 600px 300px white,
+    800px 600px white, 1000px 900px white, 1400px 500px white,
+    1600px 100px white;
+
+    filter: drop-shadow(0 0 6px white);
+
+    animation: starsMove 80s linear infinite;
+}
+
+/* Smaller stars (far) */
+.stars-small {
+    width: 1px;
+    height: 1px;
+    opacity: 0.7;
+
+    box-shadow:
+    80px 200px #aaa, 250px 600px #aaa, 450px 900px #aaa,
+    650px 300px #aaa, 850px 700px #aaa, 1050px 100px #aaa,
+    1250px 500px #aaa, 1450px 900px #aaa, 1650px 400px #aaa;
+
+    animation: starsMove 150s linear infinite;
+}
+
+/* Big bright stars (near) */
+.stars-big {
+    width: 3px;
+    height: 3px;
+
+    box-shadow:
+    150px 150px #fff, 450px 350px #fff, 750px 550px #fff,
+    1050px 250px #fff, 1350px 650px #fff, 1650px 850px #fff;
+
+    filter: drop-shadow(0 0 10px #fff);
+
+    animation: starsMove 50s linear infinite;
+}
+
+
+/* Star animation */
+@keyframes starsMove {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-2000px); }
+}
+
+
+/* =================================================
+   NEBULA ORBS
+================================================= */
+
+.space-orbs {
     position: fixed;
     inset: 0;
     z-index: -2;
-    overflow: hidden;
     pointer-events: none;
 }
 
-/* Floating Orbs */
 .orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(40px);
-    opacity: 0.6;
+    filter: blur(60px);
 
     background: radial-gradient(circle,
-        rgba(100,255,218,0.8),
+        rgba(100,255,218,0.9),
         rgba(100,255,218,0.25),
         transparent 70%);
 
     animation:
-        float 30s infinite alternate ease-in-out,
+        float 35s infinite alternate ease-in-out,
         pulse 7s infinite ease-in-out;
 }
 
-/* Individual Orbs */
-.o1 { width: 280px; height: 280px; top: 10%; left: 5%; }
-.o2 { width: 180px; height: 180px; top: 70%; left: 15%; }
-.o3 { width: 350px; height: 350px; top: 25%; right: 5%; }
-.o4 { width: 220px; height: 220px; bottom: 15%; right: 15%; }
-.o5 { width: 160px; height: 160px; top: 50%; left: 45%; }
-.o6 { width: 260px; height: 260px; bottom: 35%; left: 65%; }
+/* Orb positions */
+.o1 { width: 320px; height: 320px; top: 10%; left: 5%; }
+.o2 { width: 220px; height: 220px; bottom: 20%; left: 20%; }
+.o3 { width: 380px; height: 380px; top: 25%; right: 5%; }
+.o4 { width: 260px; height: 260px; bottom: 15%; right: 15%; }
 
 
-/* Floating Motion */
 @keyframes float {
-    from { transform: translate(0, 0); }
-    to   { transform: translate(120px, -150px); }
+    from { transform: translate(0,0); }
+    to   { transform: translate(150px,-120px); }
 }
 
-/* Glow Pulse */
 @keyframes pulse {
-    0%, 100% { opacity: 0.4; }
-    50%      { opacity: 0.85; }
+    0%,100% { opacity: 0.4; }
+    50%     { opacity: 0.85; }
 }
 
 
-/* ================================
-   Typography
-================================ */
+/* =================================================
+   UI STYLING
+================================================= */
+
 .hero-text {
-    font-size: clamp(4rem, 12vw, 8rem) !important;
+    font-size: clamp(4rem, 12vw, 8rem);
     font-weight: 900;
     text-align: center;
-    letter-spacing: 15px;
+    letter-spacing: 14px;
 
-    background: linear-gradient(to bottom,
-        #ffffff 30%,
-        #64ffda 100%);
-
+    background: linear-gradient(to bottom, #fff 30%, #64ffda 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 
     padding-top: 15vh;
-    margin-bottom: 0;
 }
 
 .slogan {
     text-align: center;
-    font-size: 1rem;
-    letter-spacing: 8px;
-    text-transform: uppercase;
-    color: #8892b0;
-    opacity: 0.8;
+    letter-spacing: 7px;
+    color: #8aa0c8;
 }
 
 
-/* ================================
-   Glass Panels
-================================ */
+/* Glass cards */
 .glass-card {
-    background: rgba(255,255,255,0.02);
-    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.025);
+    backdrop-filter: blur(18px);
 
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 0px;
+    border: 1px solid rgba(255,255,255,0.06);
 
     padding: 40px;
     margin-top: 20px;
@@ -122,25 +177,19 @@ st.markdown("""
 }
 
 .glass-card:hover {
-    border: 1px solid rgba(100,255,218,0.3);
+    border-color: rgba(100,255,218,0.5);
 }
 
 
-/* ================================
-   Inputs
-================================ */
+/* Inputs */
 .stTextInput input {
-    background-color: rgba(255,255,255,0.05) !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
+    background: rgba(255,255,255,0.05) !important;
     color: white !important;
 }
 
 
-/* ================================
-   Buttons
-================================ */
+/* Buttons */
 div.stButton > button {
-
     width: 100%;
 
     background: transparent;
@@ -148,50 +197,54 @@ div.stButton > button {
 
     border: 1px solid white;
 
-    padding: 20px;
+    padding: 15px;
 
-    text-transform: uppercase;
-    letter-spacing: 3px;
-
-    transition: 0.5s;
+    letter-spacing: 2px;
+    transition: 0.4s;
 }
 
 div.stButton > button:hover {
-
     background: white;
     color: black !important;
-
-    box-shadow: 0 0 50px rgba(255,255,255,0.2);
 }
 
 </style>
 
 
-<!-- Space Orbs -->
-<div class="space-layer">
+<!-- STARFIELD -->
+<div class="starfield">
+
+    <div class="stars"></div>
+    <div class="stars-small"></div>
+    <div class="stars-big"></div>
+
+</div>
+
+
+<!-- NEBULA ORBS -->
+<div class="space-orbs">
 
     <span class="orb o1"></span>
     <span class="orb o2"></span>
     <span class="orb o3"></span>
     <span class="orb o4"></span>
-    <span class="orb o5"></span>
-    <span class="orb o6"></span>
 
 </div>
 
 """, unsafe_allow_html=True)
 
 
-# -------------------------------------------------
-# Page State
-# -------------------------------------------------
+
+# =================================================
+# PAGE STATE
+# =================================================
 if "page" not in st.session_state:
     st.session_state.page = "landing"
 
 
-# -------------------------------------------------
-# Landing Page
-# -------------------------------------------------
+# =================================================
+# LANDING PAGE
+# =================================================
 if st.session_state.page == "landing":
 
     st.markdown('<h1 class="hero-text">MindMap</h1>', unsafe_allow_html=True)
@@ -203,37 +256,32 @@ if st.session_state.page == "landing":
 
     st.write("##")
 
-    col1, col2, col3 = st.columns([1, 1.2, 1])
+    _, center, _ = st.columns([1,1.3,1])
 
-    with col2:
+
+    with center:
 
         if st.button("Start Your Learning Journey"):
-
             st.session_state.page = "auth"
             st.rerun()
 
 
-    st.write("##")
-    st.write("##")
     st.write("---")
 
 
     c1, c2 = st.columns(2)
+
 
     with c1:
 
         st.markdown("""
         <div class="glass-card">
 
-            <h3 style="letter-spacing:2px;">
-                Orbital Organization
-            </h3>
+            <h3>Orbital Organization</h3>
 
             <p style="color:#8892b0;">
-                Your data points aren't just entries;
-                they are nodes in a constellation.
-                Experience a workspace that mimics
-                natural clustering of the universe.
+                Transform ideas into constellations
+                of connected thought.
             </p>
 
         </div>
@@ -245,15 +293,11 @@ if st.session_state.page == "landing":
         st.markdown("""
         <div class="glass-card">
 
-            <h3 style="letter-spacing:2px;">
-                Deep Discovery
-            </h3>
+            <h3>Deep Discovery</h3>
 
             <p style="color:#8892b0;">
-                Navigate through layers of complexity
-                with fluid transitions. Our engine
-                handles massive datasets with the
-                grace of silent orbit.
+                Explore knowledge like interstellar
+                navigation.
             </p>
 
         </div>
@@ -261,9 +305,9 @@ if st.session_state.page == "landing":
 
 
 
-# -------------------------------------------------
-# Auth Page
-# -------------------------------------------------
+# =================================================
+# AUTH PAGE
+# =================================================
 elif st.session_state.page == "auth":
 
     if st.button("Return to Void"):
@@ -272,29 +316,23 @@ elif st.session_state.page == "auth":
         st.rerun()
 
 
-    c1, c2, c3 = st.columns([1, 2, 1])
+    _, mid, _ = st.columns([1,2,1])
 
 
-    with c2:
+    with mid:
 
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 
-        st.markdown("""
-        <h2 style="
-            text-align:center;
-            letter-spacing:5px;
-        ">
-            PROTOCOL
-        </h2>
-        """, unsafe_allow_html=True)
-
-
-        tab_in, tab_up = st.tabs(
-            ["Initialize Session", "New Sequence"]
+        st.markdown(
+            "<h2 style='text-align:center;letter-spacing:4px;'>PROTOCOL</h2>",
+            unsafe_allow_html=True
         )
 
 
-        with tab_in:
+        tab1, tab2 = st.tabs(["Login", "Register"])
+
+
+        with tab1:
 
             st.text_input("User Key")
             st.text_input("Passcode", type="password")
@@ -302,13 +340,13 @@ elif st.session_state.page == "auth":
             st.button("Authenticate")
 
 
-        with tab_up:
+        with tab2:
 
-            st.text_input("Assigned Name")
-            st.text_input("Registry Email")
-            st.text_input("New Passcode", type="password")
+            st.text_input("Name")
+            st.text_input("Email")
+            st.text_input("Password", type="password")
 
-            st.button("Register Identity")
+            st.button("Register")
 
 
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
