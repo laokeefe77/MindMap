@@ -1,7 +1,7 @@
 import streamlit as st
 
 # 1. Page Config
-st.set_page_config(page_title="MindMappp | Deep Space", layout="wide")
+st.set_page_config(page_title="MindMap | Deep Space", layout="wide")
 
 # 2. Starfield & Nebula CSS
 st.markdown("""
@@ -132,7 +132,7 @@ if 'page' not in st.session_state:
 
 # --- LANDING PAGE ---
 if st.session_state.page == 'landing':
-    st.markdown('<h1 class="hero-text">MINDMAP</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="hero-text">MINDMApppP</h1>', unsafe_allow_html=True)
     st.markdown('<p class="slogan">Navigating the infinite expanse of thought.</p>', unsafe_allow_html=True)
     
     st.write("##")
