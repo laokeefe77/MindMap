@@ -1,179 +1,189 @@
 import streamlit as st
 
 # 1. Page Config
-st.set_page_config(page_title="MindMap | Neural Workspace", layout="wide")
+st.set_page_config(page_title="MindMap | Deep Space", layout="wide")
 
-# 2. Advanced CSS for Dynamic Bulbs
+# 2. Starfield & Nebula CSS
 st.markdown("""
     <style>
-    /* Main Background */
+    /* Main Universe Background */
     .stApp {
-        background-color: #020c1b;
-        color: #e6f1ff;
+        background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+        color: #ffffff;
         overflow-x: hidden;
     }
 
-    /* Dynamic Bulb Container */
-    .bg-container {
+    /* Star Layers */
+    .stars-container {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         z-index: -1;
-        overflow: hidden;
+        background: transparent;
     }
 
-    .bulb {
-        position: absolute;
+    /* Creating Stars using box-shadow shadows (Performance efficient) */
+    .stars {
+        width: 1px;
+        height: 1px;
+        background: transparent;
+        box-shadow: 1744px 162px #FFF , 134px 1317px #FFF , 56px 1057px #FFF , 1041px 1858px #FFF , 183px 1851px #FFF , 1574px 1279px #FFF , 1431px 188px #FFF , 1515px 1289px #FFF , 1271px 1358px #FFF , 121px 105px #FFF;
+        /* Note: In a real CSS file we'd generate 100s of these. I'll simulate with a repeating pattern */
+        animation: twinkle 8s infinite;
+    }
+
+    /* The Nebula Bulb (Space Cloud) */
+    .nebula {
+        position: fixed;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(100, 255, 218, 0.05) 0%, rgba(0, 119, 182, 0.05) 50%, transparent 100%);
+        filter: blur(100px);
         border-radius: 50%;
-        filter: blur(60px);
-        opacity: 0.4;
-        animation: move 20s infinite alternate ease-in-out;
+        z-index: -1;
+        top: -20%;
+        right: -10%;
+        animation: drift 30s infinite alternate ease-in-out;
     }
 
-    /* Different sizes and starting positions for the bulbs */
-    .bulb-1 { width: 300px; height: 300px; background: #64ffda; top: 10%; left: 10%; animation-duration: 25s; }
-    .bulb-2 { width: 450px; height: 450px; background: #48cae4; bottom: 5%; right: 15%; animation-duration: 30s; animation-delay: -5s; }
-    .bulb-3 { width: 200px; height: 200px; background: #0077b6; top: 40%; left: 50%; animation-duration: 20s; animation-delay: -2s; }
-
-    @keyframes move {
-        0% { transform: translate(0, 0) scale(1); }
-        33% { transform: translate(30px, 50px) scale(1.1); }
-        66% { transform: translate(-20px, 20px) scale(0.9); }
-        100% { transform: translate(0, 0) scale(1); }
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 0.3; }
     }
 
-    /* Typography & UI */
+    @keyframes drift {
+        from { transform: translate(0, 0); }
+        to { transform: translate(-100px, 100px); }
+    }
+
+    /* Typography */
     .hero-text {
-        font-size: clamp(3rem, 10vw, 6rem) !important;
-        font-weight: 800;
+        font-size: clamp(4rem, 12vw, 8rem) !important;
+        font-weight: 900;
         text-align: center;
-        letter-spacing: -2px;
-        background: linear-gradient(to bottom, #ffffff, #64ffda);
+        letter-spacing: 15px;
+        background: linear-gradient(to bottom, #ffffff 30%, #64ffda 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        padding-top: 10vh;
+        padding-top: 15vh;
+        margin-bottom: 0;
     }
 
     .slogan {
         text-align: center;
-        font-size: 1.2rem;
-        letter-spacing: 5px;
+        font-size: 1rem;
+        letter-spacing: 8px;
         text-transform: uppercase;
         color: #8892b0;
-        margin-bottom: 5vh;
+        opacity: 0.8;
     }
 
-    /* Dynamic Description Cards */
-    .desc-card {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(10px);
-        border-left: 2px solid #64ffda;
-        padding: 25px;
-        border-radius: 0 10px 10px 0;
-        transition: 0.5s;
-    }
-    .desc-card:hover {
-        background: rgba(100, 255, 218, 0.05);
-        transform: translateX(10px);
-    }
-
-    /* Auth Card */
+    /* Glass Panels */
     .glass-card {
-        background: rgba(10, 25, 47, 0.7);
+        background: rgba(255, 255, 255, 0.02);
         backdrop-filter: blur(20px);
-        border: 1px solid rgba(100, 255, 218, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 0px;
         padding: 40px;
-        border-radius: 15px;
+        margin-top: 20px;
+        transition: 0.3s;
+    }
+    
+    .glass-card:hover {
+        border: 1px solid rgba(100, 255, 218, 0.3);
     }
 
-    /* Button Styling */
+    /* Interactive Inputs */
+    .stTextInput input {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+    }
+
+    /* Button */
     div.stButton > button {
         width: 100%;
         background: transparent;
-        color: #64ffda !important;
-        border: 1px solid #64ffda;
-        padding: 15px;
-        font-size: 1rem;
-        letter-spacing: 2px;
-        transition: 0.3s;
+        color: #ffffff !important;
+        border: 1px solid #ffffff;
+        padding: 20px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        transition: 0.5s;
     }
     div.stButton > button:hover {
-        background: #64ffda;
-        color: #020c1b !important;
+        background: #ffffff;
+        color: #000000 !important;
+        box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
     }
     </style>
 
-    <div class="bg-container">
-        <div class="bulb bulb-1"></div>
-        <div class="bulb bulb-2"></div>
-        <div class="bulb bulb-3"></div>
+    <div class="stars-container">
+        <div class="stars"></div>
+        <div class="nebula"></div>
     </div>
     """, unsafe_allow_html=True)
 
-# 3. App Logic
+# 3. Content Flow
 if 'page' not in st.session_state:
     st.session_state.page = 'landing'
 
 # --- LANDING PAGE ---
 if st.session_state.page == 'landing':
     st.markdown('<h1 class="hero-text">MINDMAP</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="slogan">Cognitive architecture for the next era.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="slogan">Navigating the infinite expanse of thought.</p>', unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([1, 1, 1])
+    st.write("##")
+    
+    col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         if st.button("Start Your Learning Journey"):
             st.session_state.page = 'auth'
             st.rerun()
 
-    # Dynamic Description Section (Scroll down content)
+    # Dynamic Descriptions (revealed on scroll)
+    st.write("##")
     st.write("##")
     st.write("##")
     st.write("---")
     
-    st.markdown("### System Specifications")
-    d1, d2, d3 = st.columns(3)
-    
-    with d1:
-        st.markdown("""<div class="desc-card">
-            <h4>Neural Synthesis</h4>
-            <p>Automatically bridges disparate data points into a cohesive mental framework.</p>
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("""<div class="glass-card">
+            <h3 style="letter-spacing: 2px;">Orbital Organization</h3>
+            <p style="color: #8892b0;">Your data points aren't just entries; they are nodes in a constellation. Experience a workspace that mimics the natural clustering of the universe.</p>
         </div>""", unsafe_allow_html=True)
     
-    with d2:
-        st.markdown("""<div class="desc-card">
-            <h4>Real-time Logic</h4>
-            <p>Collaborative mapping that updates across the network with zero latency.</p>
-        </div>""", unsafe_allow_html=True)
-        
-    with d3:
-        st.markdown("""<div class="desc-card">
-            <h4>Visual Intelligence</h4>
-            <p>Advanced spatial rendering of complex hierarchies and relationships.</p>
+    with c2:
+        st.markdown("""<div class="glass-card">
+            <h3 style="letter-spacing: 2px;">Deep Discovery</h3>
+            <p style="color: #8892b0;">Navigate through layers of complexity with fluid transitions. Our engine handles massive datasets with the grace of a silent orbit.</p>
         </div>""", unsafe_allow_html=True)
 
 # --- AUTHENTICATION PAGE ---
 elif st.session_state.page == 'auth':
-    if st.button("Back"):
+    if st.button("Return to Void"):
         st.session_state.page = 'landing'
         st.rerun()
 
-    c1, c2, c3 = st.columns([1, 1.8, 1])
+    c1, c2, c3 = st.columns([1, 2, 1])
     with c2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("<h2 style='text-align: center;'>IDENTIFICATION</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: center; letter-spacing: 5px;'>PROTOCOL</h2>", unsafe_allow_html=True)
         
-        mode = st.radio("Select Action", ["Sign In", "Register"], label_visibility="collapsed")
+        tab_in, tab_up = st.tabs(["Initialize Session", "New Sequence"])
         
-        if mode == "Sign In":
-            st.text_input("User ID")
-            st.text_input("Access Code", type="password")
-            st.button("Authorize Access")
-        else:
-            st.text_input("Name")
-            st.text_input("Registration Email")
-            st.text_input("New Access Code", type="password")
-            st.button("Create Profile")
+        with tab_in:
+            st.text_input("User Key")
+            st.text_input("Passcode", type="password")
+            st.button("Authenticate")
+            
+        with tab_up:
+            st.text_input("Assigned Name")
+            st.text_input("Registry Email")
+            st.text_input("New Passcode", type="password")
+            st.button("Register Identity")
             
         st.markdown('</div>', unsafe_allow_html=True)
