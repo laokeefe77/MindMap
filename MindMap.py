@@ -231,7 +231,7 @@ def render_force_graph(data):
                 {{ selector: 'edge', style: {{ 
                     'width': 1, 
                     'line-color': 'rgba(0, 150, 255, 0.15)', 
-                    'curve-style': 'haystack', /* Haystack is faster and helps prevent clumping */
+                    'curve-style': 'haystack',
                 }} }},
                 {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 20 }} }}
             ],
@@ -241,17 +241,15 @@ def render_force_graph(data):
                 refresh: 4,
                 fit: true, 
                 padding: 80,
-                
-                /* --- THE CLUMP KILLER SETTINGS --- */
-                nodeOverlap: 100,           // Physical buffer: nodes literally cannot touch
-                nodeRepulsion: 10000000,    // Force pushing all nodes apart
-                idealEdgeLength: 150,       // Distance of the connections
-                edgeElasticity: 100,        // Force that pulls them back (increased for stability)
-                nestingFactor: 1.2,         // Multiplier for repulsion of nested (small) nodes
-                gravity: 1,                 // Pulls everything to center so they don't fly off
-                numIter: 4000,              // More time to resolve overlaps
-                initialTemp: 1000,          // Explosive start to separate overlapping nodes
-                coolingFactor: 0.95         // Slow settle down
+                nodeOverlap: 100,
+                nodeRepulsion: 10000000,
+                idealEdgeLength: 150,
+                edgeElasticity: 100,
+                nestingFactor: 1.2,
+                gravity: 1,
+                numIter: 4000,
+                initialTemp: 1000,
+                coolingFactor: 0.95
             }}
         }});
     </script>
@@ -339,8 +337,6 @@ def home_page():
         }
         </style>
         
-        
-        <!-- HERO -->
         <div class="hero-container">
             <div class="glitch-title">Nebula</div>
             <div class="scanline"></div>
@@ -353,186 +349,108 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-
-    # ✅ KEEP BUTTON FUNCTIONAL
     col1, col2, col3 = st.columns([1,1,1])
     with col2:
         if st.button("🚀 LAUNCH ARCHITECT"):
             st.session_state.page = "signup"
             st.rerun()
 
-
-    # ----------------------------
-    # FEATURES
-    # ----------------------------
-st.markdown("""
-<style>
-    /* Container Styling */
-    .section-dark {
-        background-color: #0e1117;
-        padding: 50px 20px;
-        border-radius: 15px;
-        font-family: 'Inter', sans-serif;
-    }
-    
-    .section-dark h2 {
-        text-align: center;
-        color: #ffffff;
-        font-size: 2.5rem;
-        margin-bottom: 40px;
-        letter-spacing: -1px;
-    }
-
-    /* Grid Layout */
-    .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 25px;
-        max-width: 1100px;
-        margin: 0 auto;
-    }
-
-    /* Card Styling */
-    .feature-card {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 30px;
-        border-radius: 20px;
-        transition: all 0.3s ease;
-        text-align: left;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-10px);
-        background: rgba(255, 255, 255, 0.1);
-        border-color: #7d2ae8; /* Space purple glow */
-        box-shadow: 0 10px 30px rgba(125, 42, 232, 0.2);
-    }
-
-    .feature-card h3 {
-        color: #ffffff;
-        font-size: 1.4rem;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .feature-card p {
-        color: #a1a1aa;
-        line-height: 1.6;
-        font-size: 1rem;
-    }
-</style>
-
-<div class="section-dark">
-    <h2>Why Nebula?</h2>
-    <div class="feature-grid">
-        <div class="feature-card">
-            <h3>🧠 Visual Thinking</h3>
-            <p>Turn abstract topics into navigable, interconnected galaxies of information.</p>
-        </div>
-        <div class="feature-card">
-            <h3>⚡ AI Architect</h3>
-            <p>Generate instant, structured learning paths tailored to your specific goals.</p>
-        </div>
-        <div class="feature-card">
-            <h3>🌌 Scalable Knowledge</h3>
-            <p>Seamlessly bridge the gap between absolute beginner and true mastery.</p>
-        </div>
-        <div class="feature-card">
-            <h3>🔒 Personal System</h3>
-            <p>Your data is yours. Secure, private, and hosted within your own universe.</p>
+    # Features Section
+    st.markdown("""
+    <style>
+        .section-dark {
+            background-color: #0e1117;
+            padding: 50px 20px;
+            border-radius: 15px;
+        }
+        .section-dark h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #7d2ae8;
+            box-shadow: 0 10px 30px rgba(125, 42, 232, 0.2);
+        }
+    </style>
+    <div class="section-dark">
+        <h2>Why Nebula?</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🧠 Visual Thinking</h3>
+                <p>Turn abstract topics into navigable, interconnected galaxies of information.</p>
+            </div>
+            <div class="feature-card">
+                <h3>⚡ AI Architect</h3>
+                <p>Generate instant, structured learning paths tailored to your specific goals.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🌌 Scalable Knowledge</h3>
+                <p>Seamlessly bridge the gap between absolute beginner and true mastery.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔒 Personal System</h3>
+                <p>Your data is yours. Secure, private, and hosted within your own universe.</p>
+            </div>
         </div>
     </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-
-    # ----------------------------
-    # PHILOSOPHY / SLOGANS
-    # ----------------------------
-st.markdown("""
+    # Philosophy Section
+    st.markdown("""
         <div class="section">
-
             <h2>Our Philosophy</h2>
-
-            <p style="color:#88ccff; font-size:20px; margin-top:30px;">
-                “Build systems. Not notes.”
-            </p>
-
-            <p style="color:#88ccff; font-size:20px;">
-                “Clarity is engineered.”
-            </p>
-
-            <p style="color:#88ccff; font-size:20px;">
-                “Learning is architecture.”
-            </p>
-
+            <p style="color:#88ccff; font-size:20px; margin-top:30px;">“Build systems. Not notes.”</p>
+            <p style="color:#88ccff; font-size:20px;">“Clarity is engineered.”</p>
+            <p style="color:#88ccff; font-size:20px;">“Learning is architecture.”</p>
         </div>
     """, unsafe_allow_html=True)
 
-
-    # ----------------------------
-    # FAQ
-    # ----------------------------
-st.markdown("""
+    # FAQ Section
+    st.markdown("""
         <div class="section section-dark">
-
             <h2>Frequently Asked Questions</h2>
-
             <div class="faq-item">
                 <h4>❓ What is Nebula?</h4>
                 <p>An AI-powered knowledge mapping system.</p>
             </div>
-
             <div class="faq-item">
                 <h4>❓ Who is it for?</h4>
                 <p>Students, researchers, and self-learners.</p>
             </div>
-
-            <div class="faq-item">
-                <h4>❓ Is my data safe?</h4>
-                <p>Your maps remain private.</p>
-            </div>
-
-            <div class="faq-item">
-                <h4>❓ Is it free?</h4>
-                <p>Currently in beta access.</p>
-            </div>
-
         </div>
     """, unsafe_allow_html=True)
 
-
-    # ----------------------------
-    # CALL TO ACTION
-    # ----------------------------
-st.markdown("""
+    # CTA Section
+    st.markdown("""
         <div class="section">
-
             <h2>Start Building Your Knowledge System</h2>
-
             <p style="color:#99ccff; max-width:600px; margin:20px auto;">
                 Transform how you learn. Design how you think.
             </p>
-
         </div>
     """, unsafe_allow_html=True)
 
-
-    # ✅ KEEP SECOND BUTTON WORKING
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
+    col1, col2, col3 = st.columns([1,1,1])
+    with col2:
         if st.button("✨ GET STARTED"):
-            st.session_state.page = "signup"
-            st.rerun()
-
-
-    # Centering the button using Streamlit columns
-_, col2, _ = st.columns([1, 0.6, 1])
-with col2:
-        if st.button("LAUNCH ARCHITECT"): 
             st.session_state.page = "signup"
             st.rerun()
 
@@ -554,52 +472,4 @@ def generator_page():
     st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
     st.markdown("<h1 style='font-weight:900;'>COMMAND_CENTER</h1><hr style='border: 2px solid white;'>", unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1, 3]) 
-    with col1:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        topic = st.text_input("SUBJECT TARGET")
-        if st.button("RUN_ARCHITECT"):
-            if topic:
-                with st.spinner("INITIATING GEMINI ARCHITECT..."):
-                    raw_tree = generate_learning_map(topic)
-                    st.session_state.map_data = parse_tree_to_physics(raw_tree)
-                st.success("MAP DEPLOYED")
-            else:
-                st.error("INPUT REQUIRED")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with col2:
-        if st.session_state.map_data:
-            render_force_graph(st.session_state.map_data)
-        else:
-            st.markdown("<div style='height: 800px; display: flex; align-items: center; justify-content: center; opacity: 0.3; border: 1px dashed #0088ff; border-radius: 8px; font-family: monospace;'>AWAITING ARCHITECT COMMAND...</div>", unsafe_allow_html=True)
-
-    with st.sidebar:
-        if st.button("SHUTDOWN"):
-            st.session_state.user = None
-            st.session_state.map_data = None
-            st.session_state.page = "home"
-            st.rerun()
-
-# --------------------
-# 6. MAIN EXECUTION
-# --------------------
-def main():
-    st.set_page_config(page_title="MindMap Noir", page_icon="🧠", layout="wide")
-    load_css()
-    
-    # Initialize Session State
-    if "page" not in st.session_state: st.session_state.page = "home"
-    if "user" not in st.session_state: st.session_state.user = None
-    if "map_data" not in st.session_state: st.session_state.map_data = None
-
-    # Routing
-    if st.session_state.page == "home":
-        home_page()
-    elif st.session_state.page == "signup":
-        signup_page()
-    elif st.session_state.page == "generator":
-        generator_page()
-
-if __name__ == "__main__":
-    main()
+    col1, col2 = st.columns(
