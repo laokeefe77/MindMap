@@ -275,20 +275,24 @@ def home_page():
             height: 80vh;
             text-align: center;
         }
+
         .glitch-title {
             font-size: 100px;
             font-weight: 900;
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 15px;
-            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8), 0 0 40px rgba(0, 150, 255, 0.4);
+            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8),
+                         0 0 40px rgba(0, 150, 255, 0.4);
             margin-bottom: 0;
             animation: pulse 4s infinite alternate;
         }
+
         @keyframes pulse {
             from { opacity: 0.8; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
         }
+
         .scanline {
             width: 300px;
             height: 2px;
@@ -296,23 +300,182 @@ def home_page():
             margin: 20px 0;
             box-shadow: 0 0 10px #00d0ff;
         }
+
         .coordinates {
             font-family: 'Courier New', monospace;
             color: #00d0ff;
             font-size: 12px;
             letter-spacing: 4px;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             opacity: 0.7;
+        }
+
+        .section {
+            padding: 100px 10%;
+            text-align: center;
+        }
+
+        .section-dark {
+            background: rgba(0,0,0,0.6);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 25px;
+            border: 1px solid rgba(0,150,255,0.3);
+            box-shadow: 0 0 15px rgba(0,150,255,0.2);
+        }
+
+        .faq-item {
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: left;
         }
         </style>
         
+        
+        <!-- HERO -->
         <div class="hero-container">
             <div class="glitch-title">Nebula</div>
             <div class="scanline"></div>
-            <div class="subtitle" style="margin-bottom:10px;">Knowledge Mapping Protocol</div>
-            <div class="coordinates">LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9</div>
+            <div class="subtitle" style="margin-bottom:10px;">
+                Knowledge Mapping Protocol
+            </div>
+            <div class="coordinates">
+                LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9
+            </div>
         </div>
     """, unsafe_allow_html=True)
+
+
+    # ✅ KEEP BUTTON FUNCTIONAL
+    col1, col2, col3 = st.columns([1,1,1])
+    with col2:
+        if st.button("🚀 LAUNCH ARCHITECT"):
+            st.session_state.page = "signup"
+            st.rerun()
+
+
+    # ----------------------------
+    # FEATURES
+    # ----------------------------
+    st.markdown("""
+        <div class="section section-dark">
+
+            <h2>Why Nebula?</h2>
+
+            <div class="feature-grid">
+
+                <div class="feature-card">
+                    <h3>🧠 Visual Thinking</h3>
+                    <p>Turn abstract topics into navigable galaxies.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>⚡ AI Architect</h3>
+                    <p>Instant structured learning paths.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🌌 Scalable Knowledge</h3>
+                    <p>From beginner to mastery.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🔒 Personal System</h3>
+                    <p>Your data. Your universe.</p>
+                </div>
+
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+
+    # ----------------------------
+    # PHILOSOPHY / SLOGANS
+    # ----------------------------
+    st.markdown("""
+        <div class="section">
+
+            <h2>Our Philosophy</h2>
+
+            <p style="color:#88ccff; font-size:20px; margin-top:30px;">
+                “Build systems. Not notes.”
+            </p>
+
+            <p style="color:#88ccff; font-size:20px;">
+                “Clarity is engineered.”
+            </p>
+
+            <p style="color:#88ccff; font-size:20px;">
+                “Learning is architecture.”
+            </p>
+
+        </div>
+    """, unsafe_allow_html=True)
+
+
+    # ----------------------------
+    # FAQ
+    # ----------------------------
+    st.markdown("""
+        <div class="section section-dark">
+
+            <h2>Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <h4>❓ What is Nebula?</h4>
+                <p>An AI-powered knowledge mapping system.</p>
+            </div>
+
+            <div class="faq-item">
+                <h4>❓ Who is it for?</h4>
+                <p>Students, researchers, and self-learners.</p>
+            </div>
+
+            <div class="faq-item">
+                <h4>❓ Is my data safe?</h4>
+                <p>Your maps remain private.</p>
+            </div>
+
+            <div class="faq-item">
+                <h4>❓ Is it free?</h4>
+                <p>Currently in beta access.</p>
+            </div>
+
+        </div>
+    """, unsafe_allow_html=True)
+
+
+    # ----------------------------
+    # CALL TO ACTION
+    # ----------------------------
+    st.markdown("""
+        <div class="section">
+
+            <h2>Start Building Your Knowledge System</h2>
+
+            <p style="color:#99ccff; max-width:600px; margin:20px auto;">
+                Transform how you learn. Design how you think.
+            </p>
+
+        </div>
+    """, unsafe_allow_html=True)
+
+
+    # ✅ KEEP SECOND BUTTON WORKING
+    col1, col2, col3 = st.columns([1,1,1])
+    with col2:
+        if st.button("✨ GET STARTED"):
+            st.session_state.page = "signup"
+            st.rerun()
+
 
     # Centering the button using Streamlit columns
     _, col2, _ = st.columns([1, 0.6, 1])
