@@ -1,11 +1,11 @@
-﻿import streamlit as st
-import random
+﻿ import streamlit as st
+import time
 
 # --------------------
 # Page Config
 # --------------------
 st.set_page_config(
-    page_title="MindMap Journey",
+    page_title="MindMap Noir",
     page_icon="🧠",
     layout="wide"
 )
@@ -15,230 +15,190 @@ st.set_page_config(
 # --------------------
 if "page" not in st.session_state:
     st.session_state.page = "home"
+if "user" not in st.session_state:
+    st.session_state.user = None
 
 # --------------------
-# Custom CSS
+# Custom CSS: High-Voltage Contrast
 # --------------------
 def load_css():
     st.markdown(
         """
         <style>
-        body {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: white;
+        /* 1. AGGRESSIVE BACKGROUND: Strong white-to-black sweep */
+        .stApp {
+            background-color: #000000;
+            background-image: 
+                linear-gradient(120deg, rgba(255,255,255,0.2) 0%, transparent 40%),
+                linear-gradient(290deg, rgba(255,255,255,0.1) 0%, transparent 30%),
+                /* High-visibility floor grid */
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
+            color: #ffffff;
         }
 
-        .main-title {
+        /* 2. RAISED LANDING: Lifted away from bottom */
+        .landing-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            font-size: 64px;
-            font-weight: bold;
-            margin-top: 80px;
-            letter-spacing: 2px;
+            min-height: 60vh; 
+            margin-top: 5vh;
+        }
+
+        /* 3. BOLD TYPOGRAPHY */
+        .main-title {
+            font-size: clamp(50px, 10vw, 120px); 
+            font-weight: 900;
+            letter-spacing: -2px; /* Tight, aggressive spacing */
+            margin-bottom: 0px;
+            text-transform: uppercase;
+            line-height: 0.9;
+            background: linear-gradient(to bottom, #ffffff, #666666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
-            text-align: center;
-            font-size: 20px;
-            opacity: 0.8;
+            font-size: 16px; 
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            color: #ffffff;
+            margin-top: 20px;
             margin-bottom: 60px;
         }
 
-        .bubble {
-            position: fixed;
-            border-radius: 50%;
-            opacity: 0.25;
-            animation: float 20s infinite linear;
-            background: radial-gradient(circle, #6dd5ed, #2193b0);
+        /* 4. OBVIOUS CARD: Heavy white border */
+        .glass-card {
+            background: #000000;
+            border: 4px solid #ffffff; /* Thick, unmistakable border */
+            padding: 50px;
+            border-radius: 0px;
+            box-shadow: 20px 20px 0px rgba(255,255,255,0.2); /* Brutalist shadow */
         }
 
-        @keyframes float {
-            from {
-                transform: translateY(100vh);
-            }
-            to {
-                transform: translateY(-120vh);
-            }
-        }
-
-        .center-btn {
-            display: flex;
-            justify-content: center;
-            margin-top: 80px;
-        }
-
+        /* 5. IN-YOUR-FACE BUTTONS */
         .stButton > button {
-            background: linear-gradient(90deg, #00c6ff, #0072ff);
-            color: white;
+            background: #ffffff !important;
+            color: #000000 !important;
             border: none;
-            padding: 16px 40px;
+            padding: 20px 80px;
             font-size: 20px;
-            border-radius: 50px;
-            transition: 0.3s ease;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            font-weight: 900;
+            border-radius: 0px;
+            width: 100%;
+            transition: 0.2s;
         }
 
         .stButton > button:hover {
-            transform: scale(1.05);
-            background: linear-gradient(90deg, #0072ff, #00c6ff);
+            background: #ff0000 !important; /* Visual feedback: Red on hover */
+            color: #ffffff !important;
+            transform: translate(-5px, -5px);
+            box-shadow: 10px 10px 0px #ffffff;
         }
 
-        .form-card {
-            background: rgba(255,255,255,0.08);
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 600px;
-            margin: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        /* Secondary Back Button */
+        .back-btn-container > div > button {
+            background: #000000 !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+            margin-top: 20px;
         }
+
+        /* Fix visibility of input labels */
+        .stTextInput label, .stSelectbox label {
+            color: #ffffff !important;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        header, footer, #MainMenu {visibility: hidden;}
         </style>
         """,
         unsafe_allow_html=True,
     )
 
-# --------------------
-# Floating Bubbles
-# --------------------
-def render_bubbles(n=20):
-    html = ""
-    for i in range(n):
-        size = random.randint(40, 120)
-        left = random.randint(0, 100)
-        duration = random.randint(15, 35)
-        delay = random.randint(0, 20)
-
-        html += f"""
-        <div class="bubble" style="
-            width:{size}px;
-            height:{size}px;
-            left:{left}vw;
-            animation-duration:{duration}s;
-            animation-delay:{delay}s;
-        "></div>
-        """
-
-    st.markdown(html, unsafe_allow_html=True)
-
-# --------------------
-# Navigation
-# --------------------
 def go_to(page):
     st.session_state.page = page
     st.rerun()
 
 # --------------------
-# Home Page
+# UI
 # --------------------
+
 def home_page():
-    render_bubbles(25)
-
-    st.markdown("<div class='main-title'>MindMap</div>", unsafe_allow_html=True)
-    st.markdown(
-        "<div class='subtitle'>Organize your thoughts. Build your future.</div>",
-        unsafe_allow_html=True,
-    )
-
-    st.markdown("<div class='center-btn'>", unsafe_allow_html=True)
-    if st.button("🚀 Start Your Journey"):
-        go_to("signup")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# --------------------
-# Signup Page
-# --------------------
-def signup_page():
-    st.markdown("<h1 style='text-align:center;'>Create Your Account</h1>", unsafe_allow_html=True)
-
-    st.markdown("<div class='form-card'>", unsafe_allow_html=True)
-
-    with st.form("signup_form"):
-        name = st.text_input("Full Name")
-        email = st.text_input("Email")
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        confirm = st.text_input("Confirm Password", type="password")
-
-        age = st.number_input("Age", min_value=1, max_value=120, step=1)
-        interest = st.selectbox(
-            "Main Interest",
-            ["Study", "Business", "Programming", "Design", "Other"],
-        )
-
-        submit = st.form_submit_button("Sign Up")
-
-    if submit:
-        if not name or not email or not username or not password:
-            st.error("Please fill in all required fields.")
-        elif password != confirm:
-            st.error("Passwords do not match.")
-        else:
-            # Example: Store in session (replace with database later)
-            st.session_state.user = {
-                "name": name,
-                "email": email,
-                "username": username,
-                "age": age,
-                "interest": interest,
-            }
-
-            st.success("Account created successfully!")
-            st.info("Welcome to MindMap 🎉")
-
-            if st.button("Go to Dashboard"):
-                go_to("dashboard")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    if st.button("⬅ Back to Home"):
-        go_to("home")
-
-# --------------------
-# Dashboard Page
-# --------------------
-def dashboard_page():
-    user = st.session_state.get("user", {})
-
-    st.markdown("<h1>📊 Dashboard</h1>", unsafe_allow_html=True)
-
-    if not user:
-        st.warning("Please sign up first.")
-        if st.button("Go to Signup"):
+    st.markdown('<div class="landing-container">', unsafe_allow_html=True)
+    st.markdown("<div class='main-title'>MINDMAP</div>", unsafe_allow_html=True)
+    st.markdown("<div class='subtitle'>GENERATE SYSTEM</div>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if st.button("INITIATE"):
             go_to("signup")
-        return
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    st.success(f"Welcome, {user.get('name', 'User')} 👋")
+def signup_page():
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 1.2, 1])
+    with col2:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align:center; font-weight:900;'>ACCESS</h1>", unsafe_allow_html=True)
+        
+        with st.form("signup_form", border=False):
+            u = st.text_input("USER ID")
+            p = st.text_input("PASSWORD", type="password")
+            submitted = st.form_submit_button("CREATE PROFILE")
+            
+        if submitted and u and p:
+            st.session_state.user = {"name": u}
+            go_to("generator")
+            
+        st.markdown('<div class="back-btn-container">', unsafe_allow_html=True)
+        if st.button("BACK"):
+            go_to("home")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown("---")
-
-    st.subheader("Your Profile")
-    st.write("**Username:**", user.get("username"))
-    st.write("**Email:**", user.get("email"))
-    st.write("**Age:**", user.get("age"))
-    st.write("**Interest:**", user.get("interest"))
-
-    st.markdown("---")
-
-    st.subheader("Your MindMap (Coming Soon 🚧)")
-    st.info("Here you will be able to create and manage your mind maps.")
-
-    if st.button("Log Out"):
-        st.session_state.clear()
+def generator_page():
+    if not st.session_state.user:
         go_to("home")
+    
+    st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
+    st.markdown("<h1 style='font-weight:900;'>COMMAND_CENTER</h1>", unsafe_allow_html=True)
+    
+    st.markdown("<hr style='border: 2px solid white;'>", unsafe_allow_html=True)
+    
+    col1, col2 = st.columns([1, 1.5])
+    with col1:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        topic = st.text_input("SUBJECT TARGET")
+        depth = st.select_slider("INTENSITY", options=["1", "2", "3"])
+        if st.button("RUN_ARCHITECT"):
+            with st.spinner("CALCULATING NODES..."):
+                time.sleep(1)
+            st.success("MAP DEPLOYED")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with st.sidebar:
+        if st.button("SHUTDOWN"):
+            st.session_state.user = None
+            go_to("home")
 
 # --------------------
-# Main App
+# Main
 # --------------------
 def main():
     load_css()
-
-    page = st.session_state.page
-
-    if page == "home":
+    if st.session_state.page == "home":
         home_page()
-    elif page == "signup":
+    elif st.session_state.page == "signup":
         signup_page()
-    elif page == "dashboard":
-        dashboard_page()
-
+    elif st.session_state.page == "generator":
+        generator_page()
 
 if __name__ == "__main__":
     main()
