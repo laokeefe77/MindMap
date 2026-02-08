@@ -422,7 +422,7 @@ def home_page():
 def signup_page():
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
-        st.markdown('<br><br><div class="glass-card">', unsafe_allow_html=True)
+
         st.markdown("<h1 style='text-align:center; font-weight:900;'>ACCESS</h1>", unsafe_allow_html=True)
         u = st.text_input("USER ID")
         p = st.text_input("PASSWORD", type="password")
