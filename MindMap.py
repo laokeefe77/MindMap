@@ -549,13 +549,16 @@ def generator_page():
 # 6. MAIN EXECUTION
 # --------------------
 def main():
-    st.set_page_config(
-        page_title="Nebula", 
-        page_icon="🧠", 
-        layout="wide",
-        initial_sidebar_state="expanded"  # Add this line
-    )    
+    st.set_page_config(page_title="MindMap Noir", page_icon="🧠", layout="wide", initial_sidebar_state="expanded")
     load_css()
+    
+    # --- GLOBAL SIDEBAR (Shows on all pages once logged in) ---
+    if st.session_state.get("user"):
+        with st.sidebar:
+            st.markdown(f"**LOGGED IN AS:** {st.session_state.user['name'].upper()}")
+            st.markdown("---")
+
+    # ... rest of your main() logic ...
     if "page" not in st.session_state: st.session_state.page = "home"
     if "user" not in st.session_state: st.session_state.user = None
     if "map_data" not in st.session_state: st.session_state.map_data = None
