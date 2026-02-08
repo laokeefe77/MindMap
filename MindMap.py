@@ -1,5 +1,4 @@
 ﻿import streamlit as st
-import random
 import time
 
 # --------------------
@@ -12,7 +11,7 @@ st.set_page_config(
 )
 
 # --------------------
-# Session State Initialization
+# Session State
 # --------------------
 if "page" not in st.session_state:
     st.session_state.page = "home"
@@ -20,107 +19,92 @@ if "user" not in st.session_state:
     st.session_state.user = None
 
 # --------------------
-# Custom CSS: Sleek Modern Noir
+# Custom CSS: Sweeping Lines & Clean Typography
 # --------------------
 def load_css():
     st.markdown(
         """
         <style>
-        /* Modern Depth Gradient Background */
+        /* Modern Background with Sweeping Linear Gradients */
         .stApp {
-            background: radial-gradient(circle at top right, #1a1a1a, #000000);
+            background-color: #000000;
+            background-image: 
+                linear-gradient(215deg, rgba(255,255,255,0.05) 0%, transparent 40%),
+                linear-gradient(125deg, rgba(255,255,255,0.03) 0%, transparent 50%);
             color: #ffffff;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
         }
 
-        /* Title Styling: Cutting White Lines */
-        .main-title {
-            text-align: center; 
-            font-size: 80px; 
-            font-weight: 900;
-            margin-top: 60px; 
-            letter-spacing: -2px;
-            color: #ffffff;
-            line-height: 1;
-        }
-
-        .subtitle {
-            text-align: center; 
-            font-size: 18px; 
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            opacity: 0.6; 
-            margin-bottom: 50px;
-        }
-
-        /* Floating Element Logic */
-        .bubble {
-            position: fixed; 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%; 
-            background: rgba(255, 255, 255, 0.03);
-            animation: float 25s infinite linear;
-            z-index: 0;
-            pointer-events: none; /* Won't block clicks */
-        }
-
-        @keyframes float {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* Sleek Glassmorphism Card */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 2px; /* Sharper corners for modern look */
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Button: High Contrast White */
-        .stButton > button {
-            background: #ffffff;
-            color: #000000 !important; 
-            border: none; 
-            padding: 14px 40px;
-            font-weight: bold;
-            border-radius: 0px; /* Sharp modern edges */
-            transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        /* Centering Container for the Landing Page */
+        .landing-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 70vh;
             width: 100%;
         }
 
-        .stButton > button:hover {
-            background: #e0e0e0;
-            transform: scale(1.02);
-            letter-spacing: 1px;
+        /* Thinner, Sleeker Typography */
+        .main-title {
+            font-size: 72px; 
+            font-weight: 300; /* Light weight for elegance */
+            letter-spacing: 12px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
-        /* Sidebar Styling */
-        section[data-testid="stSidebar"] {
-            background-color: rgba(0,0,0,0.5);
-            border-right: 1px solid rgba(255,255,255,0.1);
+        .subtitle {
+            font-size: 14px; 
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            opacity: 0.5;
+            margin-bottom: 40px;
+        }
+
+        /* Glass Card - Minimized to only wrap content */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            display: inline-block; /* Prevents empty stretching */
+            width: 100%;
+        }
+
+        /* Perfectly Centered Button */
+        .stButton {
+            display: flex;
+            justify-content: center;
+        }
+
+        .stButton > button {
+            background: #ffffff;
+            color: #000000 !important;
+            border: none;
+            padding: 12px 50px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .stButton > button:hover {
+            background: #cccccc;
+            transform: scale(1.05);
+        }
+
+        /* Remove default Streamlit padding */
+        .block-container {
+            padding-top: 2rem;
         }
         </style>
         """,
         unsafe_allow_html=True,
     )
-
-def render_bubbles(n=12):
-    # Only render if we aren't in a form to prevent 'ghost bubbles'
-    html = "".join([
-        f'<div class="bubble" style="'
-        f'width:{random.randint(50,150)}px;'
-        f'height:{random.randint(50,150)}px;'
-        f'left:{random.randint(0,95)}vw;'
-        f'animation-duration:{random.randint(20,40)}s;'
-        f'animation-delay:{random.randint(0,15)}s;"></div>' 
-        for _ in range(n)
-    ])
-    st.markdown(html, unsafe_allow_html=True)
 
 def go_to(page):
     st.session_state.page = page
@@ -129,62 +113,60 @@ def go_to(page):
 # --------------------
 # Page Logic
 # --------------------
+
 def home_page():
-    render_bubbles(10)
+    # Using a single container to ensure vertical and horizontal centering
+    st.markdown('<div class="landing-container">', unsafe_allow_html=True)
     st.markdown("<div class='main-title'>MINDMAP</div>", unsafe_allow_html=True)
-    st.markdown("<div class='subtitle'>The Architecture of Learning</div>", unsafe_allow_html=True)
+    st.markdown("<div class='subtitle'>The Architecture of Intelligence</div>", unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([1.2, 1, 1.2])
-    with col2:
-        if st.button("ENTER WORKSPACE"):
-            go_to("signup")
+    # Custom button placement for centering
+    if st.button("ENTER"):
+        go_to("signup")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def signup_page():
-    st.markdown("<h2 style='text-align:center; font-weight:200; letter-spacing:10px;'>IDENTITY</h2>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns([1, 1.5, 1])
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align:center; font-weight:300; letter-spacing:4px;'>SIGN UP</h3>", unsafe_allow_html=True)
         with st.form("signup_form", border=False):
-            st.text_input("FULL NAME")
-            username = st.text_input("USERNAME")
-            password = st.text_input("PASSWORD", type="password")
-            submit = st.form_submit_button("CREATE ACCOUNT")
+            st.text_input("NAME")
+            username = st.text_input("USER")
+            password = st.text_input("PASS", type="password")
+            # The form submit button also centers automatically with CSS
+            submit = st.form_submit_button("CREATE")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    if submit:
-        if username and password:
-            st.session_state.user = {"name": username}
-            st.success("AUTHENTICATED.")
-            time.sleep(0.5)
-            go_to("generator")
+    if submit and username and password:
+        st.session_state.user = {"name": username}
+        go_to("generator")
 
 def generator_page():
     if not st.session_state.user:
         go_to("home")
     
-    render_bubbles(5)
+    # Minimalist Workspace
+    st.markdown(f"<h5 style='letter-spacing:3px; opacity:0.6;'>OPERATOR: {st.session_state.user['name'].upper()}</h5>", unsafe_allow_html=True)
+    st.markdown("<h2 style='font-weight:300; letter-spacing:2px;'>WORKSPACE</h2>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        topic = st.text_input("INPUT TOPIC", placeholder="e.g., Deep Learning")
+        depth = st.select_slider("DEPTH", options=["LOW", "MID", "MAX"])
+        if st.button("EXECUTE"):
+            with st.spinner("BUILDING..."):
+                time.sleep(2)
+            st.success("JSON COMPILED.")
+        st.markdown('</div>', unsafe_allow_html=True)
     
     with st.sidebar:
-        st.markdown(f"### OPERATOR: {st.session_state.user['name'].upper()}")
-        if st.button("TERMINATE SESSION"):
+        if st.button("LOGOUT"):
             st.session_state.user = None
             go_to("home")
-
-    st.markdown("<h1 style='text-align:center; font-weight:800;'>GENERATOR</h1>", unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns([0.5, 2, 0.5])
-    with col2:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        topic = st.text_input("SUBJECT MATTER", placeholder="Enter topic...")
-        depth = st.select_slider("DEPTH GRADIENT", options=["LINEAR", "EXPANDED", "COMPLEX"])
-        
-        if st.button("INITIATE ARCHITECTURE"):
-            with st.spinner("PROCESSING NODES..."):
-                time.sleep(2)
-            st.success("STRUCTURE COMPLETE.")
-        st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------
 # App Router
