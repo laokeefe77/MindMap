@@ -19,26 +19,26 @@ if "user" not in st.session_state:
     st.session_state.user = None
 
 # --------------------
-# Custom CSS: High-Voltage Contrast
+# Custom CSS: High-Voltage Contrast (Brighter Gradient)
 # --------------------
 def load_css():
     st.markdown(
         """
         <style>
-        /* 1. AGGRESSIVE BACKGROUND: Strong white-to-black sweep */
+        /* 1. AGGRESSIVE BACKGROUND: Heavily increased white presence */
         .stApp {
             background-color: #000000;
             background-image: 
-                linear-gradient(120deg, rgba(255,255,255,0.2) 0%, transparent 40%),
-                linear-gradient(290deg, rgba(255,255,255,0.1) 0%, transparent 30%),
-                /* High-visibility floor grid */
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+                linear-gradient(120deg, rgba(255,255,255,0.45) 0%, transparent 60%),
+                linear-gradient(290deg, rgba(255,255,255,0.25) 0%, transparent 40%),
+                /* High-visibility floor grid (Brightened) */
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
             color: #ffffff;
         }
 
-        /* 2. RAISED LANDING: Lifted away from bottom */
+        /* 2. RAISED LANDING */
         .landing-container {
             display: flex;
             flex-direction: column;
@@ -53,11 +53,11 @@ def load_css():
         .main-title {
             font-size: clamp(50px, 10vw, 120px); 
             font-weight: 900;
-            letter-spacing: -2px; /* Tight, aggressive spacing */
+            letter-spacing: -2px;
             margin-bottom: 0px;
             text-transform: uppercase;
             line-height: 0.9;
-            background: linear-gradient(to bottom, #ffffff, #666666);
+            background: linear-gradient(to bottom, #ffffff, #888888);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -72,16 +72,16 @@ def load_css():
             margin-bottom: 60px;
         }
 
-        /* 4. OBVIOUS CARD: Heavy white border */
+        /* 4. OBVIOUS CARD */
         .glass-card {
             background: #000000;
-            border: 4px solid #ffffff; /* Thick, unmistakable border */
+            border: 4px solid #ffffff;
             padding: 50px;
             border-radius: 0px;
-            box-shadow: 20px 20px 0px rgba(255,255,255,0.2); /* Brutalist shadow */
+            box-shadow: 20px 20px 0px rgba(255,255,255,0.3);
         }
 
-        /* 5. IN-YOUR-FACE BUTTONS */
+        /* 5. BUTTONS */
         .stButton > button {
             background: #ffffff !important;
             color: #000000 !important;
@@ -95,13 +95,12 @@ def load_css():
         }
 
         .stButton > button:hover {
-            background: #ff0000 !important; /* Visual feedback: Red on hover */
+            background: #ff0000 !important;
             color: #ffffff !important;
             transform: translate(-5px, -5px);
             box-shadow: 10px 10px 0px #ffffff;
         }
 
-        /* Secondary Back Button */
         .back-btn-container > div > button {
             background: #000000 !important;
             color: #ffffff !important;
@@ -109,7 +108,6 @@ def load_css():
             margin-top: 20px;
         }
 
-        /* Fix visibility of input labels */
         .stTextInput label, .stSelectbox label {
             color: #ffffff !important;
             font-weight: bold;
