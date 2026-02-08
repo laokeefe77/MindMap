@@ -262,7 +262,6 @@ def render_force_graph(data):
 def home_page():
     load_space_background()
     
-    # Custom CSS for the Space Title
     st.markdown("""
         <style>
         .hero-container {
@@ -349,13 +348,7 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1,1,1])
-    with col2:
-        if st.button("🚀 LAUNCH ARCHITECT"):
-            st.session_state.page = "signup"
-            st.rerun()
-
-    # Features Section
+    # FEATURES SECTION
     st.markdown("""
     <style>
         .section-dark {
@@ -413,7 +406,7 @@ def home_page():
     </div>
     """, unsafe_allow_html=True)
 
-    # Philosophy Section
+    # PHILOSOPHY SECTION
     st.markdown("""
         <div class="section">
             <h2>Our Philosophy</h2>
@@ -423,7 +416,7 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # FAQ Section
+    # FAQ SECTION
     st.markdown("""
         <div class="section section-dark">
             <h2>Frequently Asked Questions</h2>
@@ -438,7 +431,7 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # CTA Section
+    # CTA SECTION
     st.markdown("""
         <div class="section">
             <h2>Start Building Your Knowledge System</h2>
@@ -506,12 +499,10 @@ def main():
     st.set_page_config(page_title="MindMap Noir", page_icon="🧠", layout="wide")
     load_css()
     
-    # Initialize Session State
     if "page" not in st.session_state: st.session_state.page = "home"
     if "user" not in st.session_state: st.session_state.user = None
     if "map_data" not in st.session_state: st.session_state.map_data = None
 
-    # Routing
     if st.session_state.page == "home":
         home_page()
     elif st.session_state.page == "signup":
