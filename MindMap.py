@@ -240,25 +240,27 @@ def render_force_graph(data):
                 {{ selector: 'edge', style: {{ 
                     'width': 1, 
                     'line-color': 'rgba(0, 150, 255, 0.15)', 
-                    'curve-style': 'haystack',
+                    'curve-style': 'bezier', /* Changed from haystack for better spacing visibility */
                 }} }},
                 {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 20 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
-                refresh: 4,
+                refresh: 20,
                 fit: true, 
-                padding: 80,
-                nodeOverlap: 100,
-                nodeRepulsion: 10000000,
-                idealEdgeLength: 150,
-                edgeElasticity: 100,
-                nestingFactor: 1.2,
-                gravity: 1,
-                numIter: 4000,
+                padding: 50,
+                
+                /* PHYSICS TWEAKS TO PREVENT OVERLAP */
+                nodeOverlap: 200,            // Increased to prevent tight packing
+                nodeRepulsion: 8000000,      // Massive boost to push other branches away
+                idealEdgeLength: 100,        // Keeps parents/children close while nodes push far
+                edgeElasticity: 100,         // Tension on the lines
+                nestingFactor: 0.1,          // Lower value allows sub-branches to drift further apart
+                gravity: 0.15,               // Reduced gravity so branches don't collapse into the center
+                numIter: 2500,               // More iterations for a cleaner settle
                 initialTemp: 1000,
-                coolingFactor: 0.95
+                coolingFactor: 0.99          // Slower cooling for better distribution
             }}
         }});
     </script>
