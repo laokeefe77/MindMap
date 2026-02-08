@@ -155,3 +155,48 @@ def signup_page():
 
     if submit:
         if username and password:
+            st.session_state.user = {"name": username}
+            st.success("AUTHENTICATED.")
+            time.sleep(0.5)
+            go_to("generator")
+
+def generator_page():
+    if not st.session_state.user:
+        go_to("home")
+    
+    render_bubbles(5)
+    
+    with st.sidebar:
+        st.markdown(f"### OPERATOR: {st.session_state.user['name'].upper()}")
+        if st.button("TERMINATE SESSION"):
+            st.session_state.user = None
+            go_to("home")
+
+    st.markdown("<h1 style='text-align:center; font-weight:800;'>GENERATOR</h1>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([0.5, 2, 0.5])
+    with col2:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        topic = st.text_input("SUBJECT MATTER", placeholder="Enter topic...")
+        depth = st.select_slider("DEPTH GRADIENT", options=["LINEAR", "EXPANDED", "COMPLEX"])
+        
+        if st.button("INITIATE ARCHITECTURE"):
+            with st.spinner("PROCESSING NODES..."):
+                time.sleep(2)
+            st.success("STRUCTURE COMPLETE.")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# --------------------
+# App Router
+# --------------------
+def main():
+    load_css()
+    if st.session_state.page == "home":
+        home_page()
+    elif st.session_state.page == "signup":
+        signup_page()
+    elif st.session_state.page == "generator":
+        generator_page()
+
+if __name__ == "__main__":
+    main()
