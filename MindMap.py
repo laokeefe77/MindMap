@@ -441,7 +441,7 @@ def signup_page():
                     st.error("Please fill in both fields.")
 
         with btn_col2:
-            if st.button("BACK TO LOGIN", use_container_width=True):
+            if st.button("BACK TO MAIN PAGE", use_container_width=True):
                 # Go back to MAIN PAGE (home)
                 st.session_state.page = "home"
                 st.rerun()
