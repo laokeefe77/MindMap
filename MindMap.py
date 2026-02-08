@@ -351,9 +351,22 @@ def home_page():
 
     col1, col2, col3 = st.columns([1,1,1])
     with col2:
+    col1, col2, col3 = st.columns(3)
+
+    with col2:
+        st.write("")   # spacer
+        st.write("")
+        st.write("")
+    
+        st.button("🚀 LAUNCH ARCHITECT")
+    
+        st.write("")
+        st.write("")
+
         if st.button("🚀 LAUNCH ARCHITECT"):
             st.session_state.page = "signup"
             st.rerun()
+            col1, col2, col3 = st.columns(3)
 
     # Features Section
     st.markdown("""
