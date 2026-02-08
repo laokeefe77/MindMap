@@ -19,21 +19,22 @@ if "user" not in st.session_state:
     st.session_state.user = None
 
 # --------------------
-# Custom CSS: Bottom-Left (Black) to Top-Right (White)
+# Custom CSS: Grid & Button Refinement
 # --------------------
 def load_css():
     st.markdown(
         """
         <style>
-        /* 1. AGGRESSIVE GRADIENT: Black (Bottom-Left) to White (Top-Right) */
+        /* 1. AGGRESSIVE GRADIENT & FULL GRID */
         .stApp {
             background-color: #000000;
             background-image: 
                 linear-gradient(45deg, #000000 25%, rgba(255,255,255,0.6) 100%),
-                /* Thicker, more visible floor lines (2px) */
-                linear-gradient(rgba(255,255,255,0.15) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(255,255,255,0.15) 2px, transparent 2px);
-            background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
+                /* Vertical Lines */
+                linear-gradient(90deg, rgba(255,255,255,0.15) 2px, transparent 2px),
+                /* Horizontal Lines */
+                linear-gradient(0deg, rgba(255,255,255,0.15) 2px, transparent 2px);
+            background-size: 100% 100%, 60px 60px, 60px 60px;
             color: #ffffff;
             background-attachment: fixed;
         }
@@ -58,7 +59,6 @@ def load_css():
             text-transform: uppercase;
             line-height: 0.9;
             color: #ffffff;
-            /* Added text shadow for legibility against white areas */
             text-shadow: 4px 4px 15px rgba(0,0,0,0.8);
         }
 
@@ -82,7 +82,7 @@ def load_css():
             box-shadow: 20px 20px 0px rgba(255,255,255,0.4);
         }
 
-        /* 5. BUTTONS */
+        /* 5. BUTTONS: Updated Hover Color to Charcoal */
         .stButton > button {
             background: #ffffff !important;
             color: #000000 !important;
@@ -96,20 +96,20 @@ def load_css():
         }
 
         .stButton > button:hover {
-            background: #ff0000 !important;
+            background: #333333 !important; /* Sophisticated Dark Gray */
             color: #ffffff !important;
             transform: translate(-5px, -5px);
             box-shadow: 10px 10px 0px #ffffff;
         }
 
-        .back-btn-container > div > button {
+        /* Back Button inside the card logic */
+        .back-btn-internal > div > button {
             background: #000000 !important;
             color: #ffffff !important;
             border: 2px solid #ffffff !important;
             margin-top: 20px;
         }
 
-        /* Form Text Visibility */
         .stTextInput label, .stSelectbox label {
             color: #ffffff !important;
             font-weight: bold;
@@ -157,7 +157,8 @@ def signup_page():
             st.session_state.user = {"name": u}
             go_to("generator")
             
-        st.markdown('<div class="back-btn-container">', unsafe_allow_html=True)
+        # MOVED INSIDE THE GLASS-CARD
+        st.markdown('<div class="back-btn-internal">', unsafe_allow_html=True)
         if st.button("BACK"):
             go_to("home")
         st.markdown('</div>', unsafe_allow_html=True)
