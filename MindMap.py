@@ -441,11 +441,7 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1,1,1])
-    with col2:
-        if st.button("✨ GET STARTED"):
-            st.session_state.page = "signup"
-            st.rerun()
+    # "GET STARTED" BUTTON REMOVED PER REQUEST
 
 def signup_page():
     col1, col2, col3 = st.columns([1, 1.2, 1])
