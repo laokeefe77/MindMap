@@ -23,7 +23,9 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     if edges is None: edges = []
     
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
-    node_size = 45 if parent_id is None else 25
+    
+    # SIGNIFICANTLY BIGGER BALLS
+    node_size = 80 if parent_id is None else 50 
     
     nodes.append({
         "id": current_id, 
@@ -228,36 +230,36 @@ def render_force_graph(data):
                     'color': '#00d0ff', 
                     'width': 'data(size)', 
                     'height': 'data(size)', 
-                    'font-size': '16px',          /* INCREASED FONT SIZE */
-                    'font-weight': 'bold',
+                    'font-size': '24px',          /* EVEN LARGER FONT */
+                    'font-weight': '900',
                     'text-valign': 'center', 
                     'text-halign': 'right', 
-                    'text-margin-x': '10px',      /* SPACING FOR READABILITY */
+                    'text-margin-x': '15px',      
                     'font-family': 'monospace', 
-                    'border-width': 2, 
+                    'border-width': 3, 
                     'border-color': '#00a0ff', 
-                    'shadow-blur': 12, 
+                    'shadow-blur': 15, 
                     'shadow-color': '#0088ff' 
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 3,                   /* THICKER CONNECTING LINES */
-                    'line-color': 'rgba(0, 150, 255, 0.4)', /* INCREASED OPACITY */
+                    'width': 6,                   /* EVEN THICKER LINES */
+                    'line-color': 'rgba(0, 150, 255, 0.5)', 
                     'curve-style': 'bezier',
                     'target-arrow-shape': 'triangle',
-                    'target-arrow-color': 'rgba(0, 150, 255, 0.4)',
-                    'arrow-scale': 1.2
+                    'target-arrow-color': 'rgba(0, 150, 255, 0.5)',
+                    'arrow-scale': 1.5
                 }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 25, 'width': 50, 'height': 50 }} }}
+                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 30 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
                 refresh: 20,
                 fit: true, 
-                padding: 60,
-                nodeOverlap: 250,
-                nodeRepulsion: 10000000,      /* SLIGHTLY HIGHER REPULSION */
-                idealEdgeLength: 120, 
+                padding: 100,             /* Increased padding for bigger nodes */
+                nodeOverlap: 400,
+                nodeRepulsion: 15000000,   /* Increased to compensate for larger node size */
+                idealEdgeLength: 150, 
                 edgeElasticity: 100, 
                 nestingFactor: 0.1, 
                 gravity: 0.1, 
