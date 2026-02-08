@@ -236,8 +236,27 @@ def generator_page():
             go_to("home")
 
 
-# [Simplified main for brevity]
-if __name__ == "__main__":
+def main():
     load_css()
-    if "user" not in st.session_state: st.session_state.user = {"name": "Admin"} # Bypass for testing
-    generator_page()
+    
+    # --- INITIALIZATION BLOCK ---
+    # This prevents the "KeyError" by ensuring the variables exist 
+    # even if they are empty/None at first.
+    if "page" not in st.session_state:
+        st.session_state.page = "home"
+    if "user" not in st.session_state:
+        st.session_state.user = None
+    if "map_data" not in st.session_state:
+        st.session_state.map_data = None
+    # ----------------------------
+
+    # Navigation Logic
+    if st.session_state.page == "home":
+        home_page()
+    elif st.session_state.page == "signup":
+        signup_page()
+    elif st.session_state.page == "generator":
+        generator_page()
+
+if __name__ == "__main__":
+    main()
