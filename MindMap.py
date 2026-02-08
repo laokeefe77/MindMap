@@ -25,103 +25,114 @@ def load_css():
     st.markdown(
         """
         <style>
-        /* 1. BACKGROUND & GRID */
+        /* 1. ORIGINAL AGGRESSIVE GRADIENT & FULL GRID REPLACED */
         .stApp {
             background-color: #000000;
             background-image: 
-                linear-gradient(45deg, #000000 25%, rgba(255,255,255,0.1) 100%),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(0deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+                linear-gradient(45deg, #000000 25%, rgba(255,255,255,0.6) 100%),
+                linear-gradient(90deg, rgba(255,255,255,0.15) 2px, transparent 2px),
+                linear-gradient(0deg, rgba(255,255,255,0.15) 2px, transparent 2px);
             background-size: 100% 100%, 60px 60px, 60px 60px;
             color: #ffffff;
             background-attachment: fixed;
         }
 
-        /* 2. FLOATING BACK ARROW */
+        /* 2. FLOATING BACK ARROW (Top Left) */
         .back-arrow-container {
             position: fixed;
-            top: 30px;
-            left: 30px;
+            top: 40px;
+            left: 40px;
             z-index: 999;
         }
         
-        /* Styling the streamlit button to look like a minimal arrow */
         .back-arrow-container .stButton > button {
             background: transparent !important;
             color: #ffffff !important;
-            border: 2px solid #ffffff !important;
+            border: 4px solid #ffffff !important;
             border-radius: 0px !important;
-            width: 50px !important;
-            height: 50px !important;
-            padding: 0px !important;
+            width: 60px !important;
+            height: 60px !important;
             font-size: 24px !important;
-            font-weight: 200 !important;
-            transition: 0.3s;
+            font-weight: 900 !important;
+            transition: 0.15s;
         }
         
         .back-arrow-container .stButton > button:hover {
             background: #ffffff !important;
             color: #000000 !important;
-            box-shadow: 5px 5px 0px rgba(255,255,255,0.3);
+            transform: translate(-5px, -5px);
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
         }
 
-        /* 3. LANDING & TYPOGRAPHY */
+        /* 3. RAISED LANDING */
         .landing-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            min-height: 70vh; 
+            min-height: 60vh; 
+            margin-top: 5vh;
         }
 
+        /* 4. BOLD TYPOGRAPHY */
         .main-title {
             font-size: clamp(50px, 10vw, 120px); 
             font-weight: 900;
             letter-spacing: -2px;
+            margin-bottom: 0px;
             text-transform: uppercase;
             line-height: 0.9;
             color: #ffffff;
+            text-shadow: 4px 4px 15px rgba(0,0,0,0.8);
         }
 
         .subtitle {
-            font-size: 14px; 
+            font-size: 16px; 
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 10px;
-            margin-bottom: 40px;
+            letter-spacing: 12px;
+            color: #ffffff;
+            margin-top: 20px;
+            margin-bottom: 60px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
         }
 
-        /* 4. THE BOX (GLASS CARD) */
+        /* 5. THE BOX (GLASS CARD) */
         .glass-card {
             background: #000000;
             border: 4px solid #ffffff;
-            padding: 40px;
+            padding: 50px;
             border-radius: 0px;
-            box-shadow: 15px 15px 0px rgba(255,255,255,0.2);
+            box-shadow: 20px 20px 0px rgba(255,255,255,0.4);
         }
 
-        /* 5. MAIN BUTTONS */
+        /* 6. BUTTONS */
         .stButton > button {
             background: #ffffff !important;
             color: #000000 !important;
             border: none;
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 20px 80px;
+            font-size: 20px;
             font-weight: 900;
             border-radius: 0px;
             width: 100%;
-            transition: 0.2s;
+            transition: 0.15s;
         }
 
         .stButton > button:hover {
             background: #333333 !important;
             color: #ffffff !important;
-            transform: translate(-3px, -3px);
-            box-shadow: 8px 8px 0px #ffffff;
+            transform: translate(-5px, -5px);
+            box-shadow: 10px 10px 0px #ffffff;
         }
 
-        /* Hidden Streamlit UI */
+        .stTextInput label, .stSelectbox label {
+            color: #ffffff !important;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
         header, footer, #MainMenu {visibility: hidden;}
         </style>
         """,
@@ -137,7 +148,6 @@ def go_to(page):
 # --------------------
 
 def back_arrow():
-    """Renders the back arrow in the corner"""
     st.markdown('<div class="back-arrow-container">', unsafe_allow_html=True)
     if st.button("←"):
         go_to("home")
@@ -155,18 +165,13 @@ def home_page():
     st.markdown('</div>', unsafe_allow_html=True)
 
 def signup_page():
-    # Show the back arrow instead of a button inside the form
     back_arrow()
-    
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
+    st.markdown("<br><br>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
-        # THE BOX STARTS HERE
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        
-        # TITLE IS NOW INSIDE THE BOX
-        st.markdown("<h1 style='text-align:center; font-weight:900; margin-top:0; color:white;'>ACCESS</h1>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align:center; letter-spacing:3px; font-size:10px; margin-bottom:30px;'>ESTABLISH CREDENTIALS</p>", unsafe_allow_html=True)
+        # ACCESS is now inside the box
+        st.markdown("<h1 style='text-align:center; font-weight:900; color:white; margin-top:0;'>ACCESS</h1>", unsafe_allow_html=True)
         
         with st.form("signup_form", border=False):
             u = st.text_input("USER ID")
@@ -176,19 +181,16 @@ def signup_page():
         if submitted and u and p:
             st.session_state.user = {"name": u}
             go_to("generator")
-            
-        st.markdown('</div>', unsafe_allow_html=True) # THE BOX ENDS HERE
+        st.markdown('</div>', unsafe_allow_html=True)
 
 def generator_page():
     if not st.session_state.user:
         go_to("home")
     
     back_arrow()
-    
-    st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
     st.markdown("<h1 style='font-weight:900;'>COMMAND_CENTER</h1>", unsafe_allow_html=True)
-    st.markdown("<hr style='border: 1px solid white;'>", unsafe_allow_html=True)
+    st.markdown("<hr style='border: 2px solid white;'>", unsafe_allow_html=True)
     
     col1, col2 = st.columns([1, 1.5])
     with col1:
