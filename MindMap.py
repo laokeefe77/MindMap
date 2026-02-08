@@ -3,6 +3,11 @@ import streamlit.components.v1 as components
 import time
 import json
 
+import json
+from dotenv import load_dotenv
+from google import genai
+from google.genai import types
+
 # --- IMPORT FROM YOUR Gemini.py FILE ---
 from Gemini import generate_learning_map
 

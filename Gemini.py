@@ -5,10 +5,11 @@ from google import genai
 from google.genai import types
 
 # Load your API key
-load_dotenv()
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
 
 def generate_learning_map(topic):
+    load_dotenv()
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     # System instructions move from the Client to the Config
     sys_instruct = """
     You are a structural data architect. 
