@@ -75,34 +75,116 @@ def load_css():
 # 3. BACKGROUND ANIMATIONS
 # --------------------
 def load_space_background():
-    # Integrated both bubble and star logic here for consistency
     st.markdown(
         """
-        <div id="space-bg"><canvas id="star-canvas"></canvas></div>
+        <div id="space-bg">
+            <canvas id="starfield"></canvas>
+        </div>
+
+        <style>
+        #space-bg {
+            position: fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            z-index:-1;
+            background: radial-gradient(circle at top, #0a1a2f, #000000 70%);
+            overflow: hidden;
+        }
+
+        canvas {
+            position: absolute;
+            top:0;
+            left:0;
+        }
+
+        /* Glowing title */
+        .nebula-title {
+            font-size: 90px;
+            letter-spacing: 12px;
+            color: #ffffff;
+            text-shadow:
+                0 0 10px #00d0ff,
+                0 0 20px #00d0ff,
+                0 0 40px #0088ff;
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.8; }
+            to { opacity: 1; }
+        }
+
+        .nebula-sub {
+            color: #88ccff;
+            letter-spacing: 4px;
+            margin-top: 10px;
+        }
+        </style>
+
         <script>
-        const canvas = document.getElementById("star-canvas");
+        const canvas = document.getElementById("starfield");
         const ctx = canvas.getContext("2d");
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener("resize", resize); 
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resize);
         resize();
+
         const stars = [];
-        for(let i=0; i<200; i++) stars.push({
-            x: Math.random()*canvas.width, y: Math.random()*canvas.height, 
-            size: Math.random()*1.5, speed: Math.random()*0.5
-        });
+        const STAR_COUNT = 300;
+
+        for (let i = 0; i < STAR_COUNT; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.5 + 0.3,
+                s: Math.random() * 0.3 + 0.1
+            });
+        }
+
         function animate() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle = "black"; ctx.fillRect(0,0,canvas.width,canvas.height);
-            stars.forEach(s => {
-                ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
-                s.y += s.speed; if(s.y > canvas.height) s.y = 0;
+
+            // Nebula glow overlay
+            const grad = ctx.createRadialGradient(
+                canvas.width/2, canvas.height/3, 50,
+                canvas.width/2, canvas.height/2, canvas.width
+            );
+            grad.addColorStop(0, "rgba(0,150,255,0.05)");
+            grad.addColorStop(1, "rgba(0,0,0,0)");
+
+            ctx.fillStyle = grad;
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.fillStyle = "white";
+                ctx.globalAlpha = Math.random();
+                ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
+                ctx.fill();
+
+                star.y += star.s;
+
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
             });
+
+            ctx.globalAlpha = 1;
             requestAnimationFrame(animate);
         }
+
         animate();
         </script>
-        <style>#space-bg { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }</style>
-        """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True
+    )
 
 # --------------------
 # 4. GRAPH ENGINE
@@ -133,12 +215,35 @@ def render_force_graph(data):
 # --------------------
 def home_page():
     load_space_background()
-    st.markdown('<div style="text-align:center; margin-top:15vh;"><h1 style="font-size:80px; letter-spacing:10px;">NEBULA</h1><p>KNOWLEDGE ARCHITECT</p></div>', unsafe_allow_html=True)
-    _, col2, _ = st.columns([1, 0.6, 1])
-    with col2:
-        if st.button("LAUNCH ARCHITECT"):
-            st.session_state.page = "signup"
-            st.rerun()
+
+    st.markdown(
+        """
+        <div style="
+            height:100vh;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+        ">
+
+            <h1 class="nebula-title">NEBULA</h1>
+
+            <h3 class="nebula-sub">
+                KNOWLEDGE ARCHITECT
+            </h3>
+
+            <div style="margin-top:40px; width:260px;">
+        """,
+        unsafe_allow_html=True
+    )
+
+    if st.button("🚀 LAUNCH ARCHITECT"):
+        st.session_state.page = "signup"
+        st.rerun()
+
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
 
 def signup_page():
     load_space_background() # Fixed: Replaced missing load_bubble_background
