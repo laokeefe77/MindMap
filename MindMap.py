@@ -365,36 +365,88 @@ def home_page():
     # ----------------------------
     # FEATURES
     # ----------------------------
-    st.markdown("""
-        <div class="section section-dark">
+   st.markdown("""
+<style>
+    /* Container Styling */
+    .section-dark {
+        background-color: #0e1117;
+        padding: 50px 20px;
+        border-radius: 15px;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .section-dark h2 {
+        text-align: center;
+        color: #ffffff;
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+        letter-spacing: -1px;
+    }
 
-            <h2>Why Nebula?</h2>
+    /* Grid Layout */
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 25px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
 
-            <div class="feature-grid">
+    /* Card Styling */
+    .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        text-align: left;
+    }
 
-                <div class="feature-card">
-                    <h3>🧠 Visual Thinking</h3>
-                    <p>Turn abstract topics into navigable galaxies.</p>
-                </div>
+    .feature-card:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #7d2ae8; /* Space purple glow */
+        box-shadow: 0 10px 30px rgba(125, 42, 232, 0.2);
+    }
 
-                <div class="feature-card">
-                    <h3>⚡ AI Architect</h3>
-                    <p>Instant structured learning paths.</p>
-                </div>
+    .feature-card h3 {
+        color: #ffffff;
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-                <div class="feature-card">
-                    <h3>🌌 Scalable Knowledge</h3>
-                    <p>From beginner to mastery.</p>
-                </div>
+    .feature-card p {
+        color: #a1a1aa;
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+</style>
 
-                <div class="feature-card">
-                    <h3>🔒 Personal System</h3>
-                    <p>Your data. Your universe.</p>
-                </div>
-
-            </div>
+<div class="section-dark">
+    <h2>Why Nebula?</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3>🧠 Visual Thinking</h3>
+            <p>Turn abstract topics into navigable, interconnected galaxies of information.</p>
         </div>
-    """, unsafe_allow_html=True)
+        <div class="feature-card">
+            <h3>⚡ AI Architect</h3>
+            <p>Generate instant, structured learning paths tailored to your specific goals.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🌌 Scalable Knowledge</h3>
+            <p>Seamlessly bridge the gap between absolute beginner and true mastery.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🔒 Personal System</h3>
+            <p>Your data is yours. Secure, private, and hosted within your own universe.</p>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 
     # ----------------------------
