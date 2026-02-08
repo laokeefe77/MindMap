@@ -353,7 +353,6 @@ def home_page():
     with col2:
     col1, col2, col3 = st.columns(3)
 
-    with col2:
         st.write("")   # spacer
         st.write("")
         st.write("")
