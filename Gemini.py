@@ -46,9 +46,22 @@ def generate_learning_map(topic):
     
     return json.loads(response.text)
 
+def get_flattened_list(node, level=0):
+    """
+    Recursively turns the JSON tree into a flat list of tuples.
+    Format: (depth_level, name, description)
+    """
+    # 1. Yield the current node first
+    yield (level, node['name'], node['description'])
+    
+    # 2. Recursively visit all children
+    if "children" in node:
+        for child in node["children"]:
+            yield from get_flattened_list(child, level + 1)
+
 # Example Usage
 if __name__ == "__main__":
-    topic = "Machine Learning" 
+    topic = "Computer Science" 
     mind_map = generate_learning_map(topic)
     
     print(json.dumps(mind_map, indent=2))
@@ -56,3 +69,10 @@ if __name__ == "__main__":
     print(f"\nMain branches for {topic}:")
     for branch in mind_map.get('children', []):
         print(f"- {branch['name']}")
+
+    all_nodes = list(get_flattened_list(mind_map))
+    
+    print(f"\nTotal concepts found: {len(all_nodes)}")
+    
+    for depth, name, info in all_nodes:
+        print([depth, name, info])

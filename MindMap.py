@@ -1,5 +1,6 @@
 ﻿import streamlit as st
 import random
+import time
 
 # --------------------
 # Page Config
@@ -11,234 +12,162 @@ st.set_page_config(
 )
 
 # --------------------
-# Session State
+# Session State Initialization
 # --------------------
 if "page" not in st.session_state:
     st.session_state.page = "home"
+if "user" not in st.session_state:
+    st.session_state.user = None
 
 # --------------------
-# Custom CSS
+# Custom CSS (Enhanced for Glassmorphism)
 # --------------------
 def load_css():
     st.markdown(
         """
         <style>
-        body {
+        .stApp {
             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             color: white;
         }
-
         .main-title {
-            text-align: center;
-            font-size: 64px;
-            font-weight: bold;
-            margin-top: 80px;
-            letter-spacing: 2px;
+            text-align: center; font-size: 64px; font-weight: bold;
+            margin-top: 50px; letter-spacing: 2px; color: #6dd5ed;
         }
-
         .subtitle {
-            text-align: center;
-            font-size: 20px;
-            opacity: 0.8;
-            margin-bottom: 60px;
+            text-align: center; font-size: 20px; opacity: 0.8; margin-bottom: 40px;
         }
-
         .bubble {
-            position: fixed;
-            border-radius: 50%;
-            opacity: 0.25;
+            position: fixed; border-radius: 50%; opacity: 0.2;
             animation: float 20s infinite linear;
             background: radial-gradient(circle, #6dd5ed, #2193b0);
+            z-index: -1;
         }
-
         @keyframes float {
-            from {
-                transform: translateY(100vh);
-            }
-            to {
-                transform: translateY(-120vh);
-            }
+            from { transform: translateY(100vh); }
+            to { transform: translateY(-120vh); }
         }
-
-        .center-btn {
-            display: flex;
-            justify-content: center;
-            margin-top: 80px;
+        /* Glassmorphism Card Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
-
         .stButton > button {
             background: linear-gradient(90deg, #00c6ff, #0072ff);
-            color: white;
-            border: none;
-            padding: 16px 40px;
-            font-size: 20px;
-            border-radius: 50px;
-            transition: 0.3s ease;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            color: white; border: none; padding: 12px 30px;
+            border-radius: 50px; transition: 0.3s;
         }
-
         .stButton > button:hover {
-            transform: scale(1.05);
-            background: linear-gradient(90deg, #0072ff, #00c6ff);
-        }
-
-        .form-card {
-            background: rgba(255,255,255,0.08);
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 600px;
-            margin: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.4);
         }
         </style>
         """,
         unsafe_allow_html=True,
     )
 
-# --------------------
-# Floating Bubbles
-# --------------------
 def render_bubbles(n=20):
-    html = ""
-    for i in range(n):
-        size = random.randint(40, 120)
-        left = random.randint(0, 100)
-        duration = random.randint(15, 35)
-        delay = random.randint(0, 20)
-
-        html += f"""
-        <div class="bubble" style="
-            width:{size}px;
-            height:{size}px;
-            left:{left}vw;
-            animation-duration:{duration}s;
-            animation-delay:{delay}s;
-        "></div>
-        """
-
+    html = "".join([f'<div class="bubble" style="width:{random.randint(40,100)}px;height:{random.randint(40,100)}px;left:{random.randint(0,100)}vw;animation-duration:{random.randint(15,30)}s;animation-delay:{random.randint(0,10)}s;"></div>' for _ in range(n)])
     st.markdown(html, unsafe_allow_html=True)
 
-# --------------------
-# Navigation
-# --------------------
 def go_to(page):
     st.session_state.page = page
     st.rerun()
 
 # --------------------
-# Home Page
+# Page: Home
 # --------------------
 def home_page():
-    render_bubbles(25)
-
+    render_bubbles(20)
     st.markdown("<div class='main-title'>MindMap</div>", unsafe_allow_html=True)
-    st.markdown(
-        "<div class='subtitle'>Organize your thoughts. Build your future.</div>",
-        unsafe_allow_html=True,
-    )
-
-    st.markdown("<div class='center-btn'>", unsafe_allow_html=True)
-    if st.button("🚀 Start Your Journey"):
-        go_to("signup")
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("<div class='subtitle'>Organize your thoughts. Build your future.</div>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if st.button("🚀 Start Your Journey", use_container_width=True):
+            go_to("signup")
 
 # --------------------
-# Signup Page
+# Page: Signup
 # --------------------
 def signup_page():
-    st.markdown("<h1 style='text-align:center;'>Create Your Account</h1>", unsafe_allow_html=True)
-
-    st.markdown("<div class='form-card'>", unsafe_allow_html=True)
-
-    with st.form("signup_form"):
-        name = st.text_input("Full Name")
-        email = st.text_input("Email")
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        confirm = st.text_input("Confirm Password", type="password")
-
-        age = st.number_input("Age", min_value=1, max_value=120, step=1)
-        interest = st.selectbox(
-            "Main Interest",
-            ["Study", "Business", "Programming", "Design", "Other"],
-        )
-
-        submit = st.form_submit_button("Sign Up")
+    st.markdown("<h1 style='text-align:center;'>Join the Journey</h1>", unsafe_allow_html=True)
+    with st.container():
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        with st.form("signup_form"):
+            name = st.text_input("Full Name")
+            username = st.text_input("Username")
+            password = st.text_input("Password", type="password")
+            submit = st.form_submit_button("Create Account")
+        st.markdown('</div>', unsafe_allow_html=True)
 
     if submit:
-        if not name or not email or not username or not password:
-            st.error("Please fill in all required fields.")
-        elif password != confirm:
-            st.error("Passwords do not match.")
+        if name and username and password:
+            st.session_state.user = {"name": name, "username": username}
+            st.success("Account created! Redirecting to Workspace...")
+            time.sleep(1)
+            go_to("generator")
         else:
-            # Example: Store in session (replace with database later)
-            st.session_state.user = {
-                "name": name,
-                "email": email,
-                "username": username,
-                "age": age,
-                "interest": interest,
-            }
+            st.error("Please fill in all fields.")
 
-            st.success("Account created successfully!")
-            st.info("Welcome to MindMap 🎉")
-
-            if st.button("Go to Dashboard"):
-                go_to("dashboard")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    if st.button("⬅ Back to Home"):
+# --------------------
+# Page: Protected Generator (The New Page)
+# --------------------
+def generator_page():
+    # SECURITY CHECK: Redirect if not logged in
+    if not st.session_state.user:
+        st.warning("Please sign up to access the generator.")
+        time.sleep(1)
         go_to("home")
-
-# --------------------
-# Dashboard Page
-# --------------------
-def dashboard_page():
-    user = st.session_state.get("user", {})
-
-    st.markdown("<h1>📊 Dashboard</h1>", unsafe_allow_html=True)
-
-    if not user:
-        st.warning("Please sign up first.")
-        if st.button("Go to Signup"):
-            go_to("signup")
         return
 
-    st.success(f"Welcome, {user.get('name', 'User')} 👋")
+    render_bubbles(10)
+    
+    # Sidebar for navigation/Logout
+    with st.sidebar:
+        st.title(f"Hi, {st.session_state.user['name']}!")
+        if st.button("Logout"):
+            st.session_state.user = None
+            go_to("home")
 
-    st.markdown("---")
+    st.markdown("<h1 style='text-align:center;'>MindMap Generator</h1>", unsafe_allow_html=True)
+    st.write("Enter a topic below to architect your learning path.")
 
-    st.subheader("Your Profile")
-    st.write("**Username:**", user.get("username"))
-    st.write("**Email:**", user.get("email"))
-    st.write("**Age:**", user.get("age"))
-    st.write("**Interest:**", user.get("interest"))
-
-    st.markdown("---")
-
-    st.subheader("Your MindMap (Coming Soon 🚧)")
-    st.info("Here you will be able to create and manage your mind maps.")
-
-    if st.button("Log Out"):
-        st.session_state.clear()
-        go_to("home")
+    # Generator UI
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    topic = st.text_input("What do you want to learn today?", placeholder="e.g. Quantum Physics, Italian Cooking...")
+    depth = st.select_slider("Map Complexity", options=["Simple", "Standard", "Deep"])
+    
+    if st.button("Generate Map 🧠"):
+        with st.status("Architecting your data structure...", expanded=True) as status:
+            st.write("Initializing Gemini Flash...")
+            time.sleep(1)
+            st.write("Building hierarchical nodes...")
+            time.sleep(1)
+            status.update(label="Map Complete!", state="complete", expanded=False)
+        
+        st.success(f"Successfully generated a {depth} map for **{topic}**!")
+        # This is where you would call your JSON generate function
+        st.info("Visualizer rendering engine coming in next update.")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------
-# Main App
+# Main App Router
 # --------------------
 def main():
     load_css()
-
     page = st.session_state.page
 
     if page == "home":
         home_page()
     elif page == "signup":
         signup_page()
-    elif page == "dashboard":
-        dashboard_page()
-
+    elif page == "generator":
+        generator_page()
 
 if __name__ == "__main__":
     main()
