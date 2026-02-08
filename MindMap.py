@@ -2,6 +2,8 @@
 import streamlit.components.v1 as components
 import json
 import time
+import pandas as pd
+import sqlite3 
 
 # --- IMPORT FROM YOUR Gemini.py FILE ---
 # Ensure Gemini.py exists in the same directory
@@ -419,19 +421,122 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
+Here is the consolidated code. I have structured it so that the database initialization, the authentication logic, and the UI layout are all in one place.
+
+I’ve also included a small "History" logger so that every time a user logs in, it's recorded—giving you the foundation for that personal history feature you mentioned.
+
+Python
+import streamlit as st
+import sqlite3
+from datetime import datetime
+
+# --- DATABASE LOGIC ---
+def init_db():
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    # Table for user credentials
+    c.execute('''CREATE TABLE IF NOT EXISTS users 
+                 (username TEXT PRIMARY KEY, password TEXT)''')
+    # Table for tracking user activity (Personal History)
+    c.execute('''CREATE TABLE IF NOT EXISTS history 
+                 (username TEXT, action TEXT, timestamp DATETIME)''')
+    conn.commit()
+    conn.close()
+
+def add_user(u, p):
+    try:
+        conn = sqlite3.connect('users.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (u, p))
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+    finally:
+        conn.close()
+
+def verify_user(u, p):
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE username=? AND password=?", (u, p))
+    result = c.fetchone()
+    conn.close()
+    return result
+
+def log_action(u, action):
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO history (username, action, timestamp) VALUES (?, ?, ?)", 
+              (u, action, datetime.now()))
+    conn.commit()
+    conn.close()
+
+# --- UI PAGE ---
 def signup_page():
-    col1, col2, col3 = st.columns([1, 1.2, 1])
+    init_db()
+    
+    # Custom CSS for the glass card effect
+    st.markdown("""
+        <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([1, 1.5, 1])
+    
     with col2:
         st.markdown('<br><br><div class="glass-card">', unsafe_allow_html=True)
         st.markdown("<h1 style='text-align:center; font-weight:900;'>ACCESS</h1>", unsafe_allow_html=True)
-        u = st.text_input("USER ID")
-        p = st.text_input("PASSWORD", type="password")
-        if st.button("CREATE PROFILE"):
-            if u and p:
-                st.session_state.user = {"name": u}
-                st.session_state.page = "generator"
-                st.rerun()
+        
+        # Tabs for clean switching between Login and Registration
+        tab1, tab2 = st.tabs(["LOGIN", "REGISTER"])
+        
+        with tab1:
+            u_login = st.text_input("USER ID", key="l_user")
+            p_login = st.text_input("PASSWORD", type="password", key="l_pass")
+            
+            if st.button("LOGIN", use_container_width=True):
+                if verify_user(u_login, p_login):
+                    st.session_state.user = {"name": u_login}
+                    log_action(u_login, "Logged In") # Tracking history
+                    st.session_state.page = "generator"
+                    st.rerun()
+                else:
+                    st.error("Invalid credentials.")
+
+        with tab2:
+            u_reg = st.text_input("CHOOSE USER ID", key="r_user")
+            p_reg = st.text_input("CHOOSE PASSWORD", type="password", key="r_pass")
+            
+            if st.button("CREATE PROFILE", use_container_width=True):
+                if u_reg and p_reg:
+                    if add_user(u_reg, p_reg):
+                        log_action(u_reg, "Account Created") # Initial history entry
+                        st.success("Account created! Please switch to Login tab.")
+                    else:
+                        st.warning("Username already taken.")
+                else:
+                    st.info("Please fill out both fields.")
+
         st.markdown('</div>', unsafe_allow_html=True)
+
+# --- APP FLOW ---
+if "page" not in st.session_state:
+    st.session_state.page = "signup"
+
+if st.session_state.page == "signup":
+    signup_page()
+elif st.session_state.page == "generator":
+    st.write(f"Welcome, {st.session_state.user['name']}!")
+    if st.button("Logout"):
+        st.session_state.page = "signup"
+        st.rerun()
 
 def generator_page():
     st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
