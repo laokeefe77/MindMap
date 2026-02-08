@@ -24,8 +24,8 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
     
-    # SIGNIFICANTLY BIGGER BALLS
-    node_size = 80 if parent_id is None else 50 
+    # MASSIVE VISUAL PRESENCE
+    node_size = 180 if parent_id is None else 100 
     
     nodes.append({
         "id": current_id, 
@@ -215,7 +215,7 @@ def render_force_graph(data):
         height: 800px; 
         background: #000; 
         border: 2px solid #0088ff; 
-        box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
+        box-shadow: 0 0 25px rgba(0, 136, 255, 0.4);
         border-radius: 8px;
     "></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
@@ -230,40 +230,40 @@ def render_force_graph(data):
                     'color': '#00d0ff', 
                     'width': 'data(size)', 
                     'height': 'data(size)', 
-                    'font-size': '24px',          /* EVEN LARGER FONT */
+                    'font-size': '42px',          /* MASSIVE FONT */
                     'font-weight': '900',
                     'text-valign': 'center', 
                     'text-halign': 'right', 
-                    'text-margin-x': '15px',      
+                    'text-margin-x': '25px',      
                     'font-family': 'monospace', 
-                    'border-width': 3, 
+                    'border-width': 6,            /* THICKER BORDERS */
                     'border-color': '#00a0ff', 
-                    'shadow-blur': 15, 
+                    'shadow-blur': 20, 
                     'shadow-color': '#0088ff' 
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 6,                   /* EVEN THICKER LINES */
-                    'line-color': 'rgba(0, 150, 255, 0.5)', 
+                    'width': 12,                  /* HEAVY LINES */
+                    'line-color': 'rgba(0, 150, 255, 0.6)', 
                     'curve-style': 'bezier',
                     'target-arrow-shape': 'triangle',
-                    'target-arrow-color': 'rgba(0, 150, 255, 0.5)',
-                    'arrow-scale': 1.5
+                    'target-arrow-color': 'rgba(0, 150, 255, 0.6)',
+                    'arrow-scale': 2.5
                 }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 30 }} }}
+                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 40 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
                 refresh: 20,
                 fit: true, 
-                padding: 100,             /* Increased padding for bigger nodes */
-                nodeOverlap: 400,
-                nodeRepulsion: 15000000,   /* Increased to compensate for larger node size */
-                idealEdgeLength: 150, 
-                edgeElasticity: 100, 
-                nestingFactor: 0.1, 
-                gravity: 0.1, 
-                numIter: 2500,
+                padding: 150,
+                nodeOverlap: 1000,
+                nodeRepulsion: 50000000,        /* ULTRA REPULSION */
+                idealEdgeLength: 300, 
+                edgeElasticity: 200, 
+                nestingFactor: 0.05, 
+                gravity: 0.01,                 /* NEAR ZERO GRAVITY - TO PREVENT COLLAPSE */
+                numIter: 4000,
                 initialTemp: 1000,
                 coolingFactor: 0.99
             }}
