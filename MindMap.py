@@ -49,20 +49,27 @@ def load_css():
         """
         <style>
         .stApp { background: #000000; color: #ffffff; overflow-x: hidden; }
-        #bubble-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
         
-        /* FIX FOR DISAPPEARING SIDEBAR ARROW */
-        /* This ensures the arrow is bright blue and visible on the black background */
+        /* THE FIX: Hide the header bar background but KEEP the sidebar button visible */
+        header[data-testid="stHeader"] {
+            background: rgba(0,0,0,0) !important;
+            border-bottom: none !important;
+        }
+        
+        /* Make the sidebar arrow visible, blue, and glowing */
         [data-testid="stSidebarCollapsedControl"] {
             color: #00d0ff !important;
             background-color: rgba(0, 136, 255, 0.1) !important;
-            border-radius: 0 5px 5px 0 !important;
-            border: 1px solid rgba(0, 208, 255, 0.3) !important;
+            border-radius: 0 10px 10px 0 !important;
+            border: 1px solid #00d0ff !important;
+            top: 10px !important;
         }
 
-        .main-title { font-size: clamp(50px, 10vw, 120px); font-weight: 900; letter-spacing: -2px; line-height: 0.9; color: #ffffff; }
-        .subtitle { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; margin-bottom: 60px; }
+        /* Hide the rest of the garbage in the top right menu */
+        #MainMenu, footer {visibility: hidden;}
 
+        .main-title { font-size: clamp(50px, 10vw, 120px); font-weight: 900; letter-spacing: -2px; line-height: 0.9; color: #ffffff; }
+        
         .glass-card { 
             background: linear-gradient(135deg, #000 0%, #050a10 100%); 
             border: 1px solid rgba(0, 180, 255, 0.3);
@@ -70,14 +77,26 @@ def load_css():
             border-radius: 4px; 
             box-shadow: 10px 10px 0px rgba(0, 0, 0, 1), 12px 12px 0px rgba(0, 100, 255, 0.2);
             position: relative;
-            overflow: hidden;
             margin-bottom: 20px;
         }
 
-        .stButton > button { background: #ffffff !important; color: #000000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; transition: 0.1s; }
-        .stButton > button:hover { background: #0088ff !important; color: #ffffff !important; transform: translate(-3px, -3px); box-shadow: 6px 6px 0px #ffffff; }
-
-        header, footer, #MainMenu {visibility: hidden;}
+        .stButton > button { 
+            background: #ffffff !important; 
+            color: #000000 !important; 
+            border: none; 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            font-weight: 900; 
+            border-radius: 0px; 
+            width: 100%; 
+            transition: 0.1s; 
+        }
+        .stButton > button:hover { 
+            background: #0088ff !important; 
+            color: #ffffff !important; 
+            transform: translate(-2px, -2px); 
+            box-shadow: 4px 4px 0px #ffffff; 
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -530,19 +549,24 @@ def generator_page():
 # 6. MAIN EXECUTION
 # --------------------
 def main():
-    # If we are NOT on the generator page, hide the sidebar entirely
-    if "page" not in st.session_state: st.session_state.page = "home"
+    if "page" not in st.session_state: 
+        st.session_state.page = "home"
     
-    sidebar_state = "expanded" if st.session_state.page == "generator" else "collapsed"
+    # Force the sidebar to be completely tucked away unless we are in the generator
+    if st.session_state.page == "generator":
+        s_state = "expanded"
+    else:
+        s_state = "collapsed"
 
     st.set_page_config(
         page_title="MindMap Noir", 
         page_icon="🧠", 
         layout="wide", 
-        initial_sidebar_state=sidebar_state
+        initial_sidebar_state=s_state
     )
     
     load_css()
+    # ... rest of your code ...
 
     if "user" not in st.session_state: st.session_state.user = None
     if "map_data" not in st.session_state: st.session_state.map_data = None
