@@ -49,20 +49,22 @@ def load_css():
             background-color: #ffffff !important;
             color: #000000 !important;
             border: none !important;
-            border-radius: 0px !important;
-            font-size: 30px !important;
+            border-radius: 8px !important;
+            font-size: 40px !important;
             font-weight: 900 !important;
-            width: 50px !important;
-            height: 50px !important;
+            width: 70px !important;
+            height: 70px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             padding: 0px !important;
-            transition: transform 0.5s ease-in-out !important;
+            transform-origin: center !important;
+            transition: transform 0.6s cubic-bezier(.2,.9,.2,1) !important;
+            box-shadow: 6px 6px 0px rgba(255,255,255,0.2) !important;
         }
         
         .back-arrow-container div[data-testid="stButton"] button:hover {
-            transform: rotate(-360deg) !important;
+            transform: rotate(360deg) scale(1.06) !important;
             background-color: #ffffff !important;
             color: #000000 !important;
         }
@@ -76,6 +78,7 @@ def load_css():
             text-align: center;
             min-height: 60vh; 
             margin-top: 5vh;
+            position: relative; /* enable absolute placement of the landing CTA */
         }
 
         .main-title {
@@ -100,6 +103,36 @@ def load_css():
             text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
         }
 
+        /* Landing page CTA: left-center positioning */
+        .landing-container .stButton {
+            position: absolute !important;
+            left: 6% !important; /* distance from left edge */
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            width: auto !important;
+            max-width: 260px !important;
+        }
+
+        .landing-container .stButton > button {
+            background: #ffffff !important;
+            color: #000000 !important;
+            border: none !important;
+            padding: 20px 40px !important;
+            font-size: 22px !important;
+            font-weight: 900 !important;
+            border-radius: 4px !important;
+            width: 100% !important;
+            text-align: left !important;
+            transition: 0.15s !important;
+        }
+
+        .landing-container .stButton > button:hover {
+            background: #333333 !important;
+            color: #ffffff !important;
+            transform: translate(-5px, -5px) !important;
+            box-shadow: 10px 10px 0px #ffffff !important;
+        }
+
         /* 4. THE BOX (GLASS CARD) */
         .glass-card {
             background: #000000;
@@ -109,8 +142,7 @@ def load_css():
             box-shadow: 20px 20px 0px rgba(255,255,255,0.4);
         }
 
-        /* 5. MAIN BUTTONS */
-        /* Targets INITIATE, CREATE PROFILE, and RUN ARCHITECT */
+        /* 5. MAIN BUTTONS (fallback for other pages) */
         .stButton > button {
             background: #ffffff !important;
             color: #000000 !important;
@@ -161,6 +193,7 @@ def home_page():
     st.markdown("<div class='main-title'>MINDMAP</div>", unsafe_allow_html=True)
     st.markdown("<div class='subtitle'>GENERATE SYSTEM</div>", unsafe_allow_html=True)
     
+    # Keep columns for layout but CTA is positioned by CSS to the left-center of landing container
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         if st.button("INITIATE"):
