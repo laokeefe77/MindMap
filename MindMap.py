@@ -269,7 +269,7 @@ def home_page():
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 80vh;
+            height: 70vh;
             text-align: center;
         }
 
@@ -303,7 +303,7 @@ def home_page():
             color: #00d0ff;
             font-size: 12px;
             letter-spacing: 4px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             opacity: 0.7;
         }
 
@@ -347,6 +347,15 @@ def home_page():
             </div>
         </div>
     """, unsafe_allow_html=True)
+
+    # --- THE LINK BUTTON ---
+    col1, col2, col3 = st.columns([1, 1.5, 1])
+    with col2:
+        if st.button("INITIALIZE PROTOCOL"):
+            st.session_state.page = "signup"
+            st.rerun()
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
 
     # FEATURES SECTION
     st.markdown("""
@@ -430,18 +439,6 @@ def home_page():
             </div>
         </div>
     """, unsafe_allow_html=True)
-
-    # CTA SECTION
-    st.markdown("""
-        <div class="section">
-            <h2>Start Building Your Knowledge System</h2>
-            <p style="color:#99ccff; max-width:600px; margin:20px auto;">
-                Transform how you learn. Design how you think.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # "GET STARTED" BUTTON REMOVED PER REQUEST
 
 def signup_page():
     col1, col2, col3 = st.columns([1, 1.2, 1])
