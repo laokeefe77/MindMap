@@ -262,15 +262,22 @@ def render_force_graph(data):
 def home_page():
     load_space_background()
     
-    # CSS: Forcing the hero-container to be a full-screen flexbox
+    # Custom CSS for the Space Title and Global Button Centering
     st.markdown("""
         <style>
-        .absolute-center-container {
+        /* Force all buttons on the landing page to be centered blocks */
+        .stButton {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .hero-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 90vh; /* Takes up the majority of the viewport height */
+            height: 80vh;
             text-align: center;
         }
 
@@ -284,6 +291,11 @@ def home_page():
                          0 0 40px rgba(0, 150, 255, 0.4);
             margin-bottom: 0;
             animation: pulse 4s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.8; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .scanline {
@@ -303,14 +315,45 @@ def home_page():
             opacity: 0.7;
         }
 
-        /* Target the specific button wrapper to center it globally */
-        div.stButton {
-            display: flex;
-            justify-content: center;
+        .section {
+            padding: 100px 10%;
+            text-align: center;
+        }
+
+        .section-dark {
+            background: rgba(0,0,0,0.6);
+            padding: 50px 20px;
+            border-radius: 15px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 25px;
+            border: 1px solid rgba(0,150,255,0.3);
+            box-shadow: 0 0 15px rgba(0,150,255,0.2);
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #00d0ff;
+        }
+
+        .faq-item {
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: left;
         }
         </style>
         
-        <div class="absolute-center-container">
+        <div class="hero-container">
             <div class="glitch-title">Nebula</div>
             <div class="scanline"></div>
             <div class="subtitle" style="margin-bottom:10px;">
@@ -319,35 +362,32 @@ def home_page():
             <div class="coordinates">
                 LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9
             </div>
+        </div>
     """, unsafe_allow_html=True)
 
-    # Placing the button inside the flex flow
+    # Launch Architect Button
     if st.button("🚀 LAUNCH ARCHITECT"):
         st.session_state.page = "signup"
         st.rerun()
 
-    # Close the div
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    # --- REST OF YOUR ORIGINAL CONTENT ---
     # Features Section
     st.markdown("""
-    <div class="section-dark" style="margin-top: 100px; padding: 50px 20px; background: rgba(0,0,0,0.6); border-radius: 15px;">
+    <div class="section-dark">
         <h2 style="text-align: center; color: white; font-size: 2.5rem; margin-bottom: 40px;">Why Nebula?</h2>
-        <div class="feature-grid" style="display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 40px;">
-            <div class="feature-card" style="padding: 25px; border: 1px solid rgba(0,150,255,0.3); background: rgba(255,255,255,0.05);">
+        <div class="feature-grid">
+            <div class="feature-card">
                 <h3>🧠 Visual Thinking</h3>
                 <p>Turn abstract topics into navigable, interconnected galaxies of information.</p>
             </div>
-            <div class="feature-card" style="padding: 25px; border: 1px solid rgba(0,150,255,0.3); background: rgba(255,255,255,0.05);">
+            <div class="feature-card">
                 <h3>⚡ AI Architect</h3>
                 <p>Generate instant, structured learning paths tailored to your specific goals.</p>
             </div>
-            <div class="feature-card" style="padding: 25px; border: 1px solid rgba(0,150,255,0.3); background: rgba(255,255,255,0.05);">
+            <div class="feature-card">
                 <h3>🌌 Scalable Knowledge</h3>
                 <p>Seamlessly bridge the gap between absolute beginner and true mastery.</p>
             </div>
-            <div class="feature-card" style="padding: 25px; border: 1px solid rgba(0,150,255,0.3); background: rgba(255,255,255,0.05);">
+            <div class="feature-card">
                 <h3>🔒 Personal System</h3>
                 <p>Your data is yours. Secure, private, and hosted within your own universe.</p>
             </div>
@@ -357,7 +397,7 @@ def home_page():
 
     # Philosophy Section
     st.markdown("""
-        <div class="section" style="padding: 100px 10%; text-align: center;">
+        <div class="section">
             <h2>Our Philosophy</h2>
             <p style="color:#88ccff; font-size:20px; margin-top:30px;">“Build systems. Not notes.”</p>
             <p style="color:#88ccff; font-size:20px;">“Clarity is engineered.”</p>
@@ -367,13 +407,13 @@ def home_page():
 
     # FAQ Section
     st.markdown("""
-        <div class="section-dark" style="padding: 50px 20px; background: rgba(0,0,0,0.6); border-radius: 15px;">
+        <div class="section-dark" style="margin-top: 50px;">
             <h2 style="text-align: center; color: white;">Frequently Asked Questions</h2>
-            <div style="max-width: 800px; margin: 40px auto; text-align: left;">
+            <div class="faq-item">
                 <h4 style="color: #00d0ff;">❓ What is Nebula?</h4>
                 <p>An AI-powered knowledge mapping system.</p>
             </div>
-            <div style="max-width: 800px; margin: 40px auto; text-align: left;">
+            <div class="faq-item">
                 <h4 style="color: #00d0ff;">❓ Who is it for?</h4>
                 <p>Students, researchers, and self-learners.</p>
             </div>
@@ -382,7 +422,7 @@ def home_page():
 
     # CTA Section
     st.markdown("""
-        <div class="section" style="padding: 100px 10%; text-align: center;">
+        <div class="section">
             <h2>Start Building Your Knowledge System</h2>
             <p style="color:#99ccff; max-width:600px; margin:20px auto;">
                 Transform how you learn. Design how you think.
@@ -390,6 +430,7 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
+    # Final CTA Button
     if st.button("✨ GET STARTED"):
         st.session_state.page = "signup"
         st.rerun()
