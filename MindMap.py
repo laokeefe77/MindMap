@@ -580,10 +580,21 @@ def generator_page():
     with col1:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         topic = st.text_input("SUBJECT TARGET")
+        
+        # --- COMPLEXITY SLIDER ---
+        complexity = st.slider(
+            "INTEL_DEPTH", 
+            min_value=1, 
+            max_value=3, 
+            value=1, 
+            help="1: General Knowledge | 2: Intermediate | 3: Complex Insight"
+        )
+        
         if st.button("RUN_ARCHITECT"):
             if topic:
                 with st.spinner("INITIATING GEMINI ARCHITECT..."):
-                    raw_tree = generate_learning_map(topic)
+                    # Pass the complexity value to your Gemini function
+                    raw_tree = generate_learning_map(topic, complexity)
                     map_result = parse_tree_to_physics(raw_tree)
                     st.session_state.map_data = map_result
                     # SAVE TO JSON HISTORY

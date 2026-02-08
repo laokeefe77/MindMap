@@ -7,7 +7,7 @@ from google.genai import types
 # Load your API key
 
 
-def generate_learning_map(topic):
+def generate_learning_map(topic, complexity):
     load_dotenv()
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     # System instructions move from the Client to the Config
@@ -27,6 +27,7 @@ def generate_learning_map(topic):
         3. NEVER list sub-topics, bullet points, or comma-separated lists inside a 'description'. 
         4. If you find yourself writing a list in a description, stop and move those items into the 'children' array instead.
         5. Aim for at least 3 levels of depth where appropriate (e.g., Math -> Linear Algebra -> Matrices).
+        6. The depth of knowledge should be defined as {complexity}.
 
         JSON STRUCTURE:
         Each node must be an object: {{"name": "...", "description": "...", "children": []}}.
