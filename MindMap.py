@@ -423,8 +423,7 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-def signup_page():
- def load_users():
+def load_users():
     if not os.path.exists(DB_FILE):
         return {}
     with open(DB_FILE, "r") as f:
