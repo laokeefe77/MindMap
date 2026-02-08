@@ -14,7 +14,9 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     if edges is None: edges = []
     
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
-    node_size = 45 if parent_id is None else 25
+    
+    # INCREASED SIZE: 80 for root, 35 for children
+    node_size = 80 if parent_id is None else 35
     
     nodes.append({
         "id": current_id, 
@@ -116,12 +118,9 @@ def render_force_graph(data):
     
     html_code = f"""
     <div id="cy" style="
-        width: 100%; 
-        height: 800px; 
-        background: #000; 
-        border: 2px solid #0088ff; 
+        width: 100%; height: 800px; background: #000; 
+        border: 2px solid #0088ff; border-radius: 8px;
         box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
-        border-radius: 8px;
     "></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
     <script>
@@ -135,39 +134,41 @@ def render_force_graph(data):
                     'color': '#00d0ff', 
                     'width': 'data(size)', 
                     'height': 'data(size)', 
-                    'font-size': '10px', 
+                    'font-size': '14px', # Increased for readability
                     'text-valign': 'center', 
                     'text-halign': 'right', 
                     'font-family': 'monospace', 
-                    'border-width': 1, 
+                    'font-weight': 'bold',
+                    'border-width': 2, 
                     'border-color': '#00a0ff', 
-                    'shadow-blur': 10, 
+                    'shadow-blur': 15, 
                     'shadow-color': '#0088ff' 
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 1, 
-                    'line-color': 'rgba(0, 150, 255, 0.15)', 
-                    'curve-style': 'haystack', /* Haystack is faster and helps prevent clumping */
+                    'width': 2, 
+                    'line-color': 'rgba(0, 150, 255, 0.3)', 
+                    'curve-style': 'bezier', 
+                    'target-arrow-shape': 'triangle',
+                    'target-arrow-color': 'rgba(0, 150, 255, 0.5)'
                 }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 20 }} }}
+                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 30 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
-                refresh: 4,
                 fit: true, 
-                padding: 80,
+                padding: 50,
                 
-                /* --- THE CLUMP KILLER SETTINGS --- */
-                nodeOverlap: 100,           // Physical buffer: nodes literally cannot touch
-                nodeRepulsion: 10000000,    // Force pushing all nodes apart
-                idealEdgeLength: 150,       // Distance of the connections
-                edgeElasticity: 100,        // Force that pulls them back (increased for stability)
-                nestingFactor: 1.2,         // Multiplier for repulsion of nested (small) nodes
-                gravity: 1,                 // Pulls everything to center so they don't fly off
-                numIter: 4000,              // More time to resolve overlaps
-                initialTemp: 1000,          // Explosive start to separate overlapping nodes
-                coolingFactor: 0.95         // Slow settle down
+                /* --- TIGHTENED PHYSICS --- */
+                nodeOverlap: 50,           // Lowered to bring them closer
+                nodeRepulsion: 4500000,    // Cut in half to stop the "explosion"
+                idealEdgeLength: 80,       // Shorter distance for tighter clusters
+                edgeElasticity: 150,       // Stronger "rubber bands" to pull nodes in
+                nestingFactor: 1.1,        
+                gravity: 2.5,              // Stronger gravity to pull everything toward center
+                numIter: 2000,
+                initialTemp: 500,          // Less violent start
+                coolingFactor: 0.99
             }}
         }});
     </script>
