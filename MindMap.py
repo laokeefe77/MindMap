@@ -353,16 +353,16 @@ def home_page():
 with col2:
     col1, col2, col3 = st.columns(3)
 
-        st.write("")   # spacer
-        st.write("")
-        st.write("")
+    st.write("")   # spacer
+    st.write("")
+    st.write("")
     
-        st.button("🚀 LAUNCH ARCHITECT")
+    st.button("🚀 LAUNCH ARCHITECT")
     
-        st.write("")
-        st.write("")
-
-        if st.button("🚀 LAUNCH ARCHITECT"):
+    st.write("")
+    st.write("")
+        
+    if st.button("🚀 LAUNCH ARCHITECT"):
             st.session_state.page = "signup"
             st.rerun()
             col1, col2, col3 = st.columns(3)
