@@ -14,9 +14,7 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     if edges is None: edges = []
     
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
-    
-    # INCREASED SIZE: 80 for root, 35 for children
-    node_size = 80 if parent_id is None else 35
+    node_size = 45 if parent_id is None else 25
     
     nodes.append({
         "id": current_id, 
@@ -118,9 +116,12 @@ def render_force_graph(data):
     
     html_code = f"""
     <div id="cy" style="
-        width: 100%; height: 800px; background: #000; 
-        border: 2px solid #0088ff; border-radius: 8px;
+        width: 100%; 
+        height: 800px; 
+        background: #000; 
+        border: 2px solid #0088ff; 
         box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
+        border-radius: 8px;
     "></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
     <script>
@@ -134,41 +135,36 @@ def render_force_graph(data):
                     'color': '#00d0ff', 
                     'width': 'data(size)', 
                     'height': 'data(size)', 
-                    'font-size': '14px', # Increased for readability
+                    'font-size': '12px', 
                     'text-valign': 'center', 
                     'text-halign': 'right', 
                     'font-family': 'monospace', 
-                    'font-weight': 'bold',
                     'border-width': 2, 
                     'border-color': '#00a0ff', 
                     'shadow-blur': 15, 
                     'shadow-color': '#0088ff' 
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 2, 
-                    'line-color': 'rgba(0, 150, 255, 0.3)', 
+                    'width': 1.5, 
+                    'line-color': 'rgba(0, 150, 255, 0.2)', 
                     'curve-style': 'bezier', 
-                    'target-arrow-shape': 'triangle',
-                    'target-arrow-color': 'rgba(0, 150, 255, 0.5)'
+                    'target-arrow-shape': 'triangle', 
+                    'target-arrow-color': 'rgba(0, 150, 255, 0.4)' 
                 }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 30 }} }}
+                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 25 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
-                fit: true, 
-                padding: 50,
-                
-                /* --- TIGHTENED PHYSICS --- */
-                nodeOverlap: 50,           // Lowered to bring them closer
-                nodeRepulsion: 4500000,    // Cut in half to stop the "explosion"
-                idealEdgeLength: 80,       // Shorter distance for tighter clusters
-                edgeElasticity: 150,       // Stronger "rubber bands" to pull nodes in
-                nestingFactor: 1.1,        
-                gravity: 2.5,              // Stronger gravity to pull everything toward center
-                numIter: 2000,
-                initialTemp: 500,          // Less violent start
-                coolingFactor: 0.99
+                componentSpacing: 200,      // Forces separate components further apart
+                nodeRepulsion: 10000000,    // Extreme repulsion
+                idealEdgeLength: 300,       // Triple the distance between parent/child
+                edgeElasticity: 0.1,        // Makes edges very "weak" so they don't pull nodes together
+                nestingFactor: 0.05,        // Drastically reduces the "cluster" pull
+                gravity: 0.05,              // Minimum gravity so nodes don't drift to center
+                numIter: 2500,              // Max iterations to allow full expansion
+                initialTemp: 500,           // High energy start to "explode" the nodes outward
+                coolingFactor: 0.99         // Slower cooling so it spends more time expanding
             }}
         }});
     </script>
