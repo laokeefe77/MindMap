@@ -83,24 +83,8 @@ def load_css():
         }
         .glass-card > * { position: relative; z-index: 1; }
 
-        /* STYLING THE STREAMLIT BUTTON TO LOOK HUD-LIKE */
-        .stButton > button { 
-            background: #ffffff !important; 
-            color: #000000 !important; 
-            border: none; 
-            padding: 18px 0px; 
-            font-size: 20px; 
-            font-weight: 900; 
-            border-radius: 0px; 
-            width: 100%; 
-            transition: 0.1s; 
-        }
-        .stButton > button:hover { 
-            background: #0088ff !important; 
-            color: #ffffff !important; 
-            transform: translate(-3px, -3px); 
-            box-shadow: 6px 6px 0px #ffffff; 
-        }
+        .stButton > button { background: #ffffff !important; color: #000000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; transition: 0.1s; }
+        .stButton > button:hover { background: #0088ff !important; color: #ffffff !important; transform: translate(-3px, -3px); box-shadow: 6px 6px 0px #ffffff; }
 
         .stTextInput label { color: #ffffff !important; font-weight: bold; font-size: 18px; }
         header, footer, #MainMenu {visibility: hidden;}
@@ -278,7 +262,6 @@ def render_force_graph(data):
 def home_page():
     load_space_background()
     
-    # HERO SECTION
     st.markdown("""
         <style>
         .hero-container {
@@ -286,23 +269,27 @@ def home_page():
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 75vh;
+            height: 80vh;
             text-align: center;
         }
+
         .glitch-title {
             font-size: 100px;
             font-weight: 900;
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 15px;
-            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8), 0 0 40px rgba(0, 150, 255, 0.4);
+            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8),
+                         0 0 40px rgba(0, 150, 255, 0.4);
             margin-bottom: 0;
             animation: pulse 4s infinite alternate;
         }
+
         @keyframes pulse {
             from { opacity: 0.8; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
         }
+
         .scanline {
             width: 300px;
             height: 2px;
@@ -310,6 +297,7 @@ def home_page():
             margin: 20px 0;
             box-shadow: 0 0 10px #00d0ff;
         }
+
         .coordinates {
             font-family: 'Courier New', monospace;
             color: #00d0ff;
@@ -317,6 +305,30 @@ def home_page():
             letter-spacing: 4px;
             margin-bottom: 40px;
             opacity: 0.7;
+        }
+
+        .section {
+            padding: 100px 10%;
+            text-align: center;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 25px;
+            border: 1px solid rgba(0,150,255,0.3);
+            box-shadow: 0 0 15px rgba(0,150,255,0.2);
+        }
+
+        .faq-item {
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: left;
         }
         </style>
         
@@ -332,25 +344,23 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # --- THE CENTERING ENGINE ---
-    # This creates a center column that forces the widget to align with the text above it.
-    _, center_col, _ = st.columns([1, 1, 1])
-    with center_col:
-        st.markdown("<p style='text-align:center; color:#00d0ff; font-family:monospace; font-size:10px; letter-spacing:3px;'>[ ACTION REQUIRED ]</p>", unsafe_allow_html=True)
-        if st.button("INITIALIZE ACCESS"):
+    # --- INTEGRATED SIGNUP BUTTON (CENTERED) ---
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        st.markdown("<p style='text-align:center; color:#00d0ff; font-family:monospace; font-size:10px; letter-spacing:2px; margin-bottom:-10px;'>[ ACTION REQUIRED ]</p>", unsafe_allow_html=True)
+        if st.button("INITIALIZE PROTOCOL"):
             st.session_state.page = "signup"
             st.rerun()
-
-    # SPACING
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
+    # --------------------------------------------
 
     # FEATURES SECTION
     st.markdown("""
     <style>
         .section-dark {
             background-color: #0e1117;
-            padding: 80px 20px;
+            padding: 50px 20px;
             border-radius: 15px;
+            margin-top: 100px;
         }
         .section-dark h2 {
             text-align: center;
@@ -404,7 +414,7 @@ def home_page():
 
     # PHILOSOPHY SECTION
     st.markdown("""
-        <div style="padding: 100px 10%; text-align: center;">
+        <div class="section">
             <h2>Our Philosophy</h2>
             <p style="color:#88ccff; font-size:20px; margin-top:30px;">“Build systems. Not notes.”</p>
             <p style="color:#88ccff; font-size:20px;">“Clarity is engineered.”</p>
@@ -414,15 +424,26 @@ def home_page():
 
     # FAQ SECTION
     st.markdown("""
-        <div style="padding: 100px 10%; background: rgba(0,0,0,0.6); border-radius: 15px;">
-            <h2 style="text-align: center;">Frequently Asked Questions</h2>
-            <div style="max-width: 800px; margin: 40px auto; text-align: left;">
+        <div class="section section-dark">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
                 <h4>❓ What is Nebula?</h4>
                 <p>An AI-powered knowledge mapping system.</p>
-                <br>
+            </div>
+            <div class="faq-item">
                 <h4>❓ Who is it for?</h4>
                 <p>Students, researchers, and self-learners.</p>
             </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # CTA SECTION
+    st.markdown("""
+        <div class="section">
+            <h2>Start Building Your Knowledge System</h2>
+            <p style="color:#99ccff; max-width:600px; margin:20px auto;">
+                Transform how you learn. Design how you think.
+            </p>
         </div>
     """, unsafe_allow_html=True)
 
