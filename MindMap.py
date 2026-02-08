@@ -2,58 +2,22 @@
 import streamlit.components.v1 as components
 import time
 import json
-import os
-from dotenv import load_dotenv
-from google import genai
-from google.genai import types
+
+# --- IMPORT FROM YOUR Gemini.py FILE ---
+from Gemini import generate_learning_map
 
 # --------------------
-# AI Architect Logic (Gemini Integration)
+# Data Parser: Tree to Physics format
 # --------------------
-load_dotenv()
-# Note: Ensure GEMINI_API_KEY is in your .env file
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-
-def generate_learning_map(topic):
-    """Calls Gemini 3 Flash to generate a nested JSON structure."""
-    sys_instruct = """
-    You are a structural data architect. 
-    Your only job is to produce deeply nested JSON learning maps. 
-    You have a 'Zero-List-in-Description' policy: descriptions must be prose only. 
-    All components must be represented as child nodes.
-    """
-
-    prompt = f"""
-        Create a comprehensive hierarchical learning roadmap for: '{topic}'.
-
-        STRICT HIERARCHY RULES:
-        1. Every specific concept, sub-tool, or sub-topic MUST be its own node in the 'children' list.
-        2. The 'description' field must ONLY explain the "What" and "Why" of the current node. 
-        3. NEVER list sub-topics, bullet points, or comma-separated lists inside a 'description'. 
-        4. If you find yourself writing a list in a description, stop and move those items into the 'children' array instead.
-        5. Aim for at least 3 levels of depth where appropriate.
-
-        JSON STRUCTURE:
-        Each node must be an object: {{"name": "...", "description": "...", "children": []}}.
-    """
-
-    response = client.models.generate_content(
-        model="gemini-2.0-flash-exp", # Adjusted to latest available flash model string
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            system_instruction=sys_instruct,
-            response_mime_type="application/json",
-            temperature=1.0,
-        )
-    )
-    return json.loads(response.text)
-
 def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
-    """Flattens the nested JSON into a format the electron-physics engine understands."""
+    """
+    Converts Gemini's nested JSON into the flat 'nodes' and 'edges' 
+    list required for the electron repulsion simulation.
+    """
     if nodes is None: nodes = []
     if edges is None: edges = []
     
-    # Generate a unique ID based on the name
+    # Unique ID for each node based on name and current list length
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
     
     # Root node is larger than child nodes
@@ -254,8 +218,10 @@ def generator_page():
         topic = st.text_input("SUBJECT TARGET")
         if st.button("RUN_ARCHITECT"):
             if topic:
-                with st.spinner("CALCULATING ELECTRON CHARGES..."):
+                with st.spinner("INITIATING GEMINI ARCHITECT..."):
+                    # 1. Call the function imported from Gemini.py
                     raw_tree = generate_learning_map(topic)
+                    # 2. Parse the result for the physics engine
                     st.session_state.map_data = parse_tree_to_physics(raw_tree)
                 st.success("MAP DEPLOYED")
             else:
