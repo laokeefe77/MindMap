@@ -262,25 +262,23 @@ def render_force_graph(data):
 def home_page():
     load_space_background()
     
-    # Custom CSS for the Space Title
+    # Custom CSS for the Space Title and Global Button Centering
     st.markdown("""
         <style>
+        /* Force all buttons on the landing page to be centered blocks */
+        .stButton {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
         .hero-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 70vh; /* Slightly reduced to keep button in view */
+            height: 80vh;
             text-align: center;
-        }
-
-        /* Centering container for the button */
-        .button-center-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin-top: -50px; /* Pulls button up closer to the hero text */
         }
 
         .glitch-title {
@@ -316,11 +314,42 @@ def home_page():
             margin-bottom: 40px;
             opacity: 0.7;
         }
+
+        .section {
+            padding: 100px 10%;
+            text-align: center;
+        }
+
+        .section-dark {
+            background: rgba(0,0,0,0.6);
+            padding: 50px 20px;
+            border-radius: 15px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 25px;
+            border: 1px solid rgba(0,150,255,0.3);
+            box-shadow: 0 0 15px rgba(0,150,255,0.2);
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
         
-        /* Ensure the button doesn't stretch to 100% of the small column */
-        .stButton > button {
-            width: auto !important;
-            padding: 18px 50px !important;
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #00d0ff;
+        }
+
+        .faq-item {
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: left;
         }
         </style>
         
@@ -336,24 +365,75 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # Centered Button Implementation
-    st.markdown('<div class="button-center-container">', unsafe_allow_html=True)
+    # Launch Architect Button
     if st.button("🚀 LAUNCH ARCHITECT"):
         st.session_state.page = "signup"
         st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
 
-    # Features Section (Rest of the code remains exactly the same)
+    # Features Section
     st.markdown("""
-    <style>
-        .section-dark {
-            background-color: #0e1117;
-            padding: 50px 20px;
-            border-radius: 15px;
-            margin-top: 100px;
-        }
-        # ... rest of your features CSS ...
+    <div class="section-dark">
+        <h2 style="text-align: center; color: white; font-size: 2.5rem; margin-bottom: 40px;">Why Nebula?</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🧠 Visual Thinking</h3>
+                <p>Turn abstract topics into navigable, interconnected galaxies of information.</p>
+            </div>
+            <div class="feature-card">
+                <h3>⚡ AI Architect</h3>
+                <p>Generate instant, structured learning paths tailored to your specific goals.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🌌 Scalable Knowledge</h3>
+                <p>Seamlessly bridge the gap between absolute beginner and true mastery.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔒 Personal System</h3>
+                <p>Your data is yours. Secure, private, and hosted within your own universe.</p>
+            </div>
+        </div>
+    </div>
     """, unsafe_allow_html=True)
+
+    # Philosophy Section
+    st.markdown("""
+        <div class="section">
+            <h2>Our Philosophy</h2>
+            <p style="color:#88ccff; font-size:20px; margin-top:30px;">“Build systems. Not notes.”</p>
+            <p style="color:#88ccff; font-size:20px;">“Clarity is engineered.”</p>
+            <p style="color:#88ccff; font-size:20px;">“Learning is architecture.”</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # FAQ Section
+    st.markdown("""
+        <div class="section-dark" style="margin-top: 50px;">
+            <h2 style="text-align: center; color: white;">Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h4 style="color: #00d0ff;">❓ What is Nebula?</h4>
+                <p>An AI-powered knowledge mapping system.</p>
+            </div>
+            <div class="faq-item">
+                <h4 style="color: #00d0ff;">❓ Who is it for?</h4>
+                <p>Students, researchers, and self-learners.</p>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # CTA Section
+    st.markdown("""
+        <div class="section">
+            <h2>Start Building Your Knowledge System</h2>
+            <p style="color:#99ccff; max-width:600px; margin:20px auto;">
+                Transform how you learn. Design how you think.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Final CTA Button
+    if st.button("✨ GET STARTED"):
+        st.session_state.page = "signup"
+        st.rerun()
 
 def signup_page():
     col1, col2, col3 = st.columns([1, 1.2, 1])
