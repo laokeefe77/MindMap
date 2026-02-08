@@ -24,8 +24,8 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
     
-    # MASSIVE VISUAL PRESENCE
-    node_size = 180 if parent_id is None else 100 
+    # TITANIC SCALING
+    node_size = 400 if parent_id is None else 250 
     
     nodes.append({
         "id": current_id, 
@@ -212,17 +212,20 @@ def render_force_graph(data):
     html_code = f"""
     <div id="cy" style="
         width: 100%; 
-        height: 800px; 
+        height: 850px; 
         background: #000; 
-        border: 2px solid #0088ff; 
-        box-shadow: 0 0 25px rgba(0, 136, 255, 0.4);
-        border-radius: 8px;
+        border: 4px solid #0088ff; 
     "></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
     <script>
         var cy = cytoscape({{
             container: document.getElementById('cy'),
             elements: {{ nodes: {json.dumps(cy_nodes)}, edges: {json.dumps(cy_edges)} }},
+            
+            /* ZOOM CONTROL */
+            minZoom: 0.5,
+            maxZoom: 2.0,
+
             style: [
                 {{ selector: 'node', style: {{ 
                     'background-color': '#fff', 
@@ -230,47 +233,43 @@ def render_force_graph(data):
                     'color': '#00d0ff', 
                     'width': 'data(size)', 
                     'height': 'data(size)', 
-                    'font-size': '42px',          /* MASSIVE FONT */
+                    'font-size': '60px',          /* TITANIC FONT */
                     'font-weight': '900',
                     'text-valign': 'center', 
-                    'text-halign': 'right', 
-                    'text-margin-x': '25px',      
+                    'text-halign': 'center',      /* CENTERED IN BALL */
                     'font-family': 'monospace', 
-                    'border-width': 6,            /* THICKER BORDERS */
+                    'border-width': 10, 
                     'border-color': '#00a0ff', 
-                    'shadow-blur': 20, 
+                    'shadow-blur': 40, 
                     'shadow-color': '#0088ff' 
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 12,                  /* HEAVY LINES */
-                    'line-color': 'rgba(0, 150, 255, 0.6)', 
+                    'width': 25,                  /* CABLE-THICK LINES */
+                    'line-color': 'rgba(0, 150, 255, 0.7)', 
                     'curve-style': 'bezier',
                     'target-arrow-shape': 'triangle',
-                    'target-arrow-color': 'rgba(0, 150, 255, 0.6)',
-                    'arrow-scale': 2.5
+                    'target-arrow-color': 'rgba(0, 150, 255, 0.7)',
+                    'arrow-scale': 4
                 }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 40 }} }}
+                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 60 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
-                refresh: 20,
                 fit: true, 
-                padding: 150,
-                nodeOverlap: 1000,
-                nodeRepulsion: 50000000,        /* ULTRA REPULSION */
-                idealEdgeLength: 300, 
-                edgeElasticity: 200, 
-                nestingFactor: 0.05, 
-                gravity: 0.01,                 /* NEAR ZERO GRAVITY - TO PREVENT COLLAPSE */
-                numIter: 4000,
-                initialTemp: 1000,
-                coolingFactor: 0.99
+                padding: 30,              /* Tight padding forces the zoom to stay in */
+                nodeOverlap: 2000,
+                nodeRepulsion: 100000000,   /* 100M Repulsion to fight the size */
+                idealEdgeLength: 600, 
+                edgeElasticity: 500, 
+                nestingFactor: 0.01, 
+                gravity: 0.005,             /* Almost no gravity */
+                numIter: 5000
             }}
         }});
     </script>
     """
-    components.html(html_code, height=820)
+    components.html(html_code, height=900)
 
 # --------------------
 # 5. PAGE DEFINITIONS
