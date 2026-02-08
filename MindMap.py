@@ -24,8 +24,8 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
     
-    # TITANIC SCALING
-    node_size = 400 if parent_id is None else 250 
+    # PLANETARY SCALING
+    node_size = 800 if parent_id is None else 450 
     
     nodes.append({
         "id": current_id, 
@@ -210,22 +210,13 @@ def render_force_graph(data):
     cy_edges = [{"data": {"id": f"e{i}", "source": e["source"], "target": e["target"]}} for i, e in enumerate(data["edges"])]
     
     html_code = f"""
-    <div id="cy" style="
-        width: 100%; 
-        height: 850px; 
-        background: #000; 
-        border: 4px solid #0088ff; 
-    "></div>
+    <div id="cy" style="width: 100%; height: 850px; background: #000; border: 2px solid #0088ff;"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
     <script>
         var cy = cytoscape({{
             container: document.getElementById('cy'),
             elements: {{ nodes: {json.dumps(cy_nodes)}, edges: {json.dumps(cy_edges)} }},
             
-            /* ZOOM CONTROL */
-            minZoom: 0.5,
-            maxZoom: 2.0,
-
             style: [
                 {{ selector: 'node', style: {{ 
                     'background-color': '#fff', 
@@ -233,37 +224,38 @@ def render_force_graph(data):
                     'color': '#00d0ff', 
                     'width': 'data(size)', 
                     'height': 'data(size)', 
-                    'font-size': '60px',          /* TITANIC FONT */
+                    'font-size': '80px',          /* MASSIVE TEXT */
                     'font-weight': '900',
-                    'text-valign': 'center', 
-                    'text-halign': 'center',      /* CENTERED IN BALL */
+                    'text-valign': 'top',         /* MOVED TEXT OUTSIDE */
+                    'text-halign': 'center',      
+                    'text-margin-y': '-40px',
                     'font-family': 'monospace', 
-                    'border-width': 10, 
+                    'border-width': 30,           /* SUPER THICK BORDER MAKES THEM LOOK HUGE */
                     'border-color': '#00a0ff', 
-                    'shadow-blur': 40, 
-                    'shadow-color': '#0088ff' 
+                    'shadow-blur': 100, 
+                    'shadow-color': '#0088ff',
+                    'shadow-opacity': 0.8
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 25,                  /* CABLE-THICK LINES */
-                    'line-color': 'rgba(0, 150, 255, 0.7)', 
+                    'width': 15,                  /* BALANCED BOLD LINES */
+                    'line-color': 'rgba(0, 150, 255, 0.3)', 
                     'curve-style': 'bezier',
                     'target-arrow-shape': 'triangle',
-                    'target-arrow-color': 'rgba(0, 150, 255, 0.7)',
-                    'arrow-scale': 4
+                    'target-arrow-color': 'rgba(0, 150, 255, 0.3)',
+                    'arrow-scale': 3
                 }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 60 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
                 fit: true, 
-                padding: 30,              /* Tight padding forces the zoom to stay in */
-                nodeOverlap: 2000,
-                nodeRepulsion: 100000000,   /* 100M Repulsion to fight the size */
-                idealEdgeLength: 600, 
-                edgeElasticity: 500, 
+                padding: 150,
+                nodeOverlap: 5000,           /* Massive overlap prevention */
+                nodeRepulsion: 500000000,    /* Half a billion repulsion to push these giants apart */
+                idealEdgeLength: 1200,       /* Huge distance to allow room for big balls */
+                edgeElasticity: 1000, 
                 nestingFactor: 0.01, 
-                gravity: 0.005,             /* Almost no gravity */
+                gravity: 0.001,              /* Negligible gravity */
                 numIter: 5000
             }}
         }});
