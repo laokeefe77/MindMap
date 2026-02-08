@@ -415,7 +415,7 @@ def home_page():
 
     st.markdown("<br><br>", unsafe_allow_html=True)
 
-    # --- 3. CORE PROTOCOL SUMMARY (The "What it does") ---
+    # --- 3. CORE PROTOCOL SUMMARY ---
     st.markdown("""
     <style>
         .core-summary {
@@ -509,34 +509,41 @@ def home_page():
         <div class="feature-grid">
             <div class="feature-card">
                 <h3>🧠 Visual Thinking</h3>
-                <p>Turn abstract topics into navigable, interconnected galaxies of information. Stop reading lists and start seeing the architecture of knowledge.</p>
+                <p>Turn abstract topics into navigable, interconnected galaxies. Stop reading lists and start seeing the architecture of knowledge.</p>
             </div>
             <div class="feature-card">
                 <h3>⚡ AI Architect</h3>
-                <p>Powered by the Gemini 3 Flash engine, we generate instant learning paths tailored to your specific subject targets with zero lag.</p>
+                <p>Powered by Gemini, we generate instant, structured learning paths tailored to your specific goals and subject targets.</p>
             </div>
             <div class="feature-card">
                 <h3>🌌 Scalable Depth</h3>
-                <p>From Level 1 reconnaissance to Level 3 expert extraction, customize the map's complexity to match your current intelligence needs.</p>
+                <p>Customize the resolution of your learning. Move from high-level reconnaissance to deep-dive technical extraction seamlessly.</p>
             </div>
             <div class="feature-card">
                 <h3>🔒 Archive Protocol</h3>
-                <p>All generated maps are stored in your secure system logs. Revisit, redeploy, and expand your private knowledge universe at any time.</p>
+                <p>Your intellectual journey is preserved. Securely store and redeploy any generated map from your private system logs.</p>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # --- 5. PHILOSOPHY & FAQ ---
+    # --- 5. PHILOSOPHY SECTION (RESTORED MISSION STATEMENT) ---
     st.markdown("""
         <div style="padding: 100px 10%; text-align: center;">
-            <h2 style="font-size: 46px; font-weight: 900;">PHILOSOPHY</h2>
-            <p style="color:#00d0ff; font-size:32px; margin-top:30px; font-family: monospace;">“BUILD SYSTEMS. NOT NOTES.”</p>
-            <p style="color:#00d0ff; font-size:32px; font-family: monospace;">“CLARITY IS ENGINEERED.”</p>
+            <h2 style="font-size: 46px; font-weight: 900; margin-bottom: 40px;">PHILOSOPHY</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <p style="color:#ffffff; font-size:28px; line-height: 1.4; font-weight: 300;">
+                    In an age of infinite information, 
+                    <span style="color:#00d0ff; font-weight: 700;">knowing what to learn is often harder than the learning itself.</span>
+                </p>
+                <div style="margin: 40px auto; width: 50px; height: 2px; background: #00d0ff;"></div>
+                <p style="color:#00d0ff; font-size:32px; font-family: monospace;">“BUILD SYSTEMS. NOT NOTES.”</p>
+                <p style="color:#00d0ff; font-size:32px; font-family: monospace;">“CLARITY IS ENGINEERED.”</p>
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # --- 6. POPULATED FAQ ---
+    # --- 6. FAQ SECTION ---
     st.markdown("""
         <div class="section-dark" style="margin-top: 50px;">
             <h2 style="text-align: center;">FAQ</h2>
