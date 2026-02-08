@@ -692,7 +692,7 @@ def main():
         s_state = "collapsed"
 
     st.set_page_config(
-        page_title="MindMap Noir", 
+        page_title="Nebula", 
         page_icon="🧠", 
         layout="wide", 
         initial_sidebar_state=s_state
