@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\jeffw\\source\\repos\\MindMap\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jeffw\\source\\repos\\MindMap\\MindMap.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:MindMap.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jeffw\\source\\repos\\MindMap\\Gemini.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Gemini.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
@@ -13,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jeffw\\source\\repos\\MindMap\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.env||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jeffw\\source\\repos\\MindMap\\MindMap.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:MindMap.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,7 +34,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": ".env",
               "DocumentMoniker": "C:\\Users\\jeffw\\source\\repos\\MindMap\\.env",
               "RelativeDocumentMoniker": ".env",
@@ -42,12 +42,11 @@
               "RelativeToolTip": ".env",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-02-07T18:57:35.001Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-07T18:57:35.001Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": ".gitignore",
               "DocumentMoniker": "C:\\Users\\jeffw\\source\\repos\\MindMap\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -55,31 +54,29 @@
               "RelativeToolTip": ".gitignore",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-02-07T18:56:55.294Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-07T18:56:55.294Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Gemini.py",
               "DocumentMoniker": "C:\\Users\\jeffw\\source\\repos\\MindMap\\Gemini.py",
               "RelativeDocumentMoniker": "Gemini.py",
               "ToolTip": "C:\\Users\\jeffw\\source\\repos\\MindMap\\Gemini.py",
               "RelativeToolTip": "Gemini.py",
-              "ViewState": "AgIAADAAAAAAAAAAAAAAAEAAAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAATAAAAAAAAAA==",
               "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAXdSURBVEhLhZZtbFRZGcd/587LnWnnpTPTDoVCX9ZSS5cWWpvdDVkgUaorMaJmieL6wdAQk/Ul\u002BJIsHwgxa/ziBzR\u002BwJcYI5oFNJtIMLLGjdjIQpZmCW43QBhNu3bYLaUt03m57/fc44eZDt1ujP/kyT3Jvfk/5/md55xzBXUlgFBj/P/kAyagNr74kJRSAuCzX3j\u002BGy\u002B\u002BfOZHS6ZPJh6KbXcXaX//XZSUaJEwZu8TaJkMDx8\u002BREr5YGpq6qcnT548Y1lWZaPnRoUAOvsGn7rTtmfi1dur4u37lXDX7SnafvMz7KtXsa5f50F7O3TkCYKAcrmc2Ldv3/jAwED80qVLbwLeRtP10mjUGmhCV0LTa57CTaZweroxt23G7Osm29vDwMAA/f39ZLNZNE1LHzx48KXz58\u002BfCoVCiY2m66WtDZSqM1VKsZApcfXj93n7UAc3PrlMNWshhEDXdXRdx7Is7t69y9jY2NeOHz/\u002B7UgkkvyA6zo1E2hCCABN05CixKr/FraYY9mcZrX6HkoppJQIIcjn82zfvp1oNJo6evTod06fPv11QP\u002BAc0MagB4SJL3VRd1aeq8/EdCmZ2iN7SQW6SUdH0F6MR49eoTneViWxdzcHKVSienp6dkTJ078ateuXd8C8hvNAcIA6ZjGV/rdhU/lvId7Pra5S8jPU6vtJxyOAgGZTB5d1xFC0N3dTTgcRghBMplM\u002Bb7fG4/H24D4RnPWumhkZOSpkaHBbK209O/xsd3PKAW5XJ5kMk1HRyeRSBRN06hWq7iuS2trK7quk0qlWgYHB4dyuVz4wIED8ZWVlUKhUFhZnyBMY2E1TVtNJpP3bdumXC5j2zbxeBwhBOVymba2NgzDIKS3cO7GAn\u002Bdmef\u002Bg2WEZ6NrHvuGuiZ//dtXuvu2bfmMYRjN1m0ucmdn56729vbnYrEYuVyOVCpFOBwGIJvNApDP5/EjrZRNh1OHhsF3EdLFsy3\u002B8dZtbhXm9wORNU/WJygUCm8UCoVztVqNxcVFpJQUi0WWlpbwfZ9KpYLv\u002B6hA8Zebc3z/wnWEdOrhOwSuje96UUCsT9BEtHfv3hc8z3s\u002BkUgQj8dRStHX1weA0qLYYQ3LVoDizOQzoBQVw\u002BQXF69SmC0jAgehJNWV21WU8ghn/jYy\u002BuxX6wyAK1euXFhZWZk5cuTIz2u1GtFolFAoRDgc5pVby7z65rt4jonm22i\u002BhZAOmm\u002BheXajkgb2978HTi1Cy7PPzczM/LiJaGJi4oXDhw//IBKJkE6naWlpIRqNkkgkuHiziOc2jAIHIV2E7yB8FxG4COk/5uK54Jiw8jrAwfpZpBSXL1\u002B\u002BcPbs2ZeVqp/CUkoqlQqapmGZJpq00aRDRtfY0dXGk9tyDPW0s6Ongx19W9j90V62pGvg2uC7YJcB0k1Eo6OjTzuO06eUQilFEARoWr1A0egW4bt890tj7PlIgYgWgAqBjILvg3Sg\u002Bgeo1upVuC6s76KZmZl3pqam3giCgLWQUqKUQhd\u002BA4fD3iczRLzXwH4djNeg8icoXYTlP0LtHXCdegIZAFhNRB0dHa39/f2ta\u002Bae5\u002BE4Do7jsH\u002BogwgewnfQNAEqAN8Dz6mH3zB1nfrMPQ/S4wB/byIKhULtrut6tm1jWRbRaJRYLEalUuHLe57g6f480vNAKQj8OucgDm2fA5EBKSGQ9afCJzV869ixY6eaCRYWFv5ZrVZvmqb5xVKphK7rzZ1smiZZIKSH6teT59XDrULtd/XZ2xb0nmDT7hc3maZpANIwDEcDuHfv3rRhGJvGx8dfSiaTwdatW2U2m3VSqZQlhFio1Wq37ty5c/HatWs/UYHy8eVjPE4Ven4IW78JgfRN0zQMwzANw3BYt61DQoj08PDwwMTExCe6urqSs7OztUqlYhWLxf8Ui8V/zc/PP3Bd15De6u/F0i8/zeoUOKvgOBAfhZYB2HToRnLz2H7DMOot9D8kgGgjPvQrs3PnzrxS6pxSalU9lqmU\u002BvPk5OTYxu//Czcc7f2sFsUUAAAAAElFTkSuQmCC",
-              "WhenOpened": "2026-02-07T18:51:02.936Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-07T18:51:02.936Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "MindMap.py",
               "DocumentMoniker": "C:\\Users\\jeffw\\source\\repos\\MindMap\\MindMap.py",
               "RelativeDocumentMoniker": "MindMap.py",
               "ToolTip": "C:\\Users\\jeffw\\source\\repos\\MindMap\\MindMap.py",
               "RelativeToolTip": "MindMap.py",
-              "ViewState": "AgIAADQBAAAAAAAAAAAuwEABAAAsAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAXdSURBVEhLhZZtbFRZGcd/587LnWnnpTPTDoVCX9ZSS5cWWpvdDVkgUaorMaJmieL6wdAQk/Ul\u002BJIsHwgxa/ziBzR\u002BwJcYI5oFNJtIMLLGjdjIQpZmCW43QBhNu3bYLaUt03m57/fc44eZDt1ujP/kyT3Jvfk/5/md55xzBXUlgFBj/P/kAyagNr74kJRSAuCzX3j\u002BGy\u002B\u002BfOZHS6ZPJh6KbXcXaX//XZSUaJEwZu8TaJkMDx8\u002BREr5YGpq6qcnT548Y1lWZaPnRoUAOvsGn7rTtmfi1dur4u37lXDX7SnafvMz7KtXsa5f50F7O3TkCYKAcrmc2Ldv3/jAwED80qVLbwLeRtP10mjUGmhCV0LTa57CTaZweroxt23G7Osm29vDwMAA/f39ZLNZNE1LHzx48KXz58\u002BfCoVCiY2m66WtDZSqM1VKsZApcfXj93n7UAc3PrlMNWshhEDXdXRdx7Is7t69y9jY2NeOHz/\u002B7UgkkvyA6zo1E2hCCABN05CixKr/FraYY9mcZrX6HkoppJQIIcjn82zfvp1oNJo6evTod06fPv11QP\u002BAc0MagB4SJL3VRd1aeq8/EdCmZ2iN7SQW6SUdH0F6MR49eoTneViWxdzcHKVSienp6dkTJ078ateuXd8C8hvNAcIA6ZjGV/rdhU/lvId7Pra5S8jPU6vtJxyOAgGZTB5d1xFC0N3dTTgcRghBMplM\u002Bb7fG4/H24D4RnPWumhkZOSpkaHBbK209O/xsd3PKAW5XJ5kMk1HRyeRSBRN06hWq7iuS2trK7quk0qlWgYHB4dyuVz4wIED8ZWVlUKhUFhZnyBMY2E1TVtNJpP3bdumXC5j2zbxeBwhBOVymba2NgzDIKS3cO7GAn\u002Bdmef\u002Bg2WEZ6NrHvuGuiZ//dtXuvu2bfmMYRjN1m0ucmdn56729vbnYrEYuVyOVCpFOBwGIJvNApDP5/EjrZRNh1OHhsF3EdLFsy3\u002B8dZtbhXm9wORNU/WJygUCm8UCoVztVqNxcVFpJQUi0WWlpbwfZ9KpYLv\u002B6hA8Zebc3z/wnWEdOrhOwSuje96UUCsT9BEtHfv3hc8z3s\u002BkUgQj8dRStHX1weA0qLYYQ3LVoDizOQzoBQVw\u002BQXF69SmC0jAgehJNWV21WU8ghn/jYy\u002BuxX6wyAK1euXFhZWZk5cuTIz2u1GtFolFAoRDgc5pVby7z65rt4jonm22i\u002BhZAOmm\u002BheXajkgb2978HTi1Cy7PPzczM/LiJaGJi4oXDhw//IBKJkE6naWlpIRqNkkgkuHiziOc2jAIHIV2E7yB8FxG4COk/5uK54Jiw8jrAwfpZpBSXL1\u002B\u002BcPbs2ZeVqp/CUkoqlQqapmGZJpq00aRDRtfY0dXGk9tyDPW0s6Ongx19W9j90V62pGvg2uC7YJcB0k1Eo6OjTzuO06eUQilFEARoWr1A0egW4bt890tj7PlIgYgWgAqBjILvg3Sg\u002Bgeo1upVuC6s76KZmZl3pqam3giCgLWQUqKUQhd\u002BA4fD3iczRLzXwH4djNeg8icoXYTlP0LtHXCdegIZAFhNRB0dHa39/f2ta\u002Bae5\u002BE4Do7jsH\u002BogwgewnfQNAEqAN8Dz6mH3zB1nfrMPQ/S4wB/byIKhULtrut6tm1jWRbRaJRYLEalUuHLe57g6f480vNAKQj8OucgDm2fA5EBKSGQ9afCJzV869ixY6eaCRYWFv5ZrVZvmqb5xVKphK7rzZ1smiZZIKSH6teT59XDrULtd/XZ2xb0nmDT7hc3maZpANIwDEcDuHfv3rRhGJvGx8dfSiaTwdatW2U2m3VSqZQlhFio1Wq37ty5c/HatWs/UYHy8eVjPE4Ven4IW78JgfRN0zQMwzANw3BYt61DQoj08PDwwMTExCe6urqSs7OztUqlYhWLxf8Ui8V/zc/PP3Bd15De6u/F0i8/zeoUOKvgOBAfhZYB2HToRnLz2H7DMOot9D8kgGgjPvQrs3PnzrxS6pxSalU9lqmU\u002BvPk5OTYxu//Czcc7f2sFsUUAAAAAElFTkSuQmCC",
               "WhenOpened": "2026-02-07T18:40:46.76Z",
               "EditorCaption": ""
