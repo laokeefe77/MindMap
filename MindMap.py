@@ -549,7 +549,12 @@ def generator_page():
 # 6. MAIN EXECUTION
 # --------------------
 def main():
-    st.set_page_config(page_title="MindMap Noir", page_icon="🧠", layout="wide")
+    st.set_page_config(
+        page_title="Nebula", 
+        page_icon="🧠", 
+        layout="wide",
+        initial_sidebar_state="expanded"  # Add this line
+    )    
     load_css()
     if "page" not in st.session_state: st.session_state.page = "home"
     if "user" not in st.session_state: st.session_state.user = None
