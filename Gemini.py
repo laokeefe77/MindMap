@@ -1,15 +1,16 @@
 import os
 import json
-import textwrap
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
+# Load your API key
+
+
 def generate_learning_map(topic):
     load_dotenv()
-    # Ensure your GEMINI_API_KEY is set in your .env file
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-    
+    # System instructions move from the Client to the Config
     sys_instruct = """
     You are a structural data architect. 
     Your only job is to produce deeply nested JSON learning maps. 
@@ -25,65 +26,54 @@ def generate_learning_map(topic):
         2. The 'description' field must ONLY explain the "What" and "Why" of the current node. 
         3. NEVER list sub-topics, bullet points, or comma-separated lists inside a 'description'. 
         4. If you find yourself writing a list in a description, stop and move those items into the 'children' array instead.
-        5. Aim for at least 3 levels of depth where appropriate.
+        5. Aim for at least 3 levels of depth where appropriate (e.g., Math -> Linear Algebra -> Matrices).
 
         JSON STRUCTURE:
         Each node must be an object: {{"name": "...", "description": "...", "children": []}}.
     """
 
     response = client.models.generate_content(
-        model="gemini-2.0-flash", # Using the latest stable flash model
+        model="gemini-3-flash-preview",
         contents=prompt,
         config=types.GenerateContentConfig(
             system_instruction=sys_instruct,
             response_mime_type="application/json",
-            temperature=1.0
+            temperature=1.0, # Higher temperature for more detailed branching
+            thinking_config=types.ThinkingConfig(
+                thinking_level=types.ThinkingLevel.MINIMAL
+            )
         )
     )
     
     return json.loads(response.text)
 
 def get_flattened_list(node, level=0):
-    """Recursively turns the JSON tree into a flat list of tuples."""
+    """
+    Recursively turns the JSON tree into a flat list of tuples.
+    Format: (depth_level, name, description)
+    """
+    # 1. Yield the current node first
     yield (level, node['name'], node['description'])
+    
+    # 2. Recursively visit all children
     if "children" in node:
         for child in node["children"]:
             yield from get_flattened_list(child, level + 1)
 
-def print_styled_map(all_nodes, topic):
-    """Renders the nodes with a 'bubble' feel using box-drawing characters."""
-    header = f" LEARNING MAP: {topic.upper()} "
-    print("\n" + "?" * len(header))
-    print(header)
-    print("?" * len(header) + "\n")
-
-    for depth, name, info in all_nodes:
-        indent = "    " * depth
-        
-        # Style the 'Bubble' Header
-        connector = "? " if depth == 0 else "??? ? "
-        print(f"{indent}{connector}\033[1m{name.upper()}\033[0m")
-        
-        # Style the 'Bubble' Body
-        body_indent = indent + ("  " if depth == 0 else "    ")
-        prefix = "? "
-        
-        # Wrap text to keep the bubble narrow and clean
-        wrapped_info = textwrap.wrap(info, width=70)
-        for line in wrapped_info:
-            print(f"{body_indent}{prefix}{line}")
-        
-        # Add a tail to the bubble for visual separation
-        print(f"{body_indent}?")
-
 # Example Usage
 if __name__ == "__main__":
-    # Note: I changed the topic slightly to ensure the AI gets high-quality math data
-    target_topic = "Infinite Series Convergence Tests" 
+    topic = "Integral ratio test" 
+    mind_map = generate_learning_map(topic)
     
-    try:
-        mind_map = generate_learning_map(target_topic)
-        all_nodes = list(get_flattened_list(mind_map))
-        print_styled_map(all_nodes, target_topic)
-    except Exception as e:
-        print(f"Error generating map: {e}")
+    print(json.dumps(mind_map, indent=2))
+
+    print(f"\nMain branches for {topic}:")
+    for branch in mind_map.get('children', []):
+        print(f"- {branch['name']}")
+
+    all_nodes = list(get_flattened_list(mind_map))
+    
+    print(f"\nTotal concepts found: {len(all_nodes)}")
+    
+    for depth, name, info in all_nodes:
+        print([depth, name, info])
