@@ -27,7 +27,7 @@ def generate_learning_map(topic, complexity):
         3. NEVER list sub-topics, bullet points, or comma-separated lists inside a 'description'. 
         4. If you find yourself writing a list in a description, stop and move those items into the 'children' array instead.
         5. Aim for at least 3 levels of depth where appropriate (e.g., Math -> Linear Algebra -> Matrices).
-        6. The depth of knowledge should be defined as {complexity}, where 1 is very basic, 2 is intermediate, and 3 is complex detail.
+        6. The depth of knowledge should be defined as {complexity}, where 1 is very basic, 2 is intermediate, and 3 is complex detail. At level 3, more detail and sentences may be added to the description.
 
         JSON STRUCTURE:
         Each node must be an object: {{"name": "...", "description": "...", "children": []}}.
