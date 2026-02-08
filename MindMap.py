@@ -348,21 +348,12 @@ def home_page():
             </div>
         </div>
     """, unsafe_allow_html=True)
-col1, col2, col3 = st.columns(3)
 
-with col2:
-    # Vertical spacing
-    st.write("")
-    st.write("")
-    st.write("")
-
-    # One button only
-    if st.button("🚀 LAUNCH ARCHITECT"):
-        st.session_state.page = "signup"
-        st.rerun()
-
-    st.write("")
-    st.write("")
+    col1, col2, col3 = st.columns([1,1,1])
+    with col2:
+        if st.button("🚀 LAUNCH ARCHITECT"):
+            st.session_state.page = "signup"
+            st.rerun()
 
     # Features Section
     st.markdown("""
