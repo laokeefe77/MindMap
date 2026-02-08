@@ -423,6 +423,7 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
+# --- UPDATED PERSISTENCE HELPERS ---
 def load_users():
     if not os.path.exists(DB_FILE):
         return {}
@@ -434,9 +435,22 @@ def load_users():
 
 def save_user(username, password):
     users = load_users()
-    users[username] = password
+    # Store as a dict to hold password AND history
+    if username not in users:
+        users[username] = {"password": password, "history": {}}
     with open(DB_FILE, "w") as f:
         json.dump(users, f)
+
+def save_map_to_history(username, topic, map_data):
+    users = load_users()
+    if username in users:
+        # Save map data under the topic name
+        users[username]["history"][topic] = {
+            "data": map_data,
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        with open(DB_FILE, "w") as f:
+            json.dump(users, f)
 
 # --- REFACTORED SIGNUP/LOGIN PAGE ---
 def signup_page():
@@ -456,8 +470,10 @@ def signup_page():
             if st.button("INITIALIZE SESSION", use_container_width=True):
                 if u and p:
                     users = load_users()
+                    users = load_users()
                     if u in users:
-                        if users[u] == p:
+                        # Check password within the new dict structure
+                        if users[u]["password"] == p:
                             st.session_state.user = {"name": u}
                             st.session_state.page = "generator"
                             st.rerun()
@@ -479,10 +495,12 @@ def signup_page():
         st.markdown('</div>', unsafe_allow_html=True)
 
 def generator_page():
-    st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
+    username = st.session_state.user['name']
+    st.markdown(f"### SYSTEM LOG: {username.upper()}")
     st.markdown("<h1 style='font-weight:900;'>COMMAND_CENTER</h1><hr style='border: 2px solid white;'>", unsafe_allow_html=True)
 
     col1, col2 = st.columns([1, 3]) 
+    
     with col1:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         topic = st.text_input("SUBJECT TARGET")
@@ -490,7 +508,10 @@ def generator_page():
             if topic:
                 with st.spinner("INITIATING GEMINI ARCHITECT..."):
                     raw_tree = generate_learning_map(topic)
-                    st.session_state.map_data = parse_tree_to_physics(raw_tree)
+                    map_result = parse_tree_to_physics(raw_tree)
+                    st.session_state.map_data = map_result
+                    # SAVE TO JSON HISTORY
+                    save_map_to_history(username, topic, map_result)
                 st.success("MAP DEPLOYED")
             else:
                 st.error("INPUT REQUIRED")
@@ -502,7 +523,22 @@ def generator_page():
         else:
             st.markdown("<div style='height: 800px; display: flex; align-items: center; justify-content: center; opacity: 0.3; border: 1px dashed #0088ff; border-radius: 8px; font-family: monospace;'>AWAITING ARCHITECT COMMAND...</div>", unsafe_allow_html=True)
 
+    # --- SIDEBAR HISTORY ---
     with st.sidebar:
+        st.markdown("### ARCHIVE_LOGS")
+        users = load_users()
+        user_data = users.get(username, {})
+        history = user_data.get("history", {})
+
+        if history:
+            for saved_topic in reversed(list(history.keys())):
+                if st.button(f"📂 {saved_topic.upper()}", use_container_width=True):
+                    st.session_state.map_data = history[saved_topic]["data"]
+                    st.rerun()
+        else:
+            st.write("No archives found.")
+
+        st.markdown("---")
         if st.button("SHUTDOWN"):
             st.session_state.user = None
             st.session_state.map_data = None
