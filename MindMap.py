@@ -522,7 +522,7 @@ st.markdown("""
 
 
     # ✅ KEEP SECOND BUTTON WORKING
-    col1, col2, col3 = st.columns([1,1,1])
+col1, col2, col3 = st.columns([1,1,1])
     with col2:
         if st.button("✨ GET STARTED"):
             st.session_state.page = "signup"
