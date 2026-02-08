@@ -129,23 +129,42 @@ def render_force_graph(data):
             container: document.getElementById('cy'),
             elements: {{ nodes: {json.dumps(cy_nodes)}, edges: {json.dumps(cy_edges)} }},
             style: [
-                {{ selector: 'node', style: {{ 'background-color': '#fff', 'label': 'data(label)', 'color': '#00d0ff', 'width': 'data(size)', 'height': 'data(size)', 'font-size': '12px', 'text-valign': 'center', 'text-halign': 'right', 'font-family': 'monospace', 'border-width': 2, 'border-color': '#00a0ff', 'shadow-blur': 15, 'shadow-color': '#0088ff' }} }},
-                {{ selector: 'edge', style: {{ 'width': 1.5, 'line-color': 'rgba(0, 150, 255, 0.2)', 'curve-style': 'bezier', 'target-arrow-shape': 'triangle', 'target-arrow-color': 'rgba(0, 150, 255, 0.4)' }} }},
+                {{ selector: 'node', style: {{ 
+                    'background-color': '#fff', 
+                    'label': 'data(label)', 
+                    'color': '#00d0ff', 
+                    'width': 'data(size)', 
+                    'height': 'data(size)', 
+                    'font-size': '12px', 
+                    'text-valign': 'center', 
+                    'text-halign': 'right', 
+                    'font-family': 'monospace', 
+                    'border-width': 2, 
+                    'border-color': '#00a0ff', 
+                    'shadow-blur': 15, 
+                    'shadow-color': '#0088ff' 
+                }} }},
+                {{ selector: 'edge', style: {{ 
+                    'width': 1.5, 
+                    'line-color': 'rgba(0, 150, 255, 0.2)', 
+                    'curve-style': 'bezier', 
+                    'target-arrow-shape': 'triangle', 
+                    'target-arrow-color': 'rgba(0, 150, 255, 0.4)' 
+                }} }},
                 {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 25 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
-                fit: true, 
-                padding: 100,
-                /* --- PHYSICS TUNING --- */
-                nodeRepulsion: 8000000,      // Massive increase to stop clumping
-                idealEdgeLength: 200,      // Longer 'springs' between nodes
-                edgeElasticity: 0.45,      // Makes the edges less 'tight'
-                nestingFactor: 0.1,        // Pushes nested nodes further apart
-                gravity: 0.15,             // Weak gravity to allow maximum spread
-                numIter: 1500,             // More time to find the perfect positions
-                initialTemp: 300           // High initial energy to shake them out of clumps
+                componentSpacing: 200,      // Forces separate components further apart
+                nodeRepulsion: 10000000,    // Extreme repulsion
+                idealEdgeLength: 300,       // Triple the distance between parent/child
+                edgeElasticity: 0.1,        // Makes edges very "weak" so they don't pull nodes together
+                nestingFactor: 0.05,        // Drastically reduces the "cluster" pull
+                gravity: 0.05,              // Minimum gravity so nodes don't drift to center
+                numIter: 2500,              // Max iterations to allow full expansion
+                initialTemp: 500,           // High energy start to "explode" the nodes outward
+                coolingFactor: 0.99         // Slower cooling so it spends more time expanding
             }}
         }});
     </script>
