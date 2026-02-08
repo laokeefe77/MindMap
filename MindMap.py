@@ -25,7 +25,7 @@ def load_css():
     st.markdown(
         """
         <style>
-        /* 1. ORIGINAL AGGRESSIVE GRADIENT & FULL GRID REPLACED */
+        /* 1. ORIGINAL AGGRESSIVE GRADIENT & FULL GRID */
         .stApp {
             background-color: #000000;
             background-image: 
@@ -37,31 +37,30 @@ def load_css():
             background-attachment: fixed;
         }
 
-        /* 2. FLOATING BACK ARROW (Top Left) */
+        /* 2. MINIMAL SPINNING ARROW (Top Left) */
         .back-arrow-container {
             position: fixed;
-            top: 40px;
-            left: 40px;
+            top: 30px;
+            left: 30px;
             z-index: 999;
         }
         
         .back-arrow-container .stButton > button {
             background: transparent !important;
             color: #ffffff !important;
-            border: 4px solid #ffffff !important;
-            border-radius: 0px !important;
-            width: 60px !important;
-            height: 60px !important;
-            font-size: 24px !important;
-            font-weight: 900 !important;
-            transition: 0.15s;
+            border: none !important;
+            font-size: 60px !important; /* Large Arrow */
+            font-weight: 100 !important;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: none !important;
+            width: auto !important;
+            height: auto !important;
         }
         
         .back-arrow-container .stButton > button:hover {
-            background: #ffffff !important;
-            color: #000000 !important;
-            transform: translate(-5px, -5px);
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
+            background: transparent !important;
+            color: #ffffff !important;
+            transform: rotate(-180deg) scale(1.1) !important; /* Spin + Slight Grow */
         }
 
         /* 3. RAISED LANDING */
@@ -107,7 +106,7 @@ def load_css():
             box-shadow: 20px 20px 0px rgba(255,255,255,0.4);
         }
 
-        /* 6. BUTTONS */
+        /* 6. MAIN BUTTONS */
         .stButton > button {
             background: #ffffff !important;
             color: #000000 !important;
@@ -170,7 +169,6 @@ def signup_page():
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        # ACCESS is now inside the box
         st.markdown("<h1 style='text-align:center; font-weight:900; color:white; margin-top:0;'>ACCESS</h1>", unsafe_allow_html=True)
         
         with st.form("signup_form", border=False):
