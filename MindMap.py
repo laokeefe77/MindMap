@@ -25,7 +25,7 @@ def load_css():
     st.markdown(
         """
         <style>
-        /* 1. ORIGINAL AGGRESSIVE GRADIENT & FULL GRID */
+        /* 1. ORIGINAL AGGRESSIVE GRID */
         .stApp {
             background-color: #000000;
             background-image: 
@@ -37,67 +37,41 @@ def load_css():
             background-attachment: fixed;
         }
 
-        /* 2. MINIMAL SPINNING ARROW (Top Left) */
-        .back-arrow-container {
-            position: fixed;
-            top: 30px;
-            left: 30px;
-            z-index: 999;
-        }
-        
-        .back-arrow-container .stButton > button {
+        /* 2. THE NEW MINIMAL SPINNING ARROW */
+        /* We use a specific class path to kill the default Streamlit button styling */
+        .back-arrow-container div[data-testid="stButton"] button {
+            background-color: transparent !important;
             background: transparent !important;
             color: #ffffff !important;
             border: none !important;
-            font-size: 60px !important; /* Large Arrow */
-            font-weight: 100 !important;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            outline: none !important;
             box-shadow: none !important;
+            font-size: 80px !important; /* Extremely large */
+            line-height: 1 !important;
+            padding: 0px !important;
             width: auto !important;
             height: auto !important;
+            transition: transform 0.6s ease-in-out !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
         
-        .back-arrow-container .stButton > button:hover {
-            background: transparent !important;
+        /* The Spin Animation */
+        .back-arrow-container div[data-testid="stButton"] button:hover {
+            transform: rotate(-180deg) !important;
+            background-color: transparent !important;
             color: #ffffff !important;
-            transform: rotate(-180deg) scale(1.1) !important; /* Spin + Slight Grow */
+            border: none !important;
+        }
+        
+        /* Kill the click animation shadow */
+        .back-arrow-container div[data-testid="stButton"] button:active {
+            background-color: transparent !important;
+            border: none !important;
         }
 
-        /* 3. RAISED LANDING */
-        .landing-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            min-height: 60vh; 
-            margin-top: 5vh;
-        }
-
-        /* 4. BOLD TYPOGRAPHY */
-        .main-title {
-            font-size: clamp(50px, 10vw, 120px); 
-            font-weight: 900;
-            letter-spacing: -2px;
-            margin-bottom: 0px;
-            text-transform: uppercase;
-            line-height: 0.9;
-            color: #ffffff;
-            text-shadow: 4px 4px 15px rgba(0,0,0,0.8);
-        }
-
-        .subtitle {
-            font-size: 16px; 
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 12px;
-            color: #ffffff;
-            margin-top: 20px;
-            margin-bottom: 60px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
-        }
-
-        /* 5. THE BOX (GLASS CARD) */
+        /* 3. THE BOX (GLASS CARD) */
         .glass-card {
             background: #000000;
             border: 4px solid #ffffff;
@@ -106,8 +80,11 @@ def load_css():
             box-shadow: 20px 20px 0px rgba(255,255,255,0.4);
         }
 
-        /* 6. MAIN BUTTONS */
-        .stButton > button {
+        /* 4. MAIN BUTTONS (INITIATE / CREATE / RUN) */
+        /* These stay as the big white blocks you liked */
+        div[data-testid="stForm"] .stButton button, 
+        .landing-container .stButton button,
+        .glass-card .stButton button {
             background: #ffffff !important;
             color: #000000 !important;
             border: none;
@@ -126,10 +103,23 @@ def load_css():
             box-shadow: 10px 10px 0px #ffffff;
         }
 
-        .stTextInput label, .stSelectbox label {
-            color: #ffffff !important;
-            font-weight: bold;
-            font-size: 18px;
+        /* 5. TITLES & TYPOGRAPHY */
+        .main-title {
+            font-size: clamp(50px, 10vw, 120px); 
+            font-weight: 900;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            line-height: 0.9;
+            color: #ffffff;
+            text-shadow: 4px 4px 15px rgba(0,0,0,0.8);
+        }
+        .subtitle {
+            font-size: 16px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 12px; margin-bottom: 60px;
+        }
+        .landing-container {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; text-align: center; min-height: 60vh;
         }
 
         header, footer, #MainMenu {visibility: hidden;}
@@ -147,8 +137,9 @@ def go_to(page):
 # --------------------
 
 def back_arrow():
+    """Renders the minimal large arrow in the corner"""
     st.markdown('<div class="back-arrow-container">', unsafe_allow_html=True)
-    if st.button("←"):
+    if st.button("⟵"): # Using a longer arrow for clear visual change
         go_to("home")
     st.markdown('</div>', unsafe_allow_html=True)
 
