@@ -515,7 +515,6 @@ def generator_page():
 def main():
     st.set_page_config(page_title="MindMap Noir", page_icon="🧠", layout="wide")
     load_css()
-    st.write(f"Database location: {os.path.abspath(DB_FILE)}")
     if "page" not in st.session_state: st.session_state.page = "home"
     if "user" not in st.session_state: st.session_state.user = None
     if "map_data" not in st.session_state: st.session_state.map_data = None
