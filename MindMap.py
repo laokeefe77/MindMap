@@ -349,11 +349,23 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1,1,1])
-    with col2:
-        if st.button("🚀 LAUNCH ARCHITECT"):
-            st.session_state.page = "signup"
-            st.rerun()
+col1, col2, col3 = st.columns([1, 1, 1])
+
+with col2:
+    st.markdown("""
+        <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 120px;
+        ">
+    """, unsafe_allow_html=True)
+
+    if st.button("🚀 LAUNCH ARCHITECT"):
+        st.session_state.page = "signup"
+        st.rerun()
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Features Section
     st.markdown("""
