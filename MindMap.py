@@ -322,7 +322,6 @@ def home_page():
             st.rerun()
 
 def signup_page():
-    load_bubble_background()
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         st.markdown('<br><br><div class="glass-card">', unsafe_allow_html=True)
@@ -337,7 +336,6 @@ def signup_page():
         st.markdown('</div>', unsafe_allow_html=True)
 
 def generator_page():
-    load_bubble_background()
     st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
     st.markdown("<h1 style='font-weight:900;'>COMMAND_CENTER</h1><hr style='border: 2px solid white;'>", unsafe_allow_html=True)
 
