@@ -472,4 +472,52 @@ def generator_page():
     st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
     st.markdown("<h1 style='font-weight:900;'>COMMAND_CENTER</h1><hr style='border: 2px solid white;'>", unsafe_allow_html=True)
 
-    col1, col2 = st.columns(
+    col1, col2 = st.columns([1, 3]) 
+    with col1:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        topic = st.text_input("SUBJECT TARGET")
+        if st.button("RUN_ARCHITECT"):
+            if topic:
+                with st.spinner("INITIATING GEMINI ARCHITECT..."):
+                    raw_tree = generate_learning_map(topic)
+                    st.session_state.map_data = parse_tree_to_physics(raw_tree)
+                st.success("MAP DEPLOYED")
+            else:
+                st.error("INPUT REQUIRED")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col2:
+        if st.session_state.map_data:
+            render_force_graph(st.session_state.map_data)
+        else:
+            st.markdown("<div style='height: 800px; display: flex; align-items: center; justify-content: center; opacity: 0.3; border: 1px dashed #0088ff; border-radius: 8px; font-family: monospace;'>AWAITING ARCHITECT COMMAND...</div>", unsafe_allow_html=True)
+
+    with st.sidebar:
+        if st.button("SHUTDOWN"):
+            st.session_state.user = None
+            st.session_state.map_data = None
+            st.session_state.page = "home"
+            st.rerun()
+
+# --------------------
+# 6. MAIN EXECUTION
+# --------------------
+def main():
+    st.set_page_config(page_title="MindMap Noir", page_icon="🧠", layout="wide")
+    load_css()
+    
+    # Initialize Session State
+    if "page" not in st.session_state: st.session_state.page = "home"
+    if "user" not in st.session_state: st.session_state.user = None
+    if "map_data" not in st.session_state: st.session_state.map_data = None
+
+    # Routing
+    if st.session_state.page == "home":
+        home_page()
+    elif st.session_state.page == "signup":
+        signup_page()
+    elif st.session_state.page == "generator":
+        generator_page()
+
+if __name__ == "__main__":
+    main()
