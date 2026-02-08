@@ -50,52 +50,33 @@ def load_css():
         <style>
         .stApp { background: #000000; color: #ffffff; overflow-x: hidden; }
         #bubble-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-        canvas#bubble-canvas { width: 100vw; height: 100vh; display: block; }
+        
+        /* FIX FOR DISAPPEARING SIDEBAR ARROW */
+        /* This ensures the arrow is bright blue and visible on the black background */
+        [data-testid="stSidebarCollapsedControl"] {
+            color: #00d0ff !important;
+            background-color: rgba(0, 136, 255, 0.1) !important;
+            border-radius: 0 5px 5px 0 !important;
+            border: 1px solid rgba(0, 208, 255, 0.3) !important;
+        }
 
-        .landing-container { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 90vh; }
         .main-title { font-size: clamp(50px, 10vw, 120px); font-weight: 900; letter-spacing: -2px; line-height: 0.9; color: #ffffff; }
         .subtitle { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; margin-bottom: 60px; }
 
-        /* BLUE BRUTALIST GLASS CARD */
         .glass-card { 
             background: linear-gradient(135deg, #000 0%, #050a10 100%); 
             border: 1px solid rgba(0, 180, 255, 0.3);
             padding: 40px; 
             border-radius: 4px; 
-            box-shadow: 10px 10px 0px rgba(0, 0, 0, 1), 
-                        12px 12px 0px rgba(0, 100, 255, 0.2);
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 1), 12px 12px 0px rgba(0, 100, 255, 0.2);
             position: relative;
             overflow: hidden;
             margin-bottom: 20px;
         }
-        .glass-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(rgba(0, 150, 255, 0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .main-title {
-            text-shadow: 0 0 20px rgba(0, 136, 255, 0.6);
-            animation: flicker 3s infinite;
-        }
-
-        @keyframes flicker {
-            0% { opacity: 1; }
-            5% { opacity: 0.9; }
-            10% { opacity: 1; }
-            15% { opacity: 0.8; }
-            20% { opacity: 1; }
-            100% { opacity: 1; }
-        }
-        .glass-card > * { position: relative; z-index: 1; }
 
         .stButton > button { background: #ffffff !important; color: #000000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; transition: 0.1s; }
         .stButton > button:hover { background: #0088ff !important; color: #ffffff !important; transform: translate(-3px, -3px); box-shadow: 6px 6px 0px #ffffff; }
 
-        .stTextInput label { color: #ffffff !important; font-weight: bold; font-size: 18px; }
         header, footer, #MainMenu {visibility: hidden;}
         </style>
         """,
@@ -549,20 +530,24 @@ def generator_page():
 # 6. MAIN EXECUTION
 # --------------------
 def main():
-    st.set_page_config(page_title="MindMap Noir", page_icon="🧠", layout="wide", initial_sidebar_state="expanded")
-    load_css()
-    
-    # --- GLOBAL SIDEBAR (Shows on all pages once logged in) ---
-    if st.session_state.get("user"):
-        with st.sidebar:
-            st.markdown(f"**LOGGED IN AS:** {st.session_state.user['name'].upper()}")
-            st.markdown("---")
-
-    # ... rest of your main() logic ...
+    # If we are NOT on the generator page, hide the sidebar entirely
     if "page" not in st.session_state: st.session_state.page = "home"
+    
+    sidebar_state = "expanded" if st.session_state.page == "generator" else "collapsed"
+
+    st.set_page_config(
+        page_title="MindMap Noir", 
+        page_icon="🧠", 
+        layout="wide", 
+        initial_sidebar_state=sidebar_state
+    )
+    
+    load_css()
+
     if "user" not in st.session_state: st.session_state.user = None
     if "map_data" not in st.session_state: st.session_state.map_data = None
 
+    # Handle page routing
     if st.session_state.page == "home":
         home_page()
     elif st.session_state.page == "signup":
