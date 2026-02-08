@@ -135,36 +135,39 @@ def render_force_graph(data):
                     'color': '#00d0ff', 
                     'width': 'data(size)', 
                     'height': 'data(size)', 
-                    'font-size': '12px', 
+                    'font-size': '10px', 
                     'text-valign': 'center', 
                     'text-halign': 'right', 
                     'font-family': 'monospace', 
-                    'border-width': 2, 
+                    'border-width': 1, 
                     'border-color': '#00a0ff', 
-                    'shadow-blur': 15, 
+                    'shadow-blur': 10, 
                     'shadow-color': '#0088ff' 
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 1.5, 
-                    'line-color': 'rgba(0, 150, 255, 0.2)', 
-                    'curve-style': 'bezier', 
-                    'target-arrow-shape': 'triangle', 
-                    'target-arrow-color': 'rgba(0, 150, 255, 0.4)' 
+                    'width': 1, 
+                    'line-color': 'rgba(0, 150, 255, 0.15)', 
+                    'curve-style': 'haystack', /* Haystack is faster and helps prevent clumping */
                 }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 25 }} }}
+                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 20 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
-                componentSpacing: 200,      // Forces separate components further apart
-                nodeRepulsion: 10000000,    // Extreme repulsion
-                idealEdgeLength: 300,       // Triple the distance between parent/child
-                edgeElasticity: 0.1,        // Makes edges very "weak" so they don't pull nodes together
-                nestingFactor: 0.05,        // Drastically reduces the "cluster" pull
-                gravity: 0.05,              // Minimum gravity so nodes don't drift to center
-                numIter: 2500,              // Max iterations to allow full expansion
-                initialTemp: 500,           // High energy start to "explode" the nodes outward
-                coolingFactor: 0.99         // Slower cooling so it spends more time expanding
+                refresh: 4,
+                fit: true, 
+                padding: 80,
+                
+                /* --- THE CLUMP KILLER SETTINGS --- */
+                nodeOverlap: 100,           // Physical buffer: nodes literally cannot touch
+                nodeRepulsion: 10000000,    // Force pushing all nodes apart
+                idealEdgeLength: 150,       // Distance of the connections
+                edgeElasticity: 100,        // Force that pulls them back (increased for stability)
+                nestingFactor: 1.2,         // Multiplier for repulsion of nested (small) nodes
+                gravity: 1,                 // Pulls everything to center so they don't fly off
+                numIter: 4000,              // More time to resolve overlaps
+                initialTemp: 1000,          // Explosive start to separate overlapping nodes
+                coolingFactor: 0.95         // Slow settle down
             }}
         }});
     </script>
