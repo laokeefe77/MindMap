@@ -452,7 +452,7 @@ st.markdown("""
     # ----------------------------
     # PHILOSOPHY / SLOGANS
     # ----------------------------
-    st.markdown("""
+st.markdown("""
         <div class="section">
 
             <h2>Our Philosophy</h2>
@@ -476,7 +476,7 @@ st.markdown("""
     # ----------------------------
     # FAQ
     # ----------------------------
-    st.markdown("""
+st.markdown("""
         <div class="section section-dark">
 
             <h2>Frequently Asked Questions</h2>
@@ -508,7 +508,7 @@ st.markdown("""
     # ----------------------------
     # CALL TO ACTION
     # ----------------------------
-    st.markdown("""
+st.markdown("""
         <div class="section">
 
             <h2>Start Building Your Knowledge System</h2>
