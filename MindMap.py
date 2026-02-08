@@ -350,7 +350,7 @@ def home_page():
     """, unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns([1,1,1])
-    with col2:
+with col2:
     col1, col2, col3 = st.columns(3)
 
         st.write("")   # spacer
