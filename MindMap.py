@@ -399,7 +399,7 @@ def home_page():
     st.markdown("""
         <div class="section">
             <h2>Our Philosophy</h2>
-            <p style="color:#88ccff; font-size:20px; margin-top:30px;">“Build systems. Not notes.”</p>
+            <p style="color:#88ccff; font-size:40px; margin-top:30px;">“Build systems. Not notes.”</p>
             <p style="color:#88ccff; font-size:20px;">“Clarity is engineered.”</p>
             <p style="color:#88ccff; font-size:20px;">“Learning is architecture.”</p>
         </div>
