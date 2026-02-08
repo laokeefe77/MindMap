@@ -478,24 +478,33 @@ def home_page():
     # PHILOSOPHY SECTION
     st.markdown("""
         <div class="section">
-            <h2 style="font-size: 46px;">Our Philosophy</h2>
-            <p style="color:#88ccff; font-size:30px; margin-top:30px;">“In the age of information overload, knowing what to learn is often harder than the learning itself. Nebula acts as your intellectual architect, engineering structured pathways out of the chaotic "information fog" of the modern web. We transform vast, fragmented data into navigable knowledge galaxies, allowing you to stop searching for the path and start walking it.”</p>
+            <h2 style="font-size: 46px;">Our Mission</h2>
+            <p style="color:#88ccff; font-size:30px; margin-top:30px;">“In the age of information overload, knowing what to learn is often harder than the learning itself. Nebula acts as your intellectual architect, engineering structured pathways out of the chaotic 'information fog' of the modern web. We transform vast, fragmented data into navigable knowledge galaxies, allowing you to stop searching for the path and start walking it.”</p>
         </div>
     """, unsafe_allow_html=True)
 
     # FAQ SECTION
     st.markdown("""
-        <div class="section-dark" style="margin-top: 50px;">
-            <h2 style="text-align: center;">Frequently Asked Questions</h2>
-            <div style="max-width: 800px; margin: 40px auto; text-align: left;">
-                <h4 style="color:#00d0ff;">❓ What is Nebula?</h4>
-                <p>An AI-powered knowledge mapping system.</p>
-                <br>
-                <h4 style="color:#00d0ff;">❓ Who is it for?</h4>
-                <p>Students, researchers, and self-learners.</p>
-            </div>
+    <div class="section-dark" style="margin-top: 50px;">
+        <h2 style="text-align: center;">Frequently Asked Questions</h2>
+        <div style="max-width: 800px; margin: 40px auto; text-align: left;">
+            <h4 style="color:#00d0ff;">❓ What is Nebula?</h4>
+            <p>Nebula is an AI-powered architect for your intellectual journey. It transforms the chaotic "information fog" of any topic into a structured, navigable galaxy of nodes and connections.</p>
+            <br>
+            <h4 style="color:#00d0ff;">❓ How does the Intel Depth slider work?</h4>
+            <p>It dictates the complexity of the blueprint: <b>Level 1</b> provides a high-level reconnaissance of a field, while <b>Level 3</b> engineers a deep-dive technical extraction for complex mastery.</p>
+            <br>
+            <h4 style="color:#00d0ff;">❓ Why a visual map instead of notes?</h4>
+            <p>Because knowing <i>what</i> to learn is often harder than the learning itself. Visualizing the hierarchy of information helps you see the pillars that support a subject before you dive into the details.</p>
+            <br>
+            <h4 style="color:#00d0ff;">❓ Can I save my maps?</h4>
+            <p>Yes. Every map generated is logged in your <b>Archive Logs</b>. You can instantly redeploy any previous subject target from the sidebar at any time.</p>
+            <br>
+            <h4 style="color:#00d0ff;">❓ Who is it for?</h4>
+            <p>Architects of their own education: students, researchers, and self-learners who want to build systems, not just take notes.</p>
         </div>
-    """, unsafe_allow_html=True)
+    </div>
+""", unsafe_allow_html=True)
 
 # --- UPDATED PERSISTENCE HELPERS ---
 def load_users():
