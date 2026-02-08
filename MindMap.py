@@ -37,10 +37,10 @@ def load_css():
             background-attachment: fixed;
         }
 
-        /* 2. WHITE BOX / BLACK ARROW (Higher Up) */
+        /* 2. WHITE BOX / BLACK ARROW (Highest Position) */
         .back-arrow-container {
             position: fixed;
-            top: 15px; /* Moved higher up */
+            top: 15px; 
             left: 20px;
             z-index: 9999;
         }
@@ -58,16 +58,49 @@ def load_css():
             align-items: center !important;
             justify-content: center !important;
             padding: 0px !important;
-            transition: transform 0.5s ease-in-out, box-shadow 0.2s !important;
+            transition: transform 0.5s ease-in-out !important;
         }
         
         .back-arrow-container div[data-testid="stButton"] button:hover {
-            transform: rotate(-360deg) !important; /* Full spin */
+            transform: rotate(-360deg) !important;
             background-color: #ffffff !important;
-            box-shadow: 0px 0px 15px rgba(255,255,255,0.8) !important;
+            color: #000000 !important;
         }
 
-        /* 3. THE BOX (GLASS CARD) */
+        /* 3. HOME PAGE TYPOGRAPHY RESTORED */
+        .landing-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 60vh; 
+            margin-top: 5vh;
+        }
+
+        .main-title {
+            font-size: clamp(50px, 10vw, 120px); 
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 0px;
+            text-transform: uppercase;
+            line-height: 0.9;
+            color: #ffffff;
+            text-shadow: 4px 4px 15px rgba(0,0,0,0.8);
+        }
+
+        .subtitle {
+            font-size: 16px; 
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            color: #ffffff;
+            margin-top: 20px;
+            margin-bottom: 60px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        }
+
+        /* 4. THE BOX (GLASS CARD) */
         .glass-card {
             background: #000000;
             border: 4px solid #ffffff;
@@ -76,10 +109,9 @@ def load_css():
             box-shadow: 20px 20px 0px rgba(255,255,255,0.4);
         }
 
-        /* 4. MAIN BUTTONS */
-        div[data-testid="stForm"] .stButton button, 
-        .landing-container .stButton button,
-        .glass-card .stButton button {
+        /* 5. MAIN BUTTONS */
+        /* Targets INITIATE, CREATE PROFILE, and RUN ARCHITECT */
+        .stButton > button {
             background: #ffffff !important;
             color: #000000 !important;
             border: none;
@@ -96,6 +128,12 @@ def load_css():
             color: #ffffff !important;
             transform: translate(-5px, -5px);
             box-shadow: 10px 10px 0px #ffffff;
+        }
+
+        .stTextInput label {
+            color: #ffffff !important;
+            font-weight: bold;
+            font-size: 18px;
         }
 
         header, footer, #MainMenu {visibility: hidden;}
