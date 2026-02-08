@@ -83,26 +83,67 @@ def load_css():
 # --------------------
 # 3. BACKGROUND ANIMATION
 # --------------------
-def load_bubble_background():
+def load_space_background():
     st.markdown(
         """
-        <div id="bubble-bg"><canvas id="bubble-canvas"></canvas></div>
+        <div id="space-bg"><canvas id="star-canvas"></canvas></div>
         <script>
-        const canvas = document.getElementById("bubble-canvas");
+        const canvas = document.getElementById("star-canvas");
         const ctx = canvas.getContext("2d");
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener("resize", resize); resize();
-        const bubbles = []; const COUNT = 120;
-        class Bubble {
-            constructor() { this.reset(); }
-            reset() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.z = Math.random()*2+0.5; this.r = Math.random()*4+2; this.vx = (Math.random()-0.5)*0.3; this.vy = (Math.random()-0.5)*0.3; }
-            update() { this.x += this.vx*this.z; this.y += this.vy*this.z; if(this.x<0||this.x>canvas.width||this.y<0||this.y>canvas.height) this.reset(); }
-            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r*this.z, 0, Math.PI*2); ctx.fillStyle = "rgba(0,150,255,0.2)"; ctx.fill(); }
+        
+        function resize() { 
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight; 
         }
-        for(let i=0; i<COUNT; i++) bubbles.push(new Bubble());
-        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); for(let b of bubbles){ b.update(); b.draw(); } requestAnimationFrame(animate); }
+        window.addEventListener("resize", resize); 
+        resize();
+
+        const stars = [];
+        const STAR_COUNT = 400;
+
+        class Star {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5;
+                this.speed = Math.random() * 0.5 + 0.1;
+                this.opacity = Math.random();
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height) this.reset();
+                this.opacity = Math.abs(Math.sin(Date.now() * 0.001 * this.speed));
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for(let i=0; i<STAR_COUNT; i++) stars.push(new Star());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Create a slight gradient glow
+            let grd = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+            grd.addColorStop(0, 'rgba(10, 20, 40, 1)');
+            grd.addColorStop(1, 'black');
+            ctx.fillStyle = grd;
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            for(let s of stars) { s.update(); s.draw(); }
+            requestAnimationFrame(animate);
+        }
         animate();
         </script>
+        <style>
+            #space-bg { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
+        </style>
         """,
         unsafe_allow_html=True,
     )
@@ -178,16 +219,64 @@ def render_force_graph(data):
 # 5. PAGE DEFINITIONS
 # --------------------
 def home_page():
-    load_bubble_background()
-    st.markdown('<div class="landing-container">', unsafe_allow_html=True)
-    st.markdown("<div class='main-title'>MINDMAP</div>", unsafe_allow_html=True)
-    st.markdown("<div class='subtitle'>GENERATE SYSTEM</div>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 1, 1])
+    load_space_background()
+    
+    # Custom CSS for the Space Title
+    st.markdown("""
+        <style>
+        .hero-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 80vh;
+            text-align: center;
+        }
+        .glitch-title {
+            font-size: 100px;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 15px;
+            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8), 0 0 40px rgba(0, 150, 255, 0.4);
+            margin-bottom: 0;
+            animation: pulse 4s infinite alternate;
+        }
+        @keyframes pulse {
+            from { opacity: 0.8; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .scanline {
+            width: 300px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d0ff, transparent);
+            margin: 20px 0;
+            box-shadow: 0 0 10px #00d0ff;
+        }
+        .coordinates {
+            font-family: 'Courier New', monospace;
+            color: #00d0ff;
+            font-size: 12px;
+            letter-spacing: 4px;
+            margin-bottom: 50px;
+            opacity: 0.7;
+        }
+        </style>
+        
+        <div class="hero-container">
+            <div class="glitch-title">Nebula</div>
+            <div class="scanline"></div>
+            <div class="subtitle" style="margin-bottom:10px;">Knowledge Mapping Protocol</div>
+            <div class="coordinates">LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Centering the button using Streamlit columns
+    _, col2, _ = st.columns([1, 0.6, 1])
     with col2:
-        if st.button("INITIATE"): 
+        if st.button("LAUNCH ARCHITECT"): 
             st.session_state.page = "signup"
             st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
 
 def signup_page():
     load_bubble_background()
