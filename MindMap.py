@@ -7,15 +7,14 @@ import time
 from Gemini import generate_learning_map
 
 # --------------------
-# 1. DATA PARSER
+# 1. DATA PARSER (Balanced Scale)
 # --------------------
 def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     if nodes is None: nodes = []
     if edges is None: edges = []
     
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
-    
-    # ROOT FIX: Main ball is 80, children are 35
+    # Big central hub (80), standard subnodes (35)
     node_size = 80 if parent_id is None else 35
     
     nodes.append({
@@ -35,7 +34,7 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     return {"nodes": nodes, "edges": edges}
 
 # --------------------
-# 2. CUSTOM CSS
+# 2. CUSTOM CSS (Original Noir Design)
 # --------------------
 def load_css():
     st.markdown(
@@ -43,24 +42,22 @@ def load_css():
         <style>
         .stApp { background: #000000; color: #ffffff; overflow-x: hidden; }
         
-        .landing-container { 
-            display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; text-align: center; min-height: 80vh; 
-            position: relative; z-index: 2;
-        }
-        .main-title { font-size: clamp(50px, 10vw, 120px); font-weight: 900; letter-spacing: -2px; color: #ffffff; text-shadow: 0 0 20px rgba(0, 136, 255, 0.4); }
-        .subtitle { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 12px; margin-bottom: 60px; color: #0088ff; }
+        .landing-container { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 90vh; }
+        .main-title { font-size: clamp(50px, 10vw, 120px); font-weight: 900; letter-spacing: -2px; line-height: 0.9; color: #ffffff; }
+        .subtitle { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; margin-bottom: 60px; }
 
         .glass-card { 
-            background: rgba(5, 10, 16, 0.8); 
+            background: linear-gradient(135deg, #000 0%, #050a10 100%); 
             border: 1px solid rgba(0, 180, 255, 0.3);
             padding: 40px; border-radius: 4px; 
-            box-shadow: 12px 12px 0px rgba(0, 100, 255, 0.1);
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 1), 12px 12px 0px rgba(0, 100, 255, 0.2);
+            position: relative; overflow: hidden; margin-bottom: 20px;
         }
 
-        .stButton > button { background: #ffffff !important; color: #000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; }
-        .stButton > button:hover { background: #0088ff !important; color: #fff !important; }
-        
+        .stButton > button { background: #ffffff !important; color: #000000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; transition: 0.1s; }
+        .stButton > button:hover { background: #0088ff !important; color: #ffffff !important; transform: translate(-3px, -3px); box-shadow: 6px 6px 0px #ffffff; }
+
+        .stTextInput label { color: #ffffff !important; font-weight: bold; font-size: 18px; }
         header, footer, #MainMenu {visibility: hidden;}
         </style>
         """,
@@ -68,15 +65,19 @@ def load_css():
     )
 
 # --------------------
-# 3. FIXED STAR/BUBBLE ANIMATION
+# 3. STARFIELD ENGINE (Fixed Background)
 # --------------------
 def load_bubble_background():
-    # We use a component to ensure the canvas doesn't get wiped by Streamlit's refresh
+    # This renders the starfield as a fixed background layer
     components.html(
         """
-        <canvas id="canvas" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:black; z-index:-1;"></canvas>
+        <style>
+            body { margin: 0; overflow: hidden; background: black; }
+            canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
+        </style>
+        <canvas id="starCanvas"></canvas>
         <script>
-            const canvas = document.getElementById("canvas");
+            const canvas = document.getElementById("starCanvas");
             const ctx = canvas.getContext("2d");
             let stars = [];
 
@@ -89,21 +90,22 @@ def load_bubble_background():
 
             class Star {
                 constructor() {
-                    this.x = Math.random() * canvas.width;
+                    this.reset();
                     this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 2;
-                    this.speed = Math.random() * 0.5 + 0.1;
-                    this.opacity = Math.random();
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = canvas.height + 10;
+                    this.size = Math.random() * 1.5 + 0.5;
+                    this.speed = Math.random() * 0.8 + 0.2;
+                    this.opacity = Math.random() * 0.5 + 0.3;
                 }
                 update() {
                     this.y -= this.speed;
-                    if (this.y < 0) {
-                        this.y = canvas.height;
-                        this.x = Math.random() * canvas.width;
-                    }
+                    if (this.y < -10) this.reset();
                 }
                 draw() {
-                    ctx.fillStyle = `rgba(0, 136, 255, ${this.opacity})`;
+                    ctx.fillStyle = `rgba(0, 160, 255, ${this.opacity})`;
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     ctx.fill();
@@ -120,13 +122,11 @@ def load_bubble_background():
             animate();
         </script>
         """,
-        height=0, # Keeps the hidden iframe from taking up space
+        height=0 # Hidden iframe container so it doesn't push UI down
     )
-    # Background div for depth
-    st.markdown('<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:transparent; z-index:-1;"></div>', unsafe_allow_html=True)
 
 # --------------------
-# 4. GRAPH ENGINE (BALANCED)
+# 4. GRAPH ENGINE (Original Wrapped Border)
 # --------------------
 def render_force_graph(data):
     cy_nodes = [{"data": n} for n in data["nodes"]]
@@ -140,21 +140,12 @@ def render_force_graph(data):
             container: document.getElementById('cy'),
             elements: {{ nodes: {json.dumps(cy_nodes)}, edges: {json.dumps(cy_edges)} }},
             style: [
-                {{ selector: 'node', style: {{ 
-                    'background-color': '#fff', 'label': 'data(label)', 'color': '#00d0ff', 
-                    'width': 'data(size)', 'height': 'data(size)', 'font-size': '14px', 
-                    'text-valign': 'center', 'text-halign': 'right', 'font-family': 'monospace', 
-                    'border-width': 2, 'border-color': '#00a0ff', 'shadow-blur': 15, 'shadow-color': '#0088ff' 
-                }} }},
-                {{ selector: 'edge', style: {{ 
-                    'width': 2, 'line-color': 'rgba(0, 150, 255, 0.3)', 'curve-style': 'bezier', 
-                    'target-arrow-shape': 'triangle', 'target-arrow-color': 'rgba(0, 150, 255, 0.5)' 
-                }} }}
+                {{ selector: 'node', style: {{ 'background-color': '#fff', 'label': 'data(label)', 'color': '#00d0ff', 'width': 'data(size)', 'height': 'data(size)', 'font-size': '14px', 'text-valign': 'center', 'text-halign': 'right', 'font-family': 'monospace', 'border-width': 2, 'border-color': '#00a0ff', 'shadow-blur': 15, 'shadow-color': '#0088ff' }} }},
+                {{ selector: 'edge', style: {{ 'width': 2, 'line-color': 'rgba(0, 150, 255, 0.2)', 'curve-style': 'bezier', 'target-arrow-shape': 'triangle', 'target-arrow-color': 'rgba(0, 150, 255, 0.4)' }} }}
             ],
             layout: {{ 
                 name: 'cose', animate: true, fit: true, padding: 50,
-                nodeOverlap: 50, nodeRepulsion: 4500000, idealEdgeLength: 100,
-                edgeElasticity: 150, gravity: 2.5, numIter: 2000
+                nodeOverlap: 50, nodeRepulsion: 4500000, idealEdgeLength: 100, gravity: 2.5
             }}
         }});
     </script>
@@ -162,7 +153,7 @@ def render_force_graph(data):
     components.html(html_code, height=820)
 
 # --------------------
-# 5. PAGES
+# 5. PAGE LOGIC
 # --------------------
 def home_page():
     load_bubble_background()
@@ -206,8 +197,6 @@ def generator_page():
                     raw_tree = generate_learning_map(topic)
                     st.session_state.map_data = parse_tree_to_physics(raw_tree)
                 st.success("MAP DEPLOYED")
-            else:
-                st.error("INPUT REQUIRED")
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
@@ -223,23 +212,16 @@ def generator_page():
             st.session_state.page = "home"
             st.rerun()
 
-# --------------------
-# 6. MAIN
-# --------------------
 def main():
     st.set_page_config(page_title="MindMap Noir", page_icon="🧠", layout="wide")
     load_css()
-    
     if "page" not in st.session_state: st.session_state.page = "home"
     if "user" not in st.session_state: st.session_state.user = None
     if "map_data" not in st.session_state: st.session_state.map_data = None
 
-    if st.session_state.page == "home":
-        home_page()
-    elif st.session_state.page == "signup":
-        signup_page()
-    elif st.session_state.page == "generator":
-        generator_page()
+    if st.session_state.page == "home": home_page()
+    elif st.session_state.page == "signup": signup_page()
+    elif st.session_state.page == "generator": generator_page()
 
 if __name__ == "__main__":
     main()
