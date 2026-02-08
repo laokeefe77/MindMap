@@ -19,52 +19,26 @@ if "user" not in st.session_state:
     st.session_state.user = None
 
 # --------------------
-# Custom CSS
+# Custom CSS: High-Voltage Contrast
 # --------------------
 def load_css():
     st.markdown(
         """
         <style>
-        /* 1. ORIGINAL AGGRESSIVE GRADIENT & FULL GRID REPLACED */
+        /* 1. AGGRESSIVE BACKGROUND: Strong white-to-black sweep */
         .stApp {
             background-color: #000000;
             background-image: 
-                linear-gradient(45deg, #000000 25%, rgba(255,255,255,0.6) 100%),
-                linear-gradient(90deg, rgba(255,255,255,0.15) 2px, transparent 2px),
-                linear-gradient(0deg, rgba(255,255,255,0.15) 2px, transparent 2px);
-            background-size: 100% 100%, 60px 60px, 60px 60px;
+                linear-gradient(120deg, rgba(255,255,255,0.2) 0%, transparent 40%),
+                linear-gradient(290deg, rgba(255,255,255,0.1) 0%, transparent 30%),
+                /* High-visibility floor grid */
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
             color: #ffffff;
-            background-attachment: fixed;
         }
 
-        /* 2. FLOATING BACK ARROW (Top Left) */
-        .back-arrow-container {
-            position: fixed;
-            top: 40px;
-            left: 40px;
-            z-index: 999;
-        }
-        
-        .back-arrow-container .stButton > button {
-            background: transparent !important;
-            color: #ffffff !important;
-            border: 4px solid #ffffff !important;
-            border-radius: 0px !important;
-            width: 60px !important;
-            height: 60px !important;
-            font-size: 24px !important;
-            font-weight: 900 !important;
-            transition: 0.15s;
-        }
-        
-        .back-arrow-container .stButton > button:hover {
-            background: #ffffff !important;
-            color: #000000 !important;
-            transform: translate(-5px, -5px);
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
-        }
-
-        /* 3. RAISED LANDING */
+        /* 2. RAISED LANDING: Lifted away from bottom */
         .landing-container {
             display: flex;
             flex-direction: column;
@@ -75,16 +49,17 @@ def load_css():
             margin-top: 5vh;
         }
 
-        /* 4. BOLD TYPOGRAPHY */
+        /* 3. BOLD TYPOGRAPHY */
         .main-title {
             font-size: clamp(50px, 10vw, 120px); 
             font-weight: 900;
-            letter-spacing: -2px;
+            letter-spacing: -2px; /* Tight, aggressive spacing */
             margin-bottom: 0px;
             text-transform: uppercase;
             line-height: 0.9;
-            color: #ffffff;
-            text-shadow: 4px 4px 15px rgba(0,0,0,0.8);
+            background: linear-gradient(to bottom, #ffffff, #666666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
@@ -95,19 +70,18 @@ def load_css():
             color: #ffffff;
             margin-top: 20px;
             margin-bottom: 60px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
         }
 
-        /* 5. THE BOX (GLASS CARD) */
+        /* 4. OBVIOUS CARD: Heavy white border */
         .glass-card {
             background: #000000;
-            border: 4px solid #ffffff;
+            border: 4px solid #ffffff; /* Thick, unmistakable border */
             padding: 50px;
             border-radius: 0px;
-            box-shadow: 20px 20px 0px rgba(255,255,255,0.4);
+            box-shadow: 20px 20px 0px rgba(255,255,255,0.2); /* Brutalist shadow */
         }
 
-        /* 6. BUTTONS */
+        /* 5. IN-YOUR-FACE BUTTONS */
         .stButton > button {
             background: #ffffff !important;
             color: #000000 !important;
@@ -117,16 +91,25 @@ def load_css():
             font-weight: 900;
             border-radius: 0px;
             width: 100%;
-            transition: 0.15s;
+            transition: 0.2s;
         }
 
         .stButton > button:hover {
-            background: #333333 !important;
+            background: #ff0000 !important; /* Visual feedback: Red on hover */
             color: #ffffff !important;
             transform: translate(-5px, -5px);
             box-shadow: 10px 10px 0px #ffffff;
         }
 
+        /* Secondary Back Button */
+        .back-btn-container > div > button {
+            background: #000000 !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+            margin-top: 20px;
+        }
+
+        /* Fix visibility of input labels */
         .stTextInput label, .stSelectbox label {
             color: #ffffff !important;
             font-weight: bold;
@@ -144,14 +127,8 @@ def go_to(page):
     st.rerun()
 
 # --------------------
-# UI COMPONENTS
+# UI
 # --------------------
-
-def back_arrow():
-    st.markdown('<div class="back-arrow-container">', unsafe_allow_html=True)
-    if st.button("←"):
-        go_to("home")
-    st.markdown('</div>', unsafe_allow_html=True)
 
 def home_page():
     st.markdown('<div class="landing-container">', unsafe_allow_html=True)
@@ -165,13 +142,11 @@ def home_page():
     st.markdown('</div>', unsafe_allow_html=True)
 
 def signup_page():
-    back_arrow()
     st.markdown("<br><br>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        # ACCESS is now inside the box
-        st.markdown("<h1 style='text-align:center; font-weight:900; color:white; margin-top:0;'>ACCESS</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align:center; font-weight:900;'>ACCESS</h1>", unsafe_allow_html=True)
         
         with st.form("signup_form", border=False):
             u = st.text_input("USER ID")
@@ -181,15 +156,20 @@ def signup_page():
         if submitted and u and p:
             st.session_state.user = {"name": u}
             go_to("generator")
+            
+        st.markdown('<div class="back-btn-container">', unsafe_allow_html=True)
+        if st.button("BACK"):
+            go_to("home")
+        st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
 def generator_page():
     if not st.session_state.user:
         go_to("home")
     
-    back_arrow()
     st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
     st.markdown("<h1 style='font-weight:900;'>COMMAND_CENTER</h1>", unsafe_allow_html=True)
+    
     st.markdown("<hr style='border: 2px solid white;'>", unsafe_allow_html=True)
     
     col1, col2 = st.columns([1, 1.5])
@@ -202,6 +182,11 @@ def generator_page():
                 time.sleep(1)
             st.success("MAP DEPLOYED")
         st.markdown('</div>', unsafe_allow_html=True)
+
+    with st.sidebar:
+        if st.button("SHUTDOWN"):
+            st.session_state.user = None
+            go_to("home")
 
 # --------------------
 # Main
