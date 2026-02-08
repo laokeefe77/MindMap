@@ -491,17 +491,17 @@ def home_page():
             <h4 style="color:#00d0ff;">❓ What is Nebula?</h4>
             <p>Nebula is an AI-powered architect for your intellectual journey. It transforms the chaotic "information fog" of any topic into a structured, navigable galaxy of nodes and connections.</p>
             <br>
-            <h4 style="color:#00d0ff;">❓ How does the Intel Depth slider work?</h4>
-            <p>It dictates the complexity of the blueprint: <b>Level 1</b> provides a high-level reconnaissance of a field, while <b>Level 3</b> engineers a deep-dive technical extraction for complex mastery.</p>
+            <h4 style="color:#00d0ff;">❓ Who is it for?</h4>
+            <p>Architects of their own education: students, researchers, and self-learners who want to build systems, not just take notes.</p>
+            <br>
+            <h4 style="color:#00d0ff;">❓ Can I customize the complexity?</h4>
+            <p>Yes. Using the <b>Intel Depth</b> slider, you can dictate the resolution of your map. <b>Level 1</b> offers a high-level reconnaissance, while <b>Level 3</b> generates a deep-dive technical extraction for complex mastery.</p>
             <br>
             <h4 style="color:#00d0ff;">❓ Why a visual map instead of notes?</h4>
             <p>Because knowing <i>what</i> to learn is often harder than the learning itself. Visualizing the hierarchy of information helps you see the pillars that support a subject before you dive into the details.</p>
             <br>
             <h4 style="color:#00d0ff;">❓ Can I save my maps?</h4>
             <p>Yes. Every map generated is logged in your <b>Archive Logs</b>. You can instantly redeploy any previous subject target from the sidebar at any time.</p>
-            <br>
-            <h4 style="color:#00d0ff;">❓ Who is it for?</h4>
-            <p>Architects of their own education: students, researchers, and self-learners who want to build systems, not just take notes.</p>
         </div>
     </div>
 """, unsafe_allow_html=True)
