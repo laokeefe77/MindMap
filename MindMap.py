@@ -328,6 +328,7 @@ def render_force_graph(data):
 def home_page():
     load_space_background()
     
+    # --- 1. HERO SECTION ---
     st.markdown("""
         <style>
         .hero-container {
@@ -335,12 +336,12 @@ def home_page():
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 70vh;
+            height: 60vh;
             text-align: center;
         }
 
         .glitch-title {
-            font-size: 100px;
+            font-size: clamp(60px, 12vw, 120px);
             font-weight: 900;
             color: #fff;
             text-transform: uppercase;
@@ -373,7 +374,7 @@ def home_page():
             opacity: 0.7;
         }
 
-        /* FORCE FULL WIDTH AND REMOVE OFFSET EFFECTS */
+        /* BUTTON STYLING */
         div.stButton > button {
             width: 100% !important;
             background: transparent !important;
@@ -384,8 +385,6 @@ def home_page():
             font-weight: 900 !important;
             letter-spacing: 5px !important;
             border-radius: 0px !important;
-            box-shadow: none !important;
-            transform: none !important;
             transition: all 0.4s ease !important;
         }
 
@@ -400,8 +399,8 @@ def home_page():
         <div class="hero-container">
             <div class="glitch-title">Nebula</div>
             <div class="scanline"></div>
-            <div class="subtitle" style="margin-bottom:10px;">
-                Knowledge Mapping Protocol
+            <div class="subtitle" style="margin-bottom:10px; letter-spacing: 2px;">
+                KNOWLEDGE MAPPING PROTOCOL
             </div>
             <div class="coordinates">
                 LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9
@@ -409,40 +408,43 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # --- FULL WIDTH BUTTON ---
-    # use_container_width=True combined with removing the columns 
-    # makes it span the entire horizontal space.
+    # --- 2. INITIALIZE BUTTON ---
     if st.button("INITIALIZE INTERFACE", use_container_width=True):
         st.session_state.page = "signup"
         st.rerun()
 
     st.markdown("<br><br>", unsafe_allow_html=True)
 
-    # CORE PROTOCOL SECTION
+    # --- 3. CORE PROTOCOL SUMMARY (The "What it does") ---
     st.markdown("""
     <style>
         .core-summary {
             text-align: center;
             max-width: 900px;
-            margin: 80px auto 40px auto;
-            padding: 20px;
+            margin: 100px auto 80px auto;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(0, 208, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 208, 255, 0.1);
         }
         .protocol-label {
             color: #00d0ff;
             font-family: 'Courier New', monospace;
-            letter-spacing: 5px;
+            letter-spacing: 8px;
             font-size: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             text-transform: uppercase;
+            opacity: 0.8;
         }
         .core-text {
-            font-size: 2.2rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             font-weight: 800;
-            line-height: 1.2;
+            line-height: 1.3;
             color: #ffffff;
+            letter-spacing: -0.5px;
         }
         .core-text span {
             color: #00d0ff;
+            text-shadow: 0 0 15px rgba(0, 208, 255, 0.4);
         }
     </style>
     <div class="core-summary">
@@ -455,49 +457,51 @@ def home_page():
     </div>
     """, unsafe_allow_html=True)
 
-    # FEATURES SECTION (The "Why Nebula?" part follows here...)
-    st.markdown("""
-    <div class="section-dark">
-        <h2>Why Nebula?</h2>
-        ...
-
-    # FEATURES SECTION
+    # --- 4. FEATURES SECTION ---
     st.markdown("""
     <style>
         .section-dark {
-            background-color: #0e1117;
-            padding: 50px 20px;
-            border-radius: 15px;
+            background-color: rgba(10, 15, 25, 0.6);
+            padding: 80px 20px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 208, 255, 0.1);
         }
         .section-dark h2 {
             text-align: center;
             color: #ffffff;
-            font-size: 2.5rem;
-            margin-bottom: 40px;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 60px;
+            letter-spacing: -1px;
         }
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            max-width: 1100px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 0px;
             transition: all 0.3s ease;
         }
         .feature-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #7d2ae8;
-            box-shadow: 0 10px 30px rgba(125, 42, 232, 0.2);
+            transform: translateY(-5px);
+            background: rgba(0, 208, 255, 0.05);
+            border-color: #00d0ff;
+            box-shadow: 0 10px 30px rgba(0, 208, 255, 0.1);
         }
-        .section {
-            padding: 100px 10%;
-            text-align: center;
+        .feature-card h3 {
+            color: #00d0ff;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        .feature-card p {
+            color: #cccccc;
+            line-height: 1.6;
         }
     </style>
     <div class="section-dark">
@@ -505,49 +509,56 @@ def home_page():
         <div class="feature-grid">
             <div class="feature-card">
                 <h3>🧠 Visual Thinking</h3>
-                <p>Turn abstract topics into navigable, interconnected galaxies of information.</p>
+                <p>Turn abstract topics into navigable, interconnected galaxies of information. Stop reading lists and start seeing the architecture of knowledge.</p>
             </div>
             <div class="feature-card">
                 <h3>⚡ AI Architect</h3>
-                <p>Generate instant, structured learning paths tailored to your specific goals.</p>
+                <p>Powered by the Gemini 3 Flash engine, we generate instant learning paths tailored to your specific subject targets with zero lag.</p>
             </div>
-            <div class="feature-card"><h3>🌌 Scalable Knowledge</h3><p>Seamlessly bridge the gap between absolute beginner and true mastery.</p></div>
-            <div class="feature-card"><h3>🔒 Personal System</h3><p>Your data is yours. Secure, private, and hosted within your own universe.</p></div>
+            <div class="feature-card">
+                <h3>🌌 Scalable Depth</h3>
+                <p>From Level 1 reconnaissance to Level 3 expert extraction, customize the map's complexity to match your current intelligence needs.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔒 Archive Protocol</h3>
+                <p>All generated maps are stored in your secure system logs. Revisit, redeploy, and expand your private knowledge universe at any time.</p>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
-    # ... rest of philosophy and FAQ ...
 
-    # PHILOSOPHY SECTION
+    # --- 5. PHILOSOPHY & FAQ ---
     st.markdown("""
-        <div class="section">
-            <h2 style="font-size: 46px;">Our Mission</h2>
-            <p style="color:#88ccff; font-size:30px; margin-top:30px;">“In the age of information overload, knowing what to learn is often harder than the learning itself. Nebula acts as your intellectual architect, engineering structured pathways out of the chaotic 'information fog' of the modern web. We transform vast, fragmented data into navigable knowledge galaxies, allowing you to stop searching for the path and start walking it.”</p>
+        <div style="padding: 100px 10%; text-align: center;">
+            <h2 style="font-size: 46px; font-weight: 900;">PHILOSOPHY</h2>
+            <p style="color:#00d0ff; font-size:32px; margin-top:30px; font-family: monospace;">“BUILD SYSTEMS. NOT NOTES.”</p>
+            <p style="color:#00d0ff; font-size:32px; font-family: monospace;">“CLARITY IS ENGINEERED.”</p>
         </div>
     """, unsafe_allow_html=True)
 
-    # FAQ SECTION
+    # --- 6. POPULATED FAQ ---
     st.markdown("""
-    <div class="section-dark" style="margin-top: 50px;">
-        <h2 style="text-align: center;">Frequently Asked Questions</h2>
-        <div style="max-width: 800px; margin: 40px auto; text-align: left;">
-            <h4 style="color:#00d0ff;">❓ What is Nebula?</h4>
-            <p>Nebula is an AI-powered architect for your intellectual journey. It transforms the chaotic "information fog" of any topic into a structured, navigable galaxy of nodes and connections.</p>
-            <br>
-            <h4 style="color:#00d0ff;">❓ Who is it for?</h4>
-            <p>Architects of their own education: students, researchers, and self-learners who want to build systems, not just take notes.</p>
-            <br>
-            <h4 style="color:#00d0ff;">❓ Can I customize the complexity?</h4>
-            <p>Yes. Using the <b>Intel Depth</b> slider, you can dictate the resolution of your map. <b>Level 1</b> offers a high-level reconnaissance, while <b>Level 3</b> generates a deep-dive technical extraction for complex mastery.</p>
-            <br>
-            <h4 style="color:#00d0ff;">❓ Why a visual map instead of notes?</h4>
-            <p>Because knowing <i>what</i> to learn is often harder than the learning itself. Visualizing the hierarchy of information helps you see the pillars that support a subject before you dive into the details.</p>
-            <br>
-            <h4 style="color:#00d0ff;">❓ Can I save my maps?</h4>
-            <p>Yes. Every map generated is logged in your <b>Archive Logs</b>. You can instantly redeploy any previous subject target from the sidebar at any time.</p>
+        <div class="section-dark" style="margin-top: 50px;">
+            <h2 style="text-align: center;">FAQ</h2>
+            <div style="max-width: 800px; margin: 40px auto; text-align: left;">
+                <h4 style="color:#00d0ff;">❓ What is Nebula?</h4>
+                <p>Nebula is an AI-powered architect for your intellectual journey. It transforms the chaotic "information fog" of any topic into a structured, navigable galaxy of nodes and connections.</p>
+                <br>
+                <h4 style="color:#00d0ff;">❓ Who is it for?</h4>
+                <p>Architects of their own education: students, researchers, and self-learners who want to build systems, not just take notes.</p>
+                <br>
+                <h4 style="color:#00d0ff;">❓ Can I customize the complexity?</h4>
+                <p>Yes. Using the <b>Intel Depth</b> slider, you can dictate the resolution of your map. Level 1 offers high-level reconnaissance, while Level 3 generates a deep-dive extraction for complex mastery.</p>
+                <br>
+                <h4 style="color:#00d0ff;">❓ Why a visual map instead of notes?</h4>
+                <p>Because knowing <i>what</i> to learn is often harder than the learning itself. Visualizing the hierarchy helps you see the pillars that support a subject before diving into the details.</p>
+                <br>
+                <h4 style="color:#00d0ff;">❓ Can I save my maps?</h4>
+                <p>Yes. Every map generated is logged in your Archive Logs. You can instantly redeploy any previous subject target from the sidebar.</p>
+            </div>
         </div>
-    </div>
-""", unsafe_allow_html=True)
+        <br><br>
+    """, unsafe_allow_html=True)
 
 # --- UPDATED PERSISTENCE HELPERS ---
 def load_users():
