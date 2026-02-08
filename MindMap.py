@@ -4,12 +4,7 @@ import json
 import time
 
 # --- IMPORT FROM YOUR Gemini.py FILE ---
-# Ensure Gemini.py exists in your directory
-try:
-    from Gemini import generate_learning_map
-except ImportError:
-    def generate_learning_map(topic):
-        return {"name": topic, "description": "Sample", "children": []}
+from Gemini import generate_learning_map
 
 # --------------------
 # 1. DATA PARSER
@@ -52,14 +47,6 @@ def load_css():
         .main-title { font-size: clamp(50px, 10vw, 120px); font-weight: 900; letter-spacing: -2px; line-height: 0.9; color: #ffffff; }
         .subtitle { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; margin-bottom: 60px; }
 
-        /* FLOATING NAV BUTTON */
-        .floating-nav {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
         /* BLUE BRUTALIST GLASS CARD */
         .glass-card { 
             background: linear-gradient(135deg, #000 0%, #050a10 100%); 
@@ -96,11 +83,8 @@ def load_css():
         }
         .glass-card > * { position: relative; z-index: 1; }
 
-        .stButton > button { background: #ffffff !important; color: #000000 !important; border: none; padding: 10px 30px; font-size: 16px; font-weight: 900; border-radius: 0px; transition: 0.1s; }
-        .stButton > button:hover { background: #0088ff !important; color: #ffffff !important; transform: translate(-2px, -2px); box-shadow: 4px 4px 0px #ffffff; }
-
-        /* Specific sizing for the big run button */
-        .stButton.run-btn > button { padding: 18px 70px; font-size: 20px; width: 100%; }
+        .stButton > button { background: #ffffff !important; color: #000000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; transition: 0.1s; }
+        .stButton > button:hover { background: #0088ff !important; color: #ffffff !important; transform: translate(-3px, -3px); box-shadow: 6px 6px 0px #ffffff; }
 
         .stTextInput label { color: #ffffff !important; font-weight: bold; font-size: 18px; }
         header, footer, #MainMenu {visibility: hidden;}
@@ -160,7 +144,7 @@ def load_space_background():
                     }
                     update() {
                         this.prevZ = this.z;
-                        this.z -= 8; 
+                        this.z -= 8; // Speed of travel
                         if (this.z <= 0) {
                             this.init();
                             this.z = canvas.width;
@@ -191,7 +175,7 @@ def load_space_background():
                 }
 
                 function animate() {
-                    ctx.fillStyle = "rgba(0, 0, 0, 0.4)"; 
+                    ctx.fillStyle = "rgba(0, 0, 0, 0.4)"; // Trail effect
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     
                     stars.forEach(s => {
@@ -277,15 +261,81 @@ def render_force_graph(data):
 # --------------------
 def home_page():
     load_space_background()
-
-    # --- FLOATING TOP-RIGHT BUTTON ---
-    st.markdown('<div class="floating-nav">', unsafe_allow_html=True)
-    if st.button("GET STARTED", key="nav_get_started"):
-        st.session_state.page = "signup"
-        st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown("""
+        <style>
+        .hero-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 80vh;
+            text-align: center;
+        }
+
+        .glitch-title {
+            font-size: 100px;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 15px;
+            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8),
+                         0 0 40px rgba(0, 150, 255, 0.4);
+            margin-bottom: 0;
+            animation: pulse 4s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.8; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .scanline {
+            width: 300px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d0ff, transparent);
+            margin: 20px 0;
+            box-shadow: 0 0 10px #00d0ff;
+        }
+
+        .coordinates {
+            font-family: 'Courier New', monospace;
+            color: #00d0ff;
+            font-size: 12px;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            opacity: 0.7;
+        }
+
+        .section {
+            padding: 100px 10%;
+            text-align: center;
+        }
+
+        .section-dark {
+            background: rgba(0,0,0,0.6);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 25px;
+            border: 1px solid rgba(0,150,255,0.3);
+            box-shadow: 0 0 15px rgba(0,150,255,0.2);
+        }
+
+        .faq-item {
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: left;
+        }
+        </style>
+        
         <div class="hero-container">
             <div class="glitch-title">Nebula</div>
             <div class="scanline"></div>
@@ -391,6 +441,8 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
+    # "GET STARTED" BUTTON REMOVED PER REQUEST
+
 def signup_page():
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
@@ -413,8 +465,6 @@ def generator_page():
     with col1:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         topic = st.text_input("SUBJECT TARGET")
-        # Added class wrapper to style the generator button separately
-        st.markdown('<div class="run-btn">', unsafe_allow_html=True)
         if st.button("RUN_ARCHITECT"):
             if topic:
                 with st.spinner("INITIATING GEMINI ARCHITECT..."):
@@ -423,7 +473,6 @@ def generator_page():
                 st.success("MAP DEPLOYED")
             else:
                 st.error("INPUT REQUIRED")
-        st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
