@@ -479,9 +479,7 @@ def home_page():
     st.markdown("""
         <div class="section">
             <h2 style="font-size: 46px;">Our Philosophy</h2>
-            <p style="color:#88ccff; font-size:40px; margin-top:30px;">“Build systems. Not notes.”</p>
-            <p style="color:#88ccff; font-size:40px;">“Clarity is engineered.”</p>
-            <p style="color:#88ccff; font-size:40px;">“Learning is architecture.”</p>
+            <p style="color:#88ccff; font-size:30px; margin-top:30px;">“In the age of information overload, knowing what to learn is often harder than the learning itself. Nebula acts as your intellectual architect, engineering structured pathways out of the chaotic "information fog" of the modern web. We transform vast, fragmented data into navigable knowledge galaxies, allowing you to stop searching for the path and start walking it.”</p>
         </div>
     """, unsafe_allow_html=True)
 
