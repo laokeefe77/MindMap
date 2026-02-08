@@ -418,6 +418,49 @@ def home_page():
 
     st.markdown("<br><br>", unsafe_allow_html=True)
 
+    # CORE PROTOCOL SECTION
+    st.markdown("""
+    <style>
+        .core-summary {
+            text-align: center;
+            max-width: 900px;
+            margin: 80px auto 40px auto;
+            padding: 20px;
+        }
+        .protocol-label {
+            color: #00d0ff;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 5px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .core-text {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #ffffff;
+        }
+        .core-text span {
+            color: #00d0ff;
+        }
+    </style>
+    <div class="core-summary">
+        <div class="protocol-label">Core Protocol</div>
+        <div class="core-text">
+            Input any subject. <span>Nebula</span> architecturally engineers a 
+            visual knowledge map, instantly converting chaotic data into a 
+            structured learning path.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # FEATURES SECTION (The "Why Nebula?" part follows here...)
+    st.markdown("""
+    <div class="section-dark">
+        <h2>Why Nebula?</h2>
+        ...
+
     # FEATURES SECTION
     st.markdown("""
     <style>
