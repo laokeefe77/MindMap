@@ -48,55 +48,49 @@ def load_css():
     st.markdown(
         """
         <style>
-        .stApp { background: #000000; color: #ffffff; overflow-x: hidden; }
-        #bubble-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-        canvas#bubble-canvas { width: 100vw; height: 100vh; display: block; }
+        /* Force Sidebar to be visible and set width */
+        [data-testid="stSidebar"] {
+            background-color: #050a10 !important;
+            border-right: 1px solid rgba(0, 180, 255, 0.3);
+            min-width: 300px !important;
+        }
+        
+        /* Ensure the sidebar content is visible */
+        [data-testid="stSidebarUserContent"] {
+            padding-top: 2rem;
+        }
 
-        .landing-container { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 90vh; }
-        .main-title { font-size: clamp(50px, 10vw, 120px); font-weight: 900; letter-spacing: -2px; line-height: 0.9; color: #ffffff; }
-        .subtitle { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; margin-bottom: 60px; }
+        .stApp { background: #000000; color: #ffffff; }
+        
+        /* Fix for hidden sidebar arrow */
+        [data-testid="stSidebarCollapsedControl"] {
+            color: #00d0ff !important;
+            background-color: rgba(0, 136, 255, 0.2);
+            border-radius: 0 5px 5px 0;
+        }
 
-        /* BLUE BRUTALIST GLASS CARD */
+        /* HUD Styles */
         .glass-card { 
             background: linear-gradient(135deg, #000 0%, #050a10 100%); 
             border: 1px solid rgba(0, 180, 255, 0.3);
             padding: 40px; 
             border-radius: 4px; 
-            box-shadow: 10px 10px 0px rgba(0, 0, 0, 1), 
-                        12px 12px 0px rgba(0, 100, 255, 0.2);
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 1), 12px 12px 0px rgba(0, 100, 255, 0.2);
             position: relative;
-            overflow: hidden;
             margin-bottom: 20px;
         }
-        .glass-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(rgba(0, 150, 255, 0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .main-title {
-            text-shadow: 0 0 20px rgba(0, 136, 255, 0.6);
-            animation: flicker 3s infinite;
-        }
 
-        @keyframes flicker {
-            0% { opacity: 1; }
-            5% { opacity: 0.9; }
-            10% { opacity: 1; }
-            15% { opacity: 0.8; }
-            20% { opacity: 1; }
-            100% { opacity: 1; }
+        .stButton > button { 
+            background: #ffffff !important; 
+            color: #000000 !important; 
+            font-weight: 900; 
+            border-radius: 0px; 
+            width: 100%; 
         }
-        .glass-card > * { position: relative; z-index: 1; }
-
-        .stButton > button { background: #ffffff !important; color: #000000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; transition: 0.1s; }
-        .stButton > button:hover { background: #0088ff !important; color: #ffffff !important; transform: translate(-3px, -3px); box-shadow: 6px 6px 0px #ffffff; }
-
-        .stTextInput label { color: #ffffff !important; font-weight: bold; font-size: 18px; }
-        header, footer, #MainMenu {visibility: hidden;}
+        
+        /* Hide decoration but KEEP the sidebar button accessible */
+        [data-testid="stHeader"] { background: rgba(0,0,0,0); }
+        footer {visibility: hidden;}
         </style>
         """,
         unsafe_allow_html=True,
