@@ -421,14 +421,6 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-Here is the consolidated code. I have structured it so that the database initialization, the authentication logic, and the UI layout are all in one place.
-
-I’ve also included a small "History" logger so that every time a user logs in, it's recorded—giving you the foundation for that personal history feature you mentioned.
-
-Python
-import streamlit as st
-import sqlite3
-from datetime import datetime
 
 # --- DATABASE LOGIC ---
 def init_db():
