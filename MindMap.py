@@ -19,26 +19,26 @@ if "user" not in st.session_state:
     st.session_state.user = None
 
 # --------------------
-# Custom CSS: High-Voltage Contrast
+# Custom CSS: Dark-to-Light Sweep
 # --------------------
 def load_css():
     st.markdown(
         """
         <style>
-        /* 1. AGGRESSIVE BACKGROUND: Strong white-to-black sweep */
+        /* 1. SINGLE LINEAR SWEEP: Black (Top-Left) to White (Bottom-Right) */
         .stApp {
             background-color: #000000;
             background-image: 
-                linear-gradient(120deg, rgba(255,255,255,0.2) 0%, transparent 40%),
-                linear-gradient(290deg, rgba(255,255,255,0.1) 0%, transparent 30%),
-                /* High-visibility floor grid */
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
+                linear-gradient(145deg, #000000 20%, rgba(255,255,255,0.5) 100%),
+                /* High-visibility floor grid stays for texture */
+                linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
             color: #ffffff;
+            background-attachment: fixed;
         }
 
-        /* 2. RAISED LANDING: Lifted away from bottom */
+        /* 2. RAISED LANDING */
         .landing-container {
             display: flex;
             flex-direction: column;
@@ -49,17 +49,16 @@ def load_css():
             margin-top: 5vh;
         }
 
-        /* 3. BOLD TYPOGRAPHY */
+        /* 3. BOLD TYPOGRAPHY (White on Black background) */
         .main-title {
             font-size: clamp(50px, 10vw, 120px); 
             font-weight: 900;
-            letter-spacing: -2px; /* Tight, aggressive spacing */
+            letter-spacing: -2px;
             margin-bottom: 0px;
             text-transform: uppercase;
             line-height: 0.9;
-            background: linear-gradient(to bottom, #ffffff, #666666);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
+            text-shadow: 10px 10px 0px rgba(0,0,0,0.5);
         }
 
         .subtitle {
@@ -72,16 +71,16 @@ def load_css():
             margin-bottom: 60px;
         }
 
-        /* 4. OBVIOUS CARD: Heavy white border */
+        /* 4. OBVIOUS CARD: Solid Black to pop against the sweeping white */
         .glass-card {
             background: #000000;
-            border: 4px solid #ffffff; /* Thick, unmistakable border */
+            border: 4px solid #ffffff;
             padding: 50px;
             border-radius: 0px;
-            box-shadow: 20px 20px 0px rgba(255,255,255,0.2); /* Brutalist shadow */
+            box-shadow: 20px 20px 0px rgba(255,255,255,0.4);
         }
 
-        /* 5. IN-YOUR-FACE BUTTONS */
+        /* 5. BUTTONS */
         .stButton > button {
             background: #ffffff !important;
             color: #000000 !important;
@@ -91,17 +90,16 @@ def load_css():
             font-weight: 900;
             border-radius: 0px;
             width: 100%;
-            transition: 0.2s;
+            transition: 0.15s;
         }
 
         .stButton > button:hover {
-            background: #ff0000 !important; /* Visual feedback: Red on hover */
+            background: #ff0000 !important;
             color: #ffffff !important;
             transform: translate(-5px, -5px);
             box-shadow: 10px 10px 0px #ffffff;
         }
 
-        /* Secondary Back Button */
         .back-btn-container > div > button {
             background: #000000 !important;
             color: #ffffff !important;
@@ -109,7 +107,7 @@ def load_css():
             margin-top: 20px;
         }
 
-        /* Fix visibility of input labels */
+        /* Form Text Visibility */
         .stTextInput label, .stSelectbox label {
             color: #ffffff !important;
             font-weight: bold;
