@@ -230,7 +230,7 @@ def render_force_graph(data):
                     'color': '#00d0ff', 
                     'width': 'data(size)', 
                     'height': 'data(size)', 
-                    'font-size': '16px',          /* Larger Font */
+                    'font-size': '16px',
                     'font-weight': 'bold',
                     'text-valign': 'center', 
                     'text-halign': 'right', 
@@ -242,7 +242,7 @@ def render_force_graph(data):
                     'shadow-color': '#0088ff' 
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 3,                   /* Thicker Lines */
+                    'width': 3,
                     'line-color': 'rgba(0, 150, 255, 0.4)', 
                     'curve-style': 'bezier',
                     'target-arrow-shape': 'triangle',
@@ -258,13 +258,13 @@ def render_force_graph(data):
                 fit: true, 
                 padding: 60,
                 
-                /* THE STABLE PHYSICS SETTINGS */
-                nodeOverlap: 200,
-                nodeRepulsion: 8000000,
-                idealEdgeLength: 100, 
-                edgeElasticity: 100, 
+                /* COMPACT PHYSICS SETTINGS */
+                nodeOverlap: 150,            // Reduced to allow tighter packing
+                nodeRepulsion: 4000000,      // Cut in half to let them get closer
+                idealEdgeLength: 50,         // Cut in half to pull nodes together
+                edgeElasticity: 150,         // Increased "snap" to pull edges tight
                 nestingFactor: 0.1, 
-                gravity: 0.15, 
+                gravity: 0.35,               // Doubled gravity to pull everything toward the center
                 numIter: 2500,
                 initialTemp: 1000,
                 coolingFactor: 0.99
