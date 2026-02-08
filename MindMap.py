@@ -315,6 +315,26 @@ def home_page():
             margin-bottom: 40px;
             opacity: 0.7;
         }
+
+        /* FULL WIDTH BLUE OUTLINE BUTTON FIX */
+        div.stButton > button {
+            background: transparent !important;
+            color: #00d0ff !important;
+            border: 2px solid #00d0ff !important;
+            padding: 18px 0px !important;
+            width: 100% !important;
+            border-radius: 4px !important;
+            box-shadow: none !important; /* Removes the white/black offset shadow */
+            transform: none !important;  /* Removes the hover movement */
+            transition: 0.3s ease;
+        }
+
+        div.stButton > button:hover {
+            background: rgba(0, 208, 255, 0.1) !important;
+            border-color: #ffffff !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 20px rgba(0, 208, 255, 0.4) !important;
+        }
         </style>
         
         <div class="hero-container">
@@ -329,12 +349,11 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # --- NEW BUTTON (ABOVE WHY NEBULA) ---
-    col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 1, 1])
-    with col3:
-        if st.button("INITIALIZE INTERFACE"):
-            st.session_state.page = "signup"
-            st.rerun()
+    # The button now spans the full width of the main container
+    if st.button("INITIALIZE INTERFACE"):
+        st.session_state.page = "signup"
+        st.rerun()
+
     st.markdown("<br><br>", unsafe_allow_html=True)
 
     # FEATURES SECTION
@@ -372,7 +391,7 @@ def home_page():
             box-shadow: 0 10px 30px rgba(125, 42, 232, 0.2);
         }
         .section {
-            padding: 100px 10%;
+            padding: 100px {10%};
             text-align: center;
         }
     </style>
