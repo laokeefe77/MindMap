@@ -68,6 +68,19 @@ def load_css():
             pointer-events: none;
             z-index: 0;
         }
+        .main-title {
+            text-shadow: 0 0 20px rgba(0, 136, 255, 0.6);
+            animation: flicker 3s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            5% { opacity: 0.9; }
+            10% { opacity: 1; }
+            15% { opacity: 0.8; }
+            20% { opacity: 1; }
+            100% { opacity: 1; }
+        }
         .glass-card > * { position: relative; z-index: 1; }
 
         .stButton > button { background: #ffffff !important; color: #000000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; transition: 0.1s; }
@@ -86,22 +99,79 @@ def load_css():
 def load_bubble_background():
     st.markdown(
         """
-        <div id="bubble-bg"><canvas id="bubble-canvas"></canvas></div>
+        <div id="bubble-bg">
+            <canvas id="bubble-canvas"></canvas>
+        </div>
+        <style>
+            #bubble-bg {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: -1; /* Ensures it stays in the background */
+                background: black;
+            }
+            #bubble-canvas {
+                display: block;
+            }
+        </style>
         <script>
-        const canvas = document.getElementById("bubble-canvas");
-        const ctx = canvas.getContext("2d");
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener("resize", resize); resize();
-        const bubbles = []; const COUNT = 120;
-        class Bubble {
-            constructor() { this.reset(); }
-            reset() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.z = Math.random()*2+0.5; this.r = Math.random()*4+2; this.vx = (Math.random()-0.5)*0.3; this.vy = (Math.random()-0.5)*0.3; }
-            update() { this.x += this.vx*this.z; this.y += this.vy*this.z; if(this.x<0||this.x>canvas.width||this.y<0||this.y>canvas.height) this.reset(); }
-            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r*this.z, 0, Math.PI*2); ctx.fillStyle = "rgba(0,150,255,0.2)"; ctx.fill(); }
-        }
-        for(let i=0; i<COUNT; i++) bubbles.push(new Bubble());
-        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); for(let b of bubbles){ b.update(); b.draw(); } requestAnimationFrame(animate); }
-        animate();
+            (function() {
+                const canvas = document.getElementById("bubble-canvas");
+                const ctx = canvas.getContext("2d");
+                let bubbles = [];
+
+                function resize() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+
+                window.addEventListener("resize", resize);
+                resize();
+
+                class Bubble {
+                    constructor() {
+                        this.reset();
+                    }
+                    reset() {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                        this.z = Math.random() * 2 + 0.5;
+                        this.r = Math.random() * 4 + 2;
+                        this.vx = (Math.random() - 0.5) * 0.3;
+                        this.vy = (Math.random() - 0.5) * 0.3;
+                    }
+                    update() {
+                        this.x += this.vx * this.z;
+                        this.y += this.vy * this.z;
+                        if (this.x < -50 || this.x > canvas.width + 50 || 
+                            this.y < -50 || this.y > canvas.height + 50) {
+                            this.reset();
+                        }
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.r * this.z, 0, Math.PI * 2);
+                        ctx.fillStyle = "rgba(0, 150, 255, 0.25)"; /* Cyber Blue Bubbles */
+                        ctx.fill();
+                    }
+                }
+
+                for (let i = 0; i < 120; i++) {
+                    bubbles.push(new Bubble());
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    bubbles.forEach(b => {
+                        b.update();
+                        b.draw();
+                    });
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            })();
         </script>
         """,
         unsafe_allow_html=True,
