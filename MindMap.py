@@ -262,7 +262,6 @@ def render_force_graph(data):
 def home_page():
     load_space_background()
     
-    # 1. ENHANCED CSS FOR THE NEON BUTTON
     st.markdown("""
         <style>
         .hero-container {
@@ -270,7 +269,7 @@ def home_page():
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 85vh;
+            height: 80vh;
             text-align: center;
         }
 
@@ -286,28 +285,9 @@ def home_page():
             animation: pulse 4s infinite alternate;
         }
 
-        /* THE NEW LAUNCH BUTTON STYLING */
-        .stButton > button#launch_btn {
-            background: transparent !important;
-            color: #00d0ff !important;
-            border: 2px solid #00d0ff !important;
-            padding: 12px 50px !important;
-            font-family: 'Courier New', monospace !important;
-            font-size: 18px !important;
-            font-weight: 100 !important;
-            letter-spacing: 8px !important;
-            text-transform: uppercase !important;
-            border-radius: 0px !important;
-            transition: all 0.4s ease !important;
-            box-shadow: 0 0 15px rgba(0, 208, 255, 0.2) !important;
-            margin-top: 20px !important;
-        }
-
-        .stButton > button#launch_btn:hover {
-            background: rgba(0, 208, 255, 0.1) !important;
-            box-shadow: 0 0 30px rgba(0, 208, 255, 0.6) !important;
-            letter-spacing: 12px !important;
-            transform: scale(1.05);
+        @keyframes pulse {
+            from { opacity: 0.8; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .scanline {
@@ -323,32 +303,51 @@ def home_page():
             color: #00d0ff;
             font-size: 12px;
             letter-spacing: 4px;
-            margin-top: 20px;
+            margin-bottom: 40px;
             opacity: 0.7;
+        }
+
+        .section {
+            padding: 100px 10%;
+            text-align: center;
+        }
+
+        .section-dark {
+            background: rgba(0,0,0,0.6);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 25px;
+            border: 1px solid rgba(0,150,255,0.3);
+            box-shadow: 0 0 15px rgba(0,150,255,0.2);
+        }
+
+        .faq-item {
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: left;
         }
         </style>
         
         <div class="hero-container">
             <div class="glitch-title">Nebula</div>
             <div class="scanline"></div>
-    """, unsafe_allow_html=True)
-
-    # 2. THE FUNCTIONAL BUTTON
-    # We use a key to target this specific button with our CSS
-    if st.button("LAUNCH", key="launch_btn"):
-        st.session_state.page = "signup"
-        st.rerun()
-
-    # 3. CLOSING THE HERO SECTION
-    st.markdown("""
+            <div class="subtitle" style="margin-bottom:10px;">
+                Knowledge Mapping Protocol
+            </div>
             <div class="coordinates">
                 LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # --- REST OF YOUR SECTIONS (FEATURES, PHILOSOPHY, etc.) ---
-    # (Keep your existing Feature Grid and FAQ code here)
     # FEATURES SECTION
     st.markdown("""
     <style>
