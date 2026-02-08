@@ -37,38 +37,34 @@ def load_css():
             background-attachment: fixed;
         }
 
-        /* 2. THE NEW MINIMAL SPINNING ARROW */
-        /* We use a specific class path to kill the default Streamlit button styling */
+        /* 2. WHITE BOX / BLACK ARROW (Higher Up) */
+        .back-arrow-container {
+            position: fixed;
+            top: 15px; /* Moved higher up */
+            left: 20px;
+            z-index: 9999;
+        }
+        
         .back-arrow-container div[data-testid="stButton"] button {
-            background-color: transparent !important;
-            background: transparent !important;
-            color: #ffffff !important;
+            background-color: #ffffff !important;
+            color: #000000 !important;
             border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
-            font-size: 80px !important; /* Extremely large */
-            line-height: 1 !important;
-            padding: 0px !important;
-            width: auto !important;
-            height: auto !important;
-            transition: transform 0.6s ease-in-out !important;
+            border-radius: 0px !important;
+            font-size: 30px !important;
+            font-weight: 900 !important;
+            width: 50px !important;
+            height: 50px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
+            padding: 0px !important;
+            transition: transform 0.5s ease-in-out, box-shadow 0.2s !important;
         }
         
-        /* The Spin Animation */
         .back-arrow-container div[data-testid="stButton"] button:hover {
-            transform: rotate(-180deg) !important;
-            background-color: transparent !important;
-            color: #ffffff !important;
-            border: none !important;
-        }
-        
-        /* Kill the click animation shadow */
-        .back-arrow-container div[data-testid="stButton"] button:active {
-            background-color: transparent !important;
-            border: none !important;
+            transform: rotate(-360deg) !important; /* Full spin */
+            background-color: #ffffff !important;
+            box-shadow: 0px 0px 15px rgba(255,255,255,0.8) !important;
         }
 
         /* 3. THE BOX (GLASS CARD) */
@@ -80,8 +76,7 @@ def load_css():
             box-shadow: 20px 20px 0px rgba(255,255,255,0.4);
         }
 
-        /* 4. MAIN BUTTONS (INITIATE / CREATE / RUN) */
-        /* These stay as the big white blocks you liked */
+        /* 4. MAIN BUTTONS */
         div[data-testid="stForm"] .stButton button, 
         .landing-container .stButton button,
         .glass-card .stButton button {
@@ -103,25 +98,6 @@ def load_css():
             box-shadow: 10px 10px 0px #ffffff;
         }
 
-        /* 5. TITLES & TYPOGRAPHY */
-        .main-title {
-            font-size: clamp(50px, 10vw, 120px); 
-            font-weight: 900;
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            line-height: 0.9;
-            color: #ffffff;
-            text-shadow: 4px 4px 15px rgba(0,0,0,0.8);
-        }
-        .subtitle {
-            font-size: 16px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 12px; margin-bottom: 60px;
-        }
-        .landing-container {
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; text-align: center; min-height: 60vh;
-        }
-
         header, footer, #MainMenu {visibility: hidden;}
         </style>
         """,
@@ -137,9 +113,8 @@ def go_to(page):
 # --------------------
 
 def back_arrow():
-    """Renders the minimal large arrow in the corner"""
     st.markdown('<div class="back-arrow-container">', unsafe_allow_html=True)
-    if st.button("⟵"): # Using a longer arrow for clear visual change
+    if st.button("←"):
         go_to("home")
     st.markdown('</div>', unsafe_allow_html=True)
 
