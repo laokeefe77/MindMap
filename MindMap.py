@@ -316,24 +316,27 @@ def home_page():
             opacity: 0.7;
         }
 
-        /* FULL WIDTH BLUE OUTLINE BUTTON FIX */
+        /* FORCE FULL WIDTH AND REMOVE OFFSET EFFECTS */
         div.stButton > button {
+            width: 100% !important;
             background: transparent !important;
             color: #00d0ff !important;
             border: 2px solid #00d0ff !important;
-            padding: 18px 0px !important;
-            width: 100% !important;
-            border-radius: 4px !important;
-            box-shadow: none !important; /* Removes the white/black offset shadow */
-            transform: none !important;  /* Removes the hover movement */
-            transition: 0.3s ease;
+            padding: 25px 0px !important;
+            font-size: 22px !important;
+            font-weight: 900 !important;
+            letter-spacing: 5px !important;
+            border-radius: 0px !important;
+            box-shadow: none !important;
+            transform: none !important;
+            transition: all 0.4s ease !important;
         }
 
         div.stButton > button:hover {
             background: rgba(0, 208, 255, 0.1) !important;
             border-color: #ffffff !important;
             color: #ffffff !important;
-            box-shadow: 0 0 20px rgba(0, 208, 255, 0.4) !important;
+            box-shadow: 0 0 30px rgba(0, 208, 255, 0.3) !important;
         }
         </style>
         
@@ -349,8 +352,10 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # The button now spans the full width of the main container
-    if st.button("INITIALIZE INTERFACE"):
+    # --- FULL WIDTH BUTTON ---
+    # use_container_width=True combined with removing the columns 
+    # makes it span the entire horizontal space.
+    if st.button("INITIALIZE INTERFACE", use_container_width=True):
         st.session_state.page = "signup"
         st.rerun()
 
@@ -391,7 +396,7 @@ def home_page():
             box-shadow: 0 10px 30px rgba(125, 42, 232, 0.2);
         }
         .section {
-            padding: 100px {10%};
+            padding: 100px 10%;
             text-align: center;
         }
     </style>
@@ -406,17 +411,12 @@ def home_page():
                 <h3>⚡ AI Architect</h3>
                 <p>Generate instant, structured learning paths tailored to your specific goals.</p>
             </div>
-            <div class="feature-card">
-                <h3>🌌 Scalable Knowledge</h3>
-                <p>Seamlessly bridge the gap between absolute beginner and true mastery.</p>
-            </div>
-            <div class="feature-card">
-                <h3>🔒 Personal System</h3>
-                <p>Your data is yours. Secure, private, and hosted within your own universe.</p>
-            </div>
+            <div class="feature-card"><h3>🌌 Scalable Knowledge</h3><p>Seamlessly bridge the gap between absolute beginner and true mastery.</p></div>
+            <div class="feature-card"><h3>🔒 Personal System</h3><p>Your data is yours. Secure, private, and hosted within your own universe.</p></div>
         </div>
     </div>
     """, unsafe_allow_html=True)
+    # ... rest of philosophy and FAQ ...
 
     # PHILOSOPHY SECTION
     st.markdown("""
