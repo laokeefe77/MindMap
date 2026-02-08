@@ -6,7 +6,7 @@ import time
 # Page Config
 # --------------------
 st.set_page_config(
-    page_title="MindMap Journey",
+    page_title="MindMap Noir",
     page_icon="🧠",
     layout="wide"
 )
@@ -20,58 +20,106 @@ if "user" not in st.session_state:
     st.session_state.user = None
 
 # --------------------
-# Custom CSS (Enhanced for Glassmorphism)
+# Custom CSS: Sleek Modern Noir
 # --------------------
 def load_css():
     st.markdown(
         """
         <style>
+        /* Modern Depth Gradient Background */
         .stApp {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: white;
+            background: radial-gradient(circle at top right, #1a1a1a, #000000);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
         }
+
+        /* Title Styling: Cutting White Lines */
         .main-title {
-            text-align: center; font-size: 64px; font-weight: bold;
-            margin-top: 50px; letter-spacing: 2px; color: #6dd5ed;
+            text-align: center; 
+            font-size: 80px; 
+            font-weight: 900;
+            margin-top: 60px; 
+            letter-spacing: -2px;
+            color: #ffffff;
+            line-height: 1;
         }
+
         .subtitle {
-            text-align: center; font-size: 20px; opacity: 0.8; margin-bottom: 40px;
+            text-align: center; 
+            font-size: 18px; 
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            opacity: 0.6; 
+            margin-bottom: 50px;
         }
+
+        /* Floating Element Logic */
         .bubble {
-            position: fixed; border-radius: 50%; opacity: 0.2;
-            animation: float 20s infinite linear;
-            background: radial-gradient(circle, #6dd5ed, #2193b0);
-            z-index: -1;
-        }
-        @keyframes float {
-            from { transform: translateY(100vh); }
-            to { transform: translateY(-120vh); }
-        }
-        /* Glassmorphism Card Effect */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            position: fixed; 
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border-radius: 50%; 
+            background: rgba(255, 255, 255, 0.03);
+            animation: float 25s infinite linear;
+            z-index: 0;
+            pointer-events: none; /* Won't block clicks */
         }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Sleek Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 2px; /* Sharper corners for modern look */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Button: High Contrast White */
         .stButton > button {
-            background: linear-gradient(90deg, #00c6ff, #0072ff);
-            color: white; border: none; padding: 12px 30px;
-            border-radius: 50px; transition: 0.3s;
+            background: #ffffff;
+            color: #000000 !important; 
+            border: none; 
+            padding: 14px 40px;
+            font-weight: bold;
+            border-radius: 0px; /* Sharp modern edges */
+            transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            width: 100%;
         }
+
         .stButton > button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.4);
+            background: #e0e0e0;
+            transform: scale(1.02);
+            letter-spacing: 1px;
+        }
+
+        /* Sidebar Styling */
+        section[data-testid="stSidebar"] {
+            background-color: rgba(0,0,0,0.5);
+            border-right: 1px solid rgba(255,255,255,0.1);
         }
         </style>
         """,
         unsafe_allow_html=True,
     )
 
-def render_bubbles(n=20):
-    html = "".join([f'<div class="bubble" style="width:{random.randint(40,100)}px;height:{random.randint(40,100)}px;left:{random.randint(0,100)}vw;animation-duration:{random.randint(15,30)}s;animation-delay:{random.randint(0,10)}s;"></div>' for _ in range(n)])
+def render_bubbles(n=12):
+    # Only render if we aren't in a form to prevent 'ghost bubbles'
+    html = "".join([
+        f'<div class="bubble" style="'
+        f'width:{random.randint(50,150)}px;'
+        f'height:{random.randint(50,150)}px;'
+        f'left:{random.randint(0,95)}vw;'
+        f'animation-duration:{random.randint(20,40)}s;'
+        f'animation-delay:{random.randint(0,15)}s;"></div>' 
+        for _ in range(n)
+    ])
     st.markdown(html, unsafe_allow_html=True)
 
 def go_to(page):
@@ -79,95 +127,31 @@ def go_to(page):
     st.rerun()
 
 # --------------------
-# Page: Home
+# Page Logic
 # --------------------
 def home_page():
-    render_bubbles(20)
-    st.markdown("<div class='main-title'>MindMap</div>", unsafe_allow_html=True)
-    st.markdown("<div class='subtitle'>Organize your thoughts. Build your future.</div>", unsafe_allow_html=True)
+    render_bubbles(10)
+    st.markdown("<div class='main-title'>MINDMAP</div>", unsafe_allow_html=True)
+    st.markdown("<div class='subtitle'>The Architecture of Learning</div>", unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([1, 1, 1])
+    col1, col2, col3 = st.columns([1.2, 1, 1.2])
     with col2:
-        if st.button("🚀 Start Your Journey", use_container_width=True):
+        if st.button("ENTER WORKSPACE"):
             go_to("signup")
 
-# --------------------
-# Page: Signup
-# --------------------
 def signup_page():
-    st.markdown("<h1 style='text-align:center;'>Join the Journey</h1>", unsafe_allow_html=True)
-    with st.container():
+    st.markdown("<h2 style='text-align:center; font-weight:200; letter-spacing:10px;'>IDENTITY</h2>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 1.5, 1])
+    with col2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        with st.form("signup_form"):
-            name = st.text_input("Full Name")
-            username = st.text_input("Username")
-            password = st.text_input("Password", type="password")
-            submit = st.form_submit_button("Create Account")
+        with st.form("signup_form", border=False):
+            st.text_input("FULL NAME")
+            username = st.text_input("USERNAME")
+            password = st.text_input("PASSWORD", type="password")
+            submit = st.form_submit_button("CREATE ACCOUNT")
         st.markdown('</div>', unsafe_allow_html=True)
 
     if submit:
-        if name and username and password:
-            st.session_state.user = {"name": name, "username": username}
-            st.success("Account created! Redirecting to Workspace...")
-            time.sleep(1)
-            go_to("generator")
-        else:
-            st.error("Please fill in all fields.")
-
-# --------------------
-# Page: Protected Generator (The New Page)
-# --------------------
-def generator_page():
-    # SECURITY CHECK: Redirect if not logged in
-    if not st.session_state.user:
-        st.warning("Please sign up to access the generator.")
-        time.sleep(1)
-        go_to("home")
-        return
-
-    render_bubbles(10)
-    
-    # Sidebar for navigation/Logout
-    with st.sidebar:
-        st.title(f"Hi, {st.session_state.user['name']}!")
-        if st.button("Logout"):
-            st.session_state.user = None
-            go_to("home")
-
-    st.markdown("<h1 style='text-align:center;'>MindMap Generator</h1>", unsafe_allow_html=True)
-    st.write("Enter a topic below to architect your learning path.")
-
-    # Generator UI
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    topic = st.text_input("What do you want to learn today?", placeholder="e.g. Quantum Physics, Italian Cooking...")
-    depth = st.select_slider("Map Complexity", options=["Simple", "Standard", "Deep"])
-    
-    if st.button("Generate Map 🧠"):
-        with st.status("Architecting your data structure...", expanded=True) as status:
-            st.write("Initializing Gemini Flash...")
-            time.sleep(1)
-            st.write("Building hierarchical nodes...")
-            time.sleep(1)
-            status.update(label="Map Complete!", state="complete", expanded=False)
-        
-        st.success(f"Successfully generated a {depth} map for **{topic}**!")
-        # This is where you would call your JSON generate function
-        st.info("Visualizer rendering engine coming in next update.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# --------------------
-# Main App Router
-# --------------------
-def main():
-    load_css()
-    page = st.session_state.page
-
-    if page == "home":
-        home_page()
-    elif page == "signup":
-        signup_page()
-    elif page == "generator":
-        generator_page()
-
-if __name__ == "__main__":
-    main()
+        if username and password:
