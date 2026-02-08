@@ -107,58 +107,134 @@ def load_bubble_background():
     </script>""", unsafe_allow_html=True)
 
 def render_force_graph(data):
+    """Noir-Cyber Physics Engine: Deep Sea Blue Theme with Wrapped Border."""
     cy_nodes = [{"data": n} for n in data["nodes"]]
     cy_edges = [{"data": {"id": f"e{i}", "source": e["source"], "target": e["target"]}} for i, e in enumerate(data["edges"])]
     
+    # We add the border directly to the div style here to ensure it wraps the graph exactly
     html_code = f"""
-    <div id="cy" style="width: 100%; height: 850px; background: #000;"></div>
+    <div id="cy" style="
+        width: 100%; 
+        height: 800px; 
+        background: #000; 
+        border: 2px solid #0088ff; 
+        box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
+        border-radius: 8px;
+    "></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
+    
     <script>
         var cy = cytoscape({{
             container: document.getElementById('cy'),
             elements: {{ nodes: {json.dumps(cy_nodes)}, edges: {json.dumps(cy_edges)} }},
             style: [
-                {{ selector: 'node', style: {{ 'background-color': '#fff', 'label': 'data(label)', 'color': '#00d0ff', 'width': 'data(size)', 'height': 'data(size)', 'font-size': '12px', 'text-valign': 'center', 'text-halign': 'right', 'font-family': 'monospace', 'border-width': 2, 'border-color': '#00a0ff', 'shadow-blur': 15, 'shadow-color': '#0088ff' }} }},
-                {{ selector: 'edge', style: {{ 'width': 1.5, 'line-color': 'rgba(0, 150, 255, 0.3)', 'curve-style': 'bezier', 'target-arrow-shape': 'triangle', 'target-arrow-color': 'rgba(0, 150, 255, 0.5)' }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 25 }} }}
+                {{
+                    selector: 'node',
+                    style: {{
+                        'background-color': '#fff',
+                        'label': 'data(label)',
+                        'color': '#00d0ff', 
+                        'width': 'data(size)',
+                        'height': 'data(size)',
+                        'font-size': '12px',
+                        'text-valign': 'center',
+                        'text-halign': 'right',
+                        'text-margin-x': '12px',
+                        'font-family': '"Courier New", monospace',
+                        'font-weight': 'bold',
+                        'text-transform': 'uppercase',
+                        'border-width': 2,
+                        'border-color': '#00a0ff',
+                        'shadow-blur': 15,
+                        'shadow-color': '#0088ff',
+                        'shadow-opacity': 0.8
+                    }}
+                }},
+                {{
+                    selector: 'edge',
+                    style: {{
+                        'width': 1.5,
+                        'line-color': 'rgba(0, 150, 255, 0.2)',
+                        'curve-style': 'bezier',
+                        'target-arrow-shape': 'triangle',
+                        'target-arrow-color': 'rgba(0, 150, 255, 0.4)',
+                        'arrow-scale': 0.8
+                    }}
+                }},
+                {{
+                    selector: ':selected',
+                    style: {{
+                        'background-color': '#00ffff',
+                        'shadow-blur': 25
+                    }}
+                }}
             ],
-            layout: {{ name: 'cose', animate: true, nodeRepulsion: 150000, idealEdgeLength: 160 }}
+            layout: {{
+                name: 'cose',
+                animate: true,
+                fit: true,
+                padding: 50,
+                nodeRepulsion: 120000, 
+                idealEdgeLength: 140
+            }}
         }});
     </script>
     """
-    components.html(html_code, height=860)
+    # Increased height of the component to accommodate the internal 800px div + border
+    components.html(html_code, height=820)
 
-# --------------------
-# Logic Sections
-# --------------------
 def generator_page():
     load_bubble_background()
-    st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper() if st.session_state.user else 'GUEST'}")
+    if not st.session_state.user: go_to("home")
     
-    # 1. Input area at the top for maximum width below
-    with st.container():
+    # Restored your original header style
+    st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
+    st.markdown("<h1 style='font-weight:900;'>COMMAND_CENTER</h1><hr style='border: 2px solid white;'>", unsafe_allow_html=True)
+
+    # Restored 2-column layout but tweaked ratios for a larger graph (1:3 instead of 1:2.2)
+    col1, col2 = st.columns([1, 3]) 
+    
+    with col1:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        t_col1, t_col2 = st.columns([3, 1])
-        with t_col1:
-            topic = st.text_input("SUBJECT TARGET", placeholder="e.g. Quantum Computing")
-        with t_col2:
-            st.write("##") # Spacer
-            run = st.button("RUN_ARCHITECT")
+        topic = st.text_input("SUBJECT TARGET")
+        if st.button("RUN_ARCHITECT"):
+            if topic:
+                with st.spinner("INITIATING GEMINI ARCHITECT..."):
+                    raw_tree = generate_learning_map(topic)
+                    st.session_state.map_data = parse_tree_to_physics(raw_tree)
+                st.success("MAP DEPLOYED")
+            else:
+                st.error("INPUT REQUIRED")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # 2. Full width graph display
-    if run and topic:
-        with st.spinner("INITIATING GEMINI ARCHITECT..."):
-            raw_tree = generate_learning_map(topic)
-            st.session_state.map_data = parse_tree_to_physics(raw_tree)
-            st.success("MAP DEPLOYED")
+    with col2:
+        # The graph now lives in its own container within the column
+        if st.session_state.map_data:
+            render_force_graph(st.session_state.map_data)
+        else:
+            # Placeholder matches the new height
+            st.markdown("""
+                <div style='
+                    height: 800px; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    opacity: 0.3; 
+                    border: 1px dashed #0088ff; 
+                    border-radius: 8px;
+                    font-family: monospace;
+                '>
+                    AWAITING ARCHITECT COMMAND...
+                </div>
+            """, unsafe_allow_html=True)
 
-    st.markdown('<div class="graph-display-container">', unsafe_allow_html=True)
-    if st.session_state.map_data:
-        render_force_graph(st.session_state.map_data)
-    else:
-        st.markdown("<div style='height: 850px; display: flex; align-items: center; justify-content: center; opacity: 0.3; font-family: monospace;'>SYSTEM IDLE // AWAITING TARGET</div>", unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    with st.sidebar:
+        # Sidebar remains exactly where it was
+        if st.button("SHUTDOWN"):
+            st.session_state.user = None
+            st.session_state.map_data = None
+            go_to("home")
+
 
 # [Simplified main for brevity]
 if __name__ == "__main__":
