@@ -25,7 +25,7 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
     
     # Back to the original balanced sizes
-    node_size = 250 if parent_id is None else 35
+    node_size = 60 if parent_id is None else 40
     
     nodes.append({
         "id": current_id, 
