@@ -14,7 +14,9 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     if edges is None: edges = []
     
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
-    node_size = 45 if parent_id is None else 25
+    
+    # ROOT FIX: Main ball is 80, children are 35
+    node_size = 80 if parent_id is None else 35
     
     nodes.append({
         "id": current_id, 
@@ -33,60 +35,32 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     return {"nodes": nodes, "edges": edges}
 
 # --------------------
-# 2. CUSTOM CSS (BLUE HUD THEME)
+# 2. CUSTOM CSS
 # --------------------
 def load_css():
     st.markdown(
         """
         <style>
         .stApp { background: #000000; color: #ffffff; overflow-x: hidden; }
-        #bubble-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-        canvas#bubble-canvas { width: 100vw; height: 100vh; display: block; }
+        
+        .landing-container { 
+            display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; text-align: center; min-height: 80vh; 
+            position: relative; z-index: 2;
+        }
+        .main-title { font-size: clamp(50px, 10vw, 120px); font-weight: 900; letter-spacing: -2px; color: #ffffff; text-shadow: 0 0 20px rgba(0, 136, 255, 0.4); }
+        .subtitle { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 12px; margin-bottom: 60px; color: #0088ff; }
 
-        .landing-container { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 90vh; }
-        .main-title { font-size: clamp(50px, 10vw, 120px); font-weight: 900; letter-spacing: -2px; line-height: 0.9; color: #ffffff; }
-        .subtitle { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; margin-bottom: 60px; }
-
-        /* BLUE BRUTALIST GLASS CARD */
         .glass-card { 
-            background: linear-gradient(135deg, #000 0%, #050a10 100%); 
+            background: rgba(5, 10, 16, 0.8); 
             border: 1px solid rgba(0, 180, 255, 0.3);
-            padding: 40px; 
-            border-radius: 4px; 
-            box-shadow: 10px 10px 0px rgba(0, 0, 0, 1), 
-                        12px 12px 0px rgba(0, 100, 255, 0.2);
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        .glass-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(rgba(0, 150, 255, 0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .main-title {
-            text-shadow: 0 0 20px rgba(0, 136, 255, 0.6);
-            animation: flicker 3s infinite;
+            padding: 40px; border-radius: 4px; 
+            box-shadow: 12px 12px 0px rgba(0, 100, 255, 0.1);
         }
 
-        @keyframes flicker {
-            0% { opacity: 1; }
-            5% { opacity: 0.9; }
-            10% { opacity: 1; }
-            15% { opacity: 0.8; }
-            20% { opacity: 1; }
-            100% { opacity: 1; }
-        }
-        .glass-card > * { position: relative; z-index: 1; }
-
-        .stButton > button { background: #ffffff !important; color: #000000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; transition: 0.1s; }
-        .stButton > button:hover { background: #0088ff !important; color: #ffffff !important; transform: translate(-3px, -3px); box-shadow: 6px 6px 0px #ffffff; }
-
-        .stTextInput label { color: #ffffff !important; font-weight: bold; font-size: 18px; }
+        .stButton > button { background: #ffffff !important; color: #000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; }
+        .stButton > button:hover { background: #0088ff !important; color: #fff !important; }
+        
         header, footer, #MainMenu {visibility: hidden;}
         </style>
         """,
@@ -94,108 +68,72 @@ def load_css():
     )
 
 # --------------------
-# 3. BACKGROUND ANIMATION
+# 3. FIXED STAR/BUBBLE ANIMATION
 # --------------------
-def load_space_background():
-    st.markdown(
+def load_bubble_background():
+    # We use a component to ensure the canvas doesn't get wiped by Streamlit's refresh
+    components.html(
         """
-        <div id="bubble-bg">
-            <canvas id="bubble-canvas"></canvas>
-        </div>
-        <style>
-            #bubble-bg {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                z-index: -1; /* Ensures it stays in the background */
-                background: black;
-            }
-            #bubble-canvas {
-                display: block;
-            }
-        </style>
+        <canvas id="canvas" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:black; z-index:-1;"></canvas>
         <script>
-            (function() {
-                const canvas = document.getElementById("bubble-canvas");
-                const ctx = canvas.getContext("2d");
-                let bubbles = [];
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            let stars = [];
 
-                function resize() {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.onresize = resize;
+            resize();
+
+            class Star {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2;
+                    this.speed = Math.random() * 0.5 + 0.1;
+                    this.opacity = Math.random();
                 }
-
-                window.addEventListener("resize", resize);
-                resize();
-
-                class Bubble {
-                    constructor() {
-                        this.reset();
-                    }
-                    reset() {
+                update() {
+                    this.y -= this.speed;
+                    if (this.y < 0) {
+                        this.y = canvas.height;
                         this.x = Math.random() * canvas.width;
-                        this.y = Math.random() * canvas.height;
-                        this.z = Math.random() * 2 + 0.5;
-                        this.r = Math.random() * 4 + 2;
-                        this.vx = (Math.random() - 0.5) * 0.3;
-                        this.vy = (Math.random() - 0.5) * 0.3;
-                    }
-                    update() {
-                        this.x += this.vx * this.z;
-                        this.y += this.vy * this.z;
-                        if (this.x < -50 || this.x > canvas.width + 50 || 
-                            this.y < -50 || this.y > canvas.height + 50) {
-                            this.reset();
-                        }
-                    }
-                    draw() {
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.r * this.z, 0, Math.PI * 2);
-                        ctx.fillStyle = "rgba(0, 150, 255, 0.25)"; /* Cyber Blue Bubbles */
-                        ctx.fill();
                     }
                 }
+                draw() {
+                    ctx.fillStyle = `rgba(0, 136, 255, ${this.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
 
-                for (let i = 0; i < 120; i++) {
-                    bubbles.push(new Bubble());
-                }
+            for(let i=0; i<150; i++) stars.push(new Star());
 
-                function animate() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    bubbles.forEach(b => {
-                        b.update();
-                        b.draw();
-                    });
-                    requestAnimationFrame(animate);
-                }
-                animate();
-            })();
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => { s.update(); s.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
         </script>
-        <style>
-            #space-bg { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
-        </style>
         """,
-        unsafe_allow_html=True,
+        height=0, # Keeps the hidden iframe from taking up space
     )
+    # Background div for depth
+    st.markdown('<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:transparent; z-index:-1;"></div>', unsafe_allow_html=True)
 
 # --------------------
-# 4. GRAPH ENGINE (BLUE THEME)
+# 4. GRAPH ENGINE (BALANCED)
 # --------------------
 def render_force_graph(data):
     cy_nodes = [{"data": n} for n in data["nodes"]]
     cy_edges = [{"data": {"id": f"e{i}", "source": e["source"], "target": e["target"]}} for i, e in enumerate(data["edges"])]
     
     html_code = f"""
-    <div id="cy" style="
-        width: 100%; 
-        height: 800px; 
-        background: #000; 
-        border: 2px solid #0088ff; 
-        box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
-        border-radius: 8px;
-    "></div>
+    <div id="cy" style="width: 100%; height: 800px; background: #000; border: 2px solid #0088ff; border-radius: 8px; box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
     <script>
         var cy = cytoscape({{
@@ -203,44 +141,20 @@ def render_force_graph(data):
             elements: {{ nodes: {json.dumps(cy_nodes)}, edges: {json.dumps(cy_edges)} }},
             style: [
                 {{ selector: 'node', style: {{ 
-                    'background-color': '#fff', 
-                    'label': 'data(label)', 
-                    'color': '#00d0ff', 
-                    'width': 'data(size)', 
-                    'height': 'data(size)', 
-                    'font-size': '10px', 
-                    'text-valign': 'center', 
-                    'text-halign': 'right', 
-                    'font-family': 'monospace', 
-                    'border-width': 1, 
-                    'border-color': '#00a0ff', 
-                    'shadow-blur': 10, 
-                    'shadow-color': '#0088ff' 
+                    'background-color': '#fff', 'label': 'data(label)', 'color': '#00d0ff', 
+                    'width': 'data(size)', 'height': 'data(size)', 'font-size': '14px', 
+                    'text-valign': 'center', 'text-halign': 'right', 'font-family': 'monospace', 
+                    'border-width': 2, 'border-color': '#00a0ff', 'shadow-blur': 15, 'shadow-color': '#0088ff' 
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 1, 
-                    'line-color': 'rgba(0, 150, 255, 0.15)', 
-                    'curve-style': 'haystack', /* Haystack is faster and helps prevent clumping */
-                }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 20 }} }}
+                    'width': 2, 'line-color': 'rgba(0, 150, 255, 0.3)', 'curve-style': 'bezier', 
+                    'target-arrow-shape': 'triangle', 'target-arrow-color': 'rgba(0, 150, 255, 0.5)' 
+                }} }}
             ],
             layout: {{ 
-                name: 'cose', 
-                animate: true, 
-                refresh: 4,
-                fit: true, 
-                padding: 80,
-                
-                /* --- THE CLUMP KILLER SETTINGS --- */
-                nodeOverlap: 100,           // Physical buffer: nodes literally cannot touch
-                nodeRepulsion: 10000000,    // Force pushing all nodes apart
-                idealEdgeLength: 150,       // Distance of the connections
-                edgeElasticity: 100,        // Force that pulls them back (increased for stability)
-                nestingFactor: 1.2,         // Multiplier for repulsion of nested (small) nodes
-                gravity: 1,                 // Pulls everything to center so they don't fly off
-                numIter: 4000,              // More time to resolve overlaps
-                initialTemp: 1000,          // Explosive start to separate overlapping nodes
-                coolingFactor: 0.95         // Slow settle down
+                name: 'cose', animate: true, fit: true, padding: 50,
+                nodeOverlap: 50, nodeRepulsion: 4500000, idealEdgeLength: 100,
+                edgeElasticity: 150, gravity: 2.5, numIter: 2000
             }}
         }});
     </script>
@@ -248,67 +162,19 @@ def render_force_graph(data):
     components.html(html_code, height=820)
 
 # --------------------
-# 5. PAGE DEFINITIONS
+# 5. PAGES
 # --------------------
 def home_page():
-    load_space_background()
-    
-    # Custom CSS for the Space Title
-    st.markdown("""
-        <style>
-        .hero-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 80vh;
-            text-align: center;
-        }
-        .glitch-title {
-            font-size: 100px;
-            font-weight: 900;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 15px;
-            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8), 0 0 40px rgba(0, 150, 255, 0.4);
-            margin-bottom: 0;
-            animation: pulse 4s infinite alternate;
-        }
-        @keyframes pulse {
-            from { opacity: 0.8; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .scanline {
-            width: 300px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00d0ff, transparent);
-            margin: 20px 0;
-            box-shadow: 0 0 10px #00d0ff;
-        }
-        .coordinates {
-            font-family: 'Courier New', monospace;
-            color: #00d0ff;
-            font-size: 12px;
-            letter-spacing: 4px;
-            margin-bottom: 50px;
-            opacity: 0.7;
-        }
-        </style>
-        
-        <div class="hero-container">
-            <div class="glitch-title">Nebula</div>
-            <div class="scanline"></div>
-            <div class="subtitle" style="margin-bottom:10px;">Knowledge Mapping Protocol</div>
-            <div class="coordinates">LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9</div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # Centering the button using Streamlit columns
-    _, col2, _ = st.columns([1, 0.6, 1])
+    load_bubble_background()
+    st.markdown('<div class="landing-container">', unsafe_allow_html=True)
+    st.markdown("<div class='main-title'>MINDMAP</div>", unsafe_allow_html=True)
+    st.markdown("<div class='subtitle'>GENERATE SYSTEM</div>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
-        if st.button("LAUNCH ARCHITECT"): 
+        if st.button("INITIATE"): 
             st.session_state.page = "signup"
             st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def signup_page():
     load_bubble_background()
@@ -358,18 +224,16 @@ def generator_page():
             st.rerun()
 
 # --------------------
-# 6. MAIN EXECUTION
+# 6. MAIN
 # --------------------
 def main():
     st.set_page_config(page_title="MindMap Noir", page_icon="🧠", layout="wide")
     load_css()
     
-    # Initialize Session State
     if "page" not in st.session_state: st.session_state.page = "home"
     if "user" not in st.session_state: st.session_state.user = None
     if "map_data" not in st.session_state: st.session_state.map_data = None
 
-    # Routing
     if st.session_state.page == "home":
         home_page()
     elif st.session_state.page == "signup":
