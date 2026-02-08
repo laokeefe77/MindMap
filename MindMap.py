@@ -424,13 +424,27 @@ def signup_page():
     with col2:
         st.markdown('<br><br><div class="glass-card">', unsafe_allow_html=True)
         st.markdown("<h1 style='text-align:center; font-weight:900;'>ACCESS</h1>", unsafe_allow_html=True)
+        
         u = st.text_input("USER ID")
         p = st.text_input("PASSWORD", type="password")
-        if st.button("CREATE PROFILE"):
-            if u and p:
-                st.session_state.user = {"name": u}
-                st.session_state.page = "generator"
+        
+        # Create two columns for the buttons to sit side-by-side
+        btn_col1, btn_col2 = st.columns(2)
+        
+        with btn_col1:
+            if st.button("CREATE PROFILE", use_container_width=True):
+                if u and p:
+                    st.session_state.user = {"name": u}
+                    st.session_state.page = "generator"
+                    st.rerun()
+                else:
+                    st.error("Please fill in both fields.")
+
+        with btn_col2:
+            if st.button("BACK TO LOGIN", use_container_width=True):
+                st.session_state.page = "login"  # Change "login" to whatever your main page key is
                 st.rerun()
+
         st.markdown('</div>', unsafe_allow_html=True)
 
 def generator_page():
