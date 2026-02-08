@@ -365,7 +365,7 @@ def home_page():
     # ----------------------------
     # FEATURES
     # ----------------------------
-   st.markdown("""
+st.markdown("""
 <style>
     /* Container Styling */
     .section-dark {
