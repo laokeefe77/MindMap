@@ -19,20 +19,20 @@ if "user" not in st.session_state:
     st.session_state.user = None
 
 # --------------------
-# Custom CSS: Dark-to-Light Sweep
+# Custom CSS: Bottom-Left (Black) to Top-Right (White)
 # --------------------
 def load_css():
     st.markdown(
         """
         <style>
-        /* 1. SINGLE LINEAR SWEEP: Black (Top-Left) to White (Bottom-Right) */
+        /* 1. AGGRESSIVE GRADIENT: Black (Bottom-Left) to White (Top-Right) */
         .stApp {
             background-color: #000000;
             background-image: 
-                linear-gradient(145deg, #000000 20%, rgba(255,255,255,0.5) 100%),
-                /* High-visibility floor grid stays for texture */
-                linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+                linear-gradient(45deg, #000000 25%, rgba(255,255,255,0.6) 100%),
+                /* Thicker, more visible floor lines (2px) */
+                linear-gradient(rgba(255,255,255,0.15) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(255,255,255,0.15) 2px, transparent 2px);
             background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
             color: #ffffff;
             background-attachment: fixed;
@@ -49,7 +49,7 @@ def load_css():
             margin-top: 5vh;
         }
 
-        /* 3. BOLD TYPOGRAPHY (White on Black background) */
+        /* 3. BOLD TYPOGRAPHY */
         .main-title {
             font-size: clamp(50px, 10vw, 120px); 
             font-weight: 900;
@@ -58,7 +58,8 @@ def load_css():
             text-transform: uppercase;
             line-height: 0.9;
             color: #ffffff;
-            text-shadow: 10px 10px 0px rgba(0,0,0,0.5);
+            /* Added text shadow for legibility against white areas */
+            text-shadow: 4px 4px 15px rgba(0,0,0,0.8);
         }
 
         .subtitle {
@@ -69,9 +70,10 @@ def load_css():
             color: #ffffff;
             margin-top: 20px;
             margin-bottom: 60px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
         }
 
-        /* 4. OBVIOUS CARD: Solid Black to pop against the sweeping white */
+        /* 4. OBVIOUS CARD */
         .glass-card {
             background: #000000;
             border: 4px solid #ffffff;
