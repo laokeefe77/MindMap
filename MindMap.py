@@ -269,7 +269,7 @@ def home_page():
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 70vh;
+            height: 80vh;
             text-align: center;
         }
 
@@ -303,7 +303,7 @@ def home_page():
             color: #00d0ff;
             font-size: 12px;
             letter-spacing: 4px;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             opacity: 0.7;
         }
 
@@ -348,14 +348,12 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # --- THE LINK BUTTON ---
-    col1, col2, col3 = st.columns([1, 1.5, 1])
+    # ADDED BUTTON TO NAVIGATE TO SIGNUP
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         if st.button("INITIALIZE PROTOCOL"):
             st.session_state.page = "signup"
             st.rerun()
-    
-    st.markdown("<br><br>", unsafe_allow_html=True)
 
     # FEATURES SECTION
     st.markdown("""
