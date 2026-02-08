@@ -228,39 +228,42 @@ def render_force_graph(data):
                     'color': '#00d0ff', 
                     'width': 'data(size)', 
                     'height': 'data(size)', 
-                    'font-size': '10px', 
+                    'font-size': '16px',          /* INCREASED FONT SIZE */
+                    'font-weight': 'bold',
                     'text-valign': 'center', 
                     'text-halign': 'right', 
+                    'text-margin-x': '10px',      /* SPACING FOR READABILITY */
                     'font-family': 'monospace', 
-                    'border-width': 1, 
+                    'border-width': 2, 
                     'border-color': '#00a0ff', 
-                    'shadow-blur': 10, 
+                    'shadow-blur': 12, 
                     'shadow-color': '#0088ff' 
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 1, 
-                    'line-color': 'rgba(0, 150, 255, 0.15)', 
-                    'curve-style': 'bezier', /* Changed from haystack for better spacing visibility */
+                    'width': 3,                   /* THICKER CONNECTING LINES */
+                    'line-color': 'rgba(0, 150, 255, 0.4)', /* INCREASED OPACITY */
+                    'curve-style': 'bezier',
+                    'target-arrow-shape': 'triangle',
+                    'target-arrow-color': 'rgba(0, 150, 255, 0.4)',
+                    'arrow-scale': 1.2
                 }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 20 }} }}
+                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 25, 'width': 50, 'height': 50 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
                 refresh: 20,
                 fit: true, 
-                padding: 50,
-                
-                /* PHYSICS TWEAKS TO PREVENT OVERLAP */
-                nodeOverlap: 200,            // Increased to prevent tight packing
-                nodeRepulsion: 8000000,      // Massive boost to push other branches away
-                idealEdgeLength: 100,        // Keeps parents/children close while nodes push far
-                edgeElasticity: 100,         // Tension on the lines
-                nestingFactor: 0.1,          // Lower value allows sub-branches to drift further apart
-                gravity: 0.15,               // Reduced gravity so branches don't collapse into the center
-                numIter: 2500,               // More iterations for a cleaner settle
+                padding: 60,
+                nodeOverlap: 250,
+                nodeRepulsion: 10000000,      /* SLIGHTLY HIGHER REPULSION */
+                idealEdgeLength: 120, 
+                edgeElasticity: 100, 
+                nestingFactor: 0.1, 
+                gravity: 0.1, 
+                numIter: 2500,
                 initialTemp: 1000,
-                coolingFactor: 0.99          // Slower cooling for better distribution
+                coolingFactor: 0.99
             }}
         }});
     </script>
