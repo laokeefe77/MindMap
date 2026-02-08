@@ -312,10 +312,6 @@ def home_page():
             text-align: center;
         }
 
-        .section-dark {
-            background: rgba(0,0,0,0.6);
-        }
-
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
@@ -348,6 +344,15 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
+    # --- INTEGRATED SIGNUP BUTTON (CENTERED) ---
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        st.markdown("<p style='text-align:center; color:#00d0ff; font-family:monospace; font-size:10px; letter-spacing:2px; margin-bottom:-10px;'>[ ACTION REQUIRED ]</p>", unsafe_allow_html=True)
+        if st.button("INITIALIZE PROTOCOL"):
+            st.session_state.page = "signup"
+            st.rerun()
+    # --------------------------------------------
+
     # FEATURES SECTION
     st.markdown("""
     <style>
@@ -355,6 +360,7 @@ def home_page():
             background-color: #0e1117;
             padding: 50px 20px;
             border-radius: 15px;
+            margin-top: 100px;
         }
         .section-dark h2 {
             text-align: center;
@@ -440,8 +446,6 @@ def home_page():
             </p>
         </div>
     """, unsafe_allow_html=True)
-
-    # "GET STARTED" BUTTON REMOVED PER REQUEST
 
 def signup_page():
     col1, col2, col3 = st.columns([1, 1.2, 1])
