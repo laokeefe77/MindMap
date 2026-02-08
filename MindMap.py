@@ -24,8 +24,8 @@ def parse_tree_to_physics(node, nodes=None, edges=None, parent_id=None):
     
     current_id = node['name'].replace(" ", "_").lower() + "_" + str(len(nodes))
     
-    # PLANETARY SCALING
-    node_size = 800 if parent_id is None else 450 
+    # Back to the original balanced sizes
+    node_size = 45 if parent_id is None else 25
     
     nodes.append({
         "id": current_id, 
@@ -210,13 +210,19 @@ def render_force_graph(data):
     cy_edges = [{"data": {"id": f"e{i}", "source": e["source"], "target": e["target"]}} for i, e in enumerate(data["edges"])]
     
     html_code = f"""
-    <div id="cy" style="width: 100%; height: 850px; background: #000; border: 2px solid #0088ff;"></div>
+    <div id="cy" style="
+        width: 100%; 
+        height: 800px; 
+        background: #000; 
+        border: 2px solid #0088ff; 
+        box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
+        border-radius: 8px;
+    "></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
     <script>
         var cy = cytoscape({{
             container: document.getElementById('cy'),
             elements: {{ nodes: {json.dumps(cy_nodes)}, edges: {json.dumps(cy_edges)} }},
-            
             style: [
                 {{ selector: 'node', style: {{ 
                     'background-color': '#fff', 
@@ -224,44 +230,49 @@ def render_force_graph(data):
                     'color': '#00d0ff', 
                     'width': 'data(size)', 
                     'height': 'data(size)', 
-                    'font-size': '80px',          /* MASSIVE TEXT */
-                    'font-weight': '900',
-                    'text-valign': 'top',         /* MOVED TEXT OUTSIDE */
-                    'text-halign': 'center',      
-                    'text-margin-y': '-40px',
+                    'font-size': '16px',          /* Larger Font */
+                    'font-weight': 'bold',
+                    'text-valign': 'center', 
+                    'text-halign': 'right', 
+                    'text-margin-x': '10px',
                     'font-family': 'monospace', 
-                    'border-width': 30,           /* SUPER THICK BORDER MAKES THEM LOOK HUGE */
+                    'border-width': 2, 
                     'border-color': '#00a0ff', 
-                    'shadow-blur': 100, 
-                    'shadow-color': '#0088ff',
-                    'shadow-opacity': 0.8
+                    'shadow-blur': 12, 
+                    'shadow-color': '#0088ff' 
                 }} }},
                 {{ selector: 'edge', style: {{ 
-                    'width': 15,                  /* BALANCED BOLD LINES */
-                    'line-color': 'rgba(0, 150, 255, 0.3)', 
+                    'width': 3,                   /* Thicker Lines */
+                    'line-color': 'rgba(0, 150, 255, 0.4)', 
                     'curve-style': 'bezier',
                     'target-arrow-shape': 'triangle',
-                    'target-arrow-color': 'rgba(0, 150, 255, 0.3)',
-                    'arrow-scale': 3
+                    'target-arrow-color': 'rgba(0, 150, 255, 0.4)',
+                    'arrow-scale': 1.2
                 }} }},
+                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 25 }} }}
             ],
             layout: {{ 
                 name: 'cose', 
                 animate: true, 
+                refresh: 20,
                 fit: true, 
-                padding: 150,
-                nodeOverlap: 5000,           /* Massive overlap prevention */
-                nodeRepulsion: 500000000,    /* Half a billion repulsion to push these giants apart */
-                idealEdgeLength: 1200,       /* Huge distance to allow room for big balls */
-                edgeElasticity: 1000, 
-                nestingFactor: 0.01, 
-                gravity: 0.001,              /* Negligible gravity */
-                numIter: 5000
+                padding: 60,
+                
+                /* THE STABLE PHYSICS SETTINGS */
+                nodeOverlap: 200,
+                nodeRepulsion: 8000000,
+                idealEdgeLength: 100, 
+                edgeElasticity: 100, 
+                nestingFactor: 0.1, 
+                gravity: 0.15, 
+                numIter: 2500,
+                initialTemp: 1000,
+                coolingFactor: 0.99
             }}
         }});
     </script>
     """
-    components.html(html_code, height=900)
+    components.html(html_code, height=820)
 
 # --------------------
 # 5. PAGE DEFINITIONS
