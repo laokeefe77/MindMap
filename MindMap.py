@@ -99,83 +99,94 @@ def load_css():
 def load_space_background():
     st.markdown(
         """
-        <div id="bubble-bg">
-            <canvas id="bubble-canvas"></canvas>
+        <div id="space-bg">
+            <canvas id="star-canvas"></canvas>
         </div>
         <style>
-            #bubble-bg {
+            #space-bg {
                 position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                z-index: -1; /* Ensures it stays in the background */
-                background: black;
+                top: 0; left: 0;
+                width: 100vw; height: 100vh;
+                z-index: -1;
+                background: radial-gradient(circle at center, #001525 0%, #000000 100%);
             }
-            #bubble-canvas {
+            #star-canvas {
                 display: block;
             }
         </style>
         <script>
             (function() {
-                const canvas = document.getElementById("bubble-canvas");
+                const canvas = document.getElementById("star-canvas");
                 const ctx = canvas.getContext("2d");
-                let bubbles = [];
+                let stars = [];
+                const numStars = 400;
+                let centerX, centerY;
 
                 function resize() {
                     canvas.width = window.innerWidth;
                     canvas.height = window.innerHeight;
+                    centerX = canvas.width / 2;
+                    centerY = canvas.height / 2;
                 }
 
                 window.addEventListener("resize", resize);
                 resize();
 
-                class Bubble {
+                class Star {
                     constructor() {
-                        this.reset();
+                        this.init();
                     }
-                    reset() {
-                        this.x = Math.random() * canvas.width;
-                        this.y = Math.random() * canvas.height;
-                        this.z = Math.random() * 2 + 0.5;
-                        this.r = Math.random() * 4 + 2;
-                        this.vx = (Math.random() - 0.5) * 0.3;
-                        this.vy = (Math.random() - 0.5) * 0.3;
+                    init() {
+                        this.x = (Math.random() - 0.5) * canvas.width;
+                        this.y = (Math.random() - 0.5) * canvas.height;
+                        this.z = Math.random() * canvas.width;
+                        this.prevZ = this.z;
                     }
                     update() {
-                        this.x += this.vx * this.z;
-                        this.y += this.vy * this.z;
-                        if (this.x < -50 || this.x > canvas.width + 50 || 
-                            this.y < -50 || this.y > canvas.height + 50) {
-                            this.reset();
+                        this.prevZ = this.z;
+                        this.z -= 8; // Speed of travel
+                        if (this.z <= 0) {
+                            this.init();
+                            this.z = canvas.width;
+                            this.prevZ = this.z;
                         }
                     }
                     draw() {
+                        const x = (this.x / this.z) * centerX + centerX;
+                        const y = (this.y / this.z) * centerY + centerY;
+                        
+                        const prevX = (this.x / this.prevZ) * centerX + centerX;
+                        const prevY = (this.y / this.prevZ) * centerY + centerY;
+
+                        const size = (1 - this.z / canvas.width) * 2;
+                        
                         ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.r * this.z, 0, Math.PI * 2);
-                        ctx.fillStyle = "rgba(0, 150, 255, 0.25)"; /* Cyber Blue Bubbles */
-                        ctx.fill();
+                        ctx.strokeStyle = `rgba(0, 200, 255, ${1 - this.z / canvas.width})`;
+                        ctx.lineWidth = size;
+                        ctx.lineCap = "round";
+                        ctx.moveTo(prevX, prevY);
+                        ctx.lineTo(x, y);
+                        ctx.stroke();
                     }
                 }
 
-                for (let i = 0; i < 120; i++) {
-                    bubbles.push(new Bubble());
+                for (let i = 0; i < numStars; i++) {
+                    stars.push(new Star());
                 }
 
                 function animate() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    bubbles.forEach(b => {
-                        b.update();
-                        b.draw();
+                    ctx.fillStyle = "rgba(0, 0, 0, 0.4)"; // Trail effect
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    stars.forEach(s => {
+                        s.update();
+                        s.draw();
                     });
                     requestAnimationFrame(animate);
                 }
                 animate();
             })();
         </script>
-        <style>
-            #space-bg { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
-        </style>
         """,
         unsafe_allow_html=True,
     )
