@@ -262,15 +262,16 @@ def render_force_graph(data):
 def home_page():
     load_space_background()
     
-    # Custom CSS for the Space Title
+    # Custom CSS for centering and button coordination
     st.markdown("""
         <style>
+        /* Centering container for the Hero section */
         .hero-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 80vh;
+            height: 70vh; /* Reduced height to keep button visible */
             text-align: center;
         }
 
@@ -280,22 +281,16 @@ def home_page():
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 15px;
-            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8),
-                         0 0 40px rgba(0, 150, 255, 0.4);
+            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8), 0 0 40px rgba(0, 150, 255, 0.4);
             margin-bottom: 0;
             animation: pulse 4s infinite alternate;
-        }
-
-        @keyframes pulse {
-            from { opacity: 0.8; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
         }
 
         .scanline {
             width: 300px;
             height: 2px;
             background: linear-gradient(90deg, transparent, #00d0ff, transparent);
-            margin: 20px 0;
+            margin: 20px auto;
             box-shadow: 0 0 10px #00d0ff;
         }
 
@@ -304,94 +299,40 @@ def home_page():
             color: #00d0ff;
             font-size: 12px;
             letter-spacing: 4px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             opacity: 0.7;
         }
 
-        .section {
-            padding: 100px 10%;
-            text-align: center;
-        }
-
-        .section-dark {
-            background: rgba(0,0,0,0.6);
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-            gap: 40px;
-            margin-top: 50px;
-        }
-
-        .feature-card {
-            padding: 25px;
-            border: 1px solid rgba(0,150,255,0.3);
-            box-shadow: 0 0 15px rgba(0,150,255,0.2);
-        }
-
-        .faq-item {
-            max-width: 800px;
-            margin: 40px auto;
-            text-align: left;
+        /* Force Streamlit buttons to center themselves in their column */
+        div.stButton > button {
+            display: block;
+            margin: 0 auto;
+            width: 280px !important; /* Fixed width for consistency */
         }
         </style>
         
         <div class="hero-container">
             <div class="glitch-title">Nebula</div>
             <div class="scanline"></div>
-            <div class="subtitle" style="margin-bottom:10px;">
-                Knowledge Mapping Protocol
-            </div>
-            <div class="coordinates">
-                LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9
-            </div>
+            <div class="subtitle" style="margin-bottom:10px;">Knowledge Mapping Protocol</div>
+            <div class="coordinates">LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9</div>
         </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1,1,1])
+    # --- CENTERED LAUNCH BUTTON ---
+    # Using a 1:1:1 column ratio and putting the button in the middle
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
-        if st.button("🚀 LAUNCH ARCHITECT"):
+        if st.button("🚀 LAUNCH ARCHITECT", key="hero_launch"):
             st.session_state.page = "signup"
             st.rerun()
 
-    # Features Section
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
+
+    # --- FEATURES SECTION ---
     st.markdown("""
-    <style>
-        .section-dark {
-            background-color: #0e1117;
-            padding: 50px 20px;
-            border-radius: 15px;
-        }
-        .section-dark h2 {
-            text-align: center;
-            color: #ffffff;
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-        }
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #7d2ae8;
-            box-shadow: 0 10px 30px rgba(125, 42, 232, 0.2);
-        }
-    </style>
     <div class="section-dark">
-        <h2>Why Nebula?</h2>
+        <h2 style='text-align:center;'>Why Nebula?</h2>
         <div class="feature-grid">
             <div class="feature-card">
                 <h3>🧠 Visual Thinking</h3>
@@ -412,6 +353,25 @@ def home_page():
         </div>
     </div>
     """, unsafe_allow_html=True)
+
+    # --- PHILOSOPHY ---
+    st.markdown("""
+        <div style="text-align: center; padding: 60px 0;">
+            <h2>Our Philosophy</h2>
+            <p style="color:#88ccff; font-size:20px;">“Build systems. Not notes.”</p>
+            <p style="color:#88ccff; font-size:20px;">“Clarity is engineered.”</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # --- CENTERED GET STARTED BUTTON ---
+    st.markdown("<h2 style='text-align:center;'>Ready to Begin?</h2>", unsafe_allow_html=True)
+    c1, c2, c3 = st.columns([1, 1, 1])
+    with c2:
+        if st.button("✨ GET STARTED", key="final_get_started"):
+            st.session_state.page = "signup"
+            st.rerun()
+    
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
 
     # Philosophy Section
     st.markdown("""
