@@ -96,7 +96,7 @@ def load_css():
 # --------------------
 # 3. BACKGROUND ANIMATION
 # --------------------
-def load_bubble_background():
+def load_space_background():
     st.markdown(
         """
         <div id="bubble-bg">
@@ -173,6 +173,9 @@ def load_bubble_background():
                 animate();
             })();
         </script>
+        <style>
+            #space-bg { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
+        </style>
         """,
         unsafe_allow_html=True,
     )
@@ -248,16 +251,64 @@ def render_force_graph(data):
 # 5. PAGE DEFINITIONS
 # --------------------
 def home_page():
-    load_bubble_background()
-    st.markdown('<div class="landing-container">', unsafe_allow_html=True)
-    st.markdown("<div class='main-title'>MINDMAP</div>", unsafe_allow_html=True)
-    st.markdown("<div class='subtitle'>GENERATE SYSTEM</div>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 1, 1])
+    load_space_background()
+    
+    # Custom CSS for the Space Title
+    st.markdown("""
+        <style>
+        .hero-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 80vh;
+            text-align: center;
+        }
+        .glitch-title {
+            font-size: 100px;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 15px;
+            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8), 0 0 40px rgba(0, 150, 255, 0.4);
+            margin-bottom: 0;
+            animation: pulse 4s infinite alternate;
+        }
+        @keyframes pulse {
+            from { opacity: 0.8; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .scanline {
+            width: 300px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d0ff, transparent);
+            margin: 20px 0;
+            box-shadow: 0 0 10px #00d0ff;
+        }
+        .coordinates {
+            font-family: 'Courier New', monospace;
+            color: #00d0ff;
+            font-size: 12px;
+            letter-spacing: 4px;
+            margin-bottom: 50px;
+            opacity: 0.7;
+        }
+        </style>
+        
+        <div class="hero-container">
+            <div class="glitch-title">Nebula</div>
+            <div class="scanline"></div>
+            <div class="subtitle" style="margin-bottom:10px;">Knowledge Mapping Protocol</div>
+            <div class="coordinates">LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Centering the button using Streamlit columns
+    _, col2, _ = st.columns([1, 0.6, 1])
     with col2:
-        if st.button("INITIATE"): 
+        if st.button("LAUNCH ARCHITECT"): 
             st.session_state.page = "signup"
             st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
 
 def signup_page():
     load_bubble_background()
