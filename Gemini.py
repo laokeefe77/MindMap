@@ -62,7 +62,7 @@ def get_flattened_list(node, level=0):
 
 # Example Usage
 if __name__ == "__main__":
-    topic = "Computer Science" 
+    topic = "Integral ratio test" 
     mind_map = generate_learning_map(topic)
     
     print(json.dumps(mind_map, indent=2))
