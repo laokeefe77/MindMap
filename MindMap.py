@@ -48,49 +48,101 @@ def load_css():
     st.markdown(
         """
         <style>
-        /* Force Sidebar to be visible and set width */
+        /* BASE APP THEME */
+        .stApp { background: #000000; color: #ffffff; overflow-x: hidden; }
+        
+        /* SIDEBAR HUD STYLING */
         [data-testid="stSidebar"] {
             background-color: #050a10 !important;
             border-right: 1px solid rgba(0, 180, 255, 0.3);
-            min-width: 300px !important;
         }
+        [data-testid="stSidebarNav"] { background-color: transparent !important; }
         
-        /* Ensure the sidebar content is visible */
-        [data-testid="stSidebarUserContent"] {
-            padding-top: 2rem;
+        /* HERO SECTION */
+        .hero-container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            padding-top: 5vh;
+            margin-bottom: 20px;
         }
 
-        .stApp { background: #000000; color: #ffffff; }
-        
-        /* Fix for hidden sidebar arrow */
-        [data-testid="stSidebarCollapsedControl"] {
-            color: #00d0ff !important;
-            background-color: rgba(0, 136, 255, 0.2);
-            border-radius: 0 5px 5px 0;
+        .glitch-title { 
+            font-size: clamp(50px, 10vw, 120px); 
+            font-weight: 900; 
+            letter-spacing: 15px; 
+            text-transform: uppercase;
+            color: #ffffff; 
+            text-shadow: 0 0 20px rgba(0, 136, 255, 0.6);
+            animation: flicker 3s infinite;
         }
 
-        /* HUD Styles */
+        .protocol-text {
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #00d0ff;
+            text-shadow: 0 0 10px rgba(0, 208, 255, 0.4);
+        }
+
+        .scanline {
+            width: 300px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d0ff, transparent);
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00d0ff;
+        }
+
+        .coordinates {
+            font-family: 'Courier New', monospace;
+            color: #0088ff;
+            font-size: 12px;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            opacity: 0.7;
+        }
+
+        /* BUTTON STYLING */
+        .stButton > button { 
+            background: #ffffff !important; 
+            color: #000000 !important; 
+            border: none; 
+            padding: 18px 40px; 
+            font-size: 18px; 
+            font-weight: 900; 
+            border-radius: 0px; 
+            width: 100%; 
+            transition: 0.2s cubic-bezier(0.19, 1, 0.22, 1); 
+        }
+        .stButton > button:hover { 
+            background: #0088ff !important; 
+            color: #ffffff !important; 
+            transform: translate(-3px, -3px); 
+            box-shadow: 6px 6px 0px #ffffff; 
+        }
+
+        /* CARDS & SECTIONS */
         .glass-card { 
             background: linear-gradient(135deg, #000 0%, #050a10 100%); 
             border: 1px solid rgba(0, 180, 255, 0.3);
             padding: 40px; 
             border-radius: 4px; 
-            box-shadow: 10px 10px 0px rgba(0, 0, 0, 1), 12px 12px 0px rgba(0, 100, 255, 0.2);
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 1);
             position: relative;
             margin-bottom: 20px;
         }
 
-        .stButton > button { 
-            background: #ffffff !important; 
-            color: #000000 !important; 
-            font-weight: 900; 
-            border-radius: 0px; 
-            width: 100%; 
+        @keyframes flicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 100% { opacity: 1; }
+            20%, 21.999%, 63%, 63.999% { opacity: 0.4; }
         }
-        
-        /* Hide decoration but KEEP the sidebar button accessible */
-        [data-testid="stHeader"] { background: rgba(0,0,0,0); }
-        footer {visibility: hidden;}
+
+        header, footer { visibility: hidden; }
         </style>
         """,
         unsafe_allow_html=True,
@@ -265,155 +317,80 @@ def render_force_graph(data):
 def home_page():
     load_space_background()
     
+    # HERO SECTION
     st.markdown("""
-        <style>
-        .hero-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 70vh;
-            text-align: center;
-        }
-
-        .glitch-title {
-            font-size: 100px;
-            font-weight: 900;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 15px;
-            text-shadow: 0 0 20px rgba(0, 150, 255, 0.8),
-                         0 0 40px rgba(0, 150, 255, 0.4);
-            margin-bottom: 0;
-            animation: pulse 4s infinite alternate;
-        }
-
-        @keyframes pulse {
-            from { opacity: 0.8; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .scanline {
-            width: 300px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00d0ff, transparent);
-            margin: 20px 0;
-            box-shadow: 0 0 10px #00d0ff;
-        }
-
-        .coordinates {
-            font-family: 'Courier New', monospace;
-            color: #00d0ff;
-            font-size: 12px;
-            letter-spacing: 4px;
-            margin-bottom: 40px;
-            opacity: 0.7;
-        }
-        </style>
-        
         <div class="hero-container">
             <div class="glitch-title">Nebula</div>
             <div class="scanline"></div>
-            <div class="subtitle" style="margin-bottom:10px;">
-                Knowledge Mapping Protocol
-            </div>
-            <div class="coordinates">
-                LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9
-            </div>
+            <div class="protocol-text">Knowledge Mapping Protocol</div>
+            <div class="coordinates">LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9</div>
         </div>
     """, unsafe_allow_html=True)
 
-    # --- NEW BUTTON (ABOVE WHY NEBULA) ---
-    col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 1, 1])
-    with col3:
+    # CENTERED BUTTON
+    # Using columns to create a "container" for the button in the middle
+    _, col_btn, _ = st.columns([1, 1.2, 1])
+    with col_btn:
         if st.button("INITIALIZE INTERFACE"):
             st.session_state.page = "signup"
             st.rerun()
-    st.markdown("<br><br>", unsafe_allow_html=True)
 
-    # FEATURES SECTION
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
+
+    # WHY NEBULA SECTION
     st.markdown("""
     <style>
-        .section-dark {
-            background-color: #0e1117;
-            padding: 50px 20px;
-            border-radius: 15px;
-        }
-        .section-dark h2 {
-            text-align: center;
-            color: #ffffff;
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-        }
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 25px;
             max-width: 1100px;
             margin: 0 auto;
+            padding: 20px;
         }
         .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 136, 255, 0.03);
+            border: 1px solid rgba(0, 180, 255, 0.2);
             padding: 30px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
+            border-radius: 4px;
+            transition: 0.3s;
         }
         .feature-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #7d2ae8;
-            box-shadow: 0 10px 30px rgba(125, 42, 232, 0.2);
-        }
-        .section {
-            padding: 100px 10%;
-            text-align: center;
+            border-color: #00d0ff;
+            background: rgba(0, 136, 255, 0.08);
+            transform: translateY(-5px);
         }
     </style>
-    <div class="section-dark">
-        <h2>Why Nebula?</h2>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <h3>🧠 Visual Thinking</h3>
-                <p>Turn abstract topics into navigable, interconnected galaxies of information.</p>
-            </div>
-            <div class="feature-card">
-                <h3>⚡ AI Architect</h3>
-                <p>Generate instant, structured learning paths tailored to your specific goals.</p>
-            </div>
-            <div class="feature-card">
-                <h3>🌌 Scalable Knowledge</h3>
-                <p>Seamlessly bridge the gap between absolute beginner and true mastery.</p>
-            </div>
-            <div class="feature-card">
-                <h3>🔒 Personal System</h3>
-                <p>Your data is yours. Secure, private, and hosted within your own universe.</p>
-            </div>
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h2 style="letter-spacing: 8px; text-transform: uppercase;">System Capabilities</h2>
+    </div>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3 style="color: #00d0ff;">🧠 Visual Thinking</h3>
+            <p style="color: #88ccff; font-size: 14px;">Turn abstract topics into navigable, interconnected galaxies of information.</p>
+        </div>
+        <div class="feature-card">
+            <h3 style="color: #00d0ff;">⚡ AI Architect</h3>
+            <p style="color: #88ccff; font-size: 14px;">Generate instant, structured learning paths tailored to your specific goals.</p>
+        </div>
+        <div class="feature-card">
+            <h3 style="color: #00d0ff;">🌌 Scalable Knowledge</h3>
+            <p style="color: #88ccff; font-size: 14px;">Seamlessly bridge the gap between absolute beginner and true mastery.</p>
+        </div>
+        <div class="feature-card">
+            <h3 style="color: #00d0ff;">🔒 Personal System</h3>
+            <p style="color: #88ccff; font-size: 14px;">Secure, private, and hosted within your own digital universe.</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # PHILOSOPHY SECTION
+    # PHILOSOPHY
     st.markdown("""
-        <div class="section">
-            <h2 style="font-size: 46px;">Our Philosophy</h2>
-            <p style="color:#88ccff; font-size:40px; margin-top:30px;">“Build systems. Not notes.”</p>
-            <p style="color:#88ccff; font-size:40px;">“Clarity is engineered.”</p>
-            <p style="color:#88ccff; font-size:40px;">“Learning is architecture.”</p>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # FAQ SECTION
-    st.markdown("""
-        <div class="section-dark" style="margin-top: 50px;">
-            <h2 style="text-align: center;">Frequently Asked Questions</h2>
-            <div style="max-width: 800px; margin: 40px auto; text-align: left;">
-                <h4 style="color:#00d0ff;">❓ What is Nebula?</h4>
-                <p>An AI-powered knowledge mapping system.</p>
-                <br>
-                <h4 style="color:#00d0ff;">❓ Who is it for?</h4>
-                <p>Students, researchers, and self-learners.</p>
-            </div>
+        <div style="padding: 100px 10%; text-align: center;">
+            <h2 style="font-size: 32px; letter-spacing: 10px; text-transform: uppercase; opacity: 0.8;">Our Philosophy</h2>
+            <p style="color:#00d0ff; font-size:24px; margin-top:30px; font-family: monospace;">“Build systems. Not notes.”</p>
+            <p style="color:#00d0ff; font-size:24px; font-family: monospace;">“Clarity is engineered.”</p>
+            <p style="color:#00d0ff; font-size:24px; font-family: monospace;">“Learning is architecture.”</p>
         </div>
     """, unsafe_allow_html=True)
 
