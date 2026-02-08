@@ -328,7 +328,6 @@ def render_force_graph(data):
 def home_page():
     load_space_background()
     
-    # --- 1. HERO SECTION ---
     st.markdown("""
         <style>
         .hero-container {
@@ -336,12 +335,12 @@ def home_page():
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 60vh;
+            height: 70vh;
             text-align: center;
         }
 
         .glitch-title {
-            font-size: clamp(60px, 12vw, 120px);
+            font-size: 100px;
             font-weight: 900;
             color: #fff;
             text-transform: uppercase;
@@ -374,7 +373,7 @@ def home_page():
             opacity: 0.7;
         }
 
-        /* BUTTON STYLING */
+        /* FORCE FULL WIDTH AND REMOVE OFFSET EFFECTS */
         div.stButton > button {
             width: 100% !important;
             background: transparent !important;
@@ -385,6 +384,8 @@ def home_page():
             font-weight: 900 !important;
             letter-spacing: 5px !important;
             border-radius: 0px !important;
+            box-shadow: none !important;
+            transform: none !important;
             transition: all 0.4s ease !important;
         }
 
@@ -399,8 +400,8 @@ def home_page():
         <div class="hero-container">
             <div class="glitch-title">Nebula</div>
             <div class="scanline"></div>
-            <div class="subtitle" style="margin-bottom:10px; letter-spacing: 2px;">
-                KNOWLEDGE MAPPING PROTOCOL
+            <div class="subtitle" style="margin-bottom:10px;">
+                Knowledge Mapping Protocol
             </div>
             <div class="coordinates">
                 LAT: 40.7128 | LONG: 74.0060 | SECTOR: G-9
@@ -408,100 +409,52 @@ def home_page():
         </div>
     """, unsafe_allow_html=True)
 
-    # --- 2. INITIALIZE BUTTON ---
+    # --- FULL WIDTH BUTTON ---
+    # use_container_width=True combined with removing the columns 
+    # makes it span the entire horizontal space.
     if st.button("INITIALIZE INTERFACE", use_container_width=True):
         st.session_state.page = "signup"
         st.rerun()
 
     st.markdown("<br><br>", unsafe_allow_html=True)
 
-    # --- 3. CORE PROTOCOL SUMMARY ---
-    st.markdown("""
-    <style>
-        .core-summary {
-            text-align: center;
-            max-width: 900px;
-            margin: 100px auto 80px auto;
-            padding: 40px 20px;
-            border-top: 1px solid rgba(0, 208, 255, 0.1);
-            border-bottom: 1px solid rgba(0, 208, 255, 0.1);
-        }
-        .protocol-label {
-            color: #00d0ff;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 8px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-        .core-text {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 800;
-            line-height: 1.3;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-        }
-        .core-text span {
-            color: #00d0ff;
-            text-shadow: 0 0 15px rgba(0, 208, 255, 0.4);
-        }
-    </style>
-    <div class="core-summary">
-        <div class="protocol-label">Core Protocol</div>
-        <div class="core-text">
-            Input any subject. <span>Nebula</span> architecturally engineers a 
-            visual knowledge map, instantly converting chaotic data into a 
-            structured learning path.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # --- 4. FEATURES SECTION ---
+    # FEATURES SECTION
     st.markdown("""
     <style>
         .section-dark {
-            background-color: rgba(10, 15, 25, 0.6);
-            padding: 80px 20px;
-            border-radius: 4px;
-            border: 1px solid rgba(0, 208, 255, 0.1);
+            background-color: #0e1117;
+            padding: 50px 20px;
+            border-radius: 15px;
         }
         .section-dark h2 {
             text-align: center;
             color: #ffffff;
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 60px;
-            letter-spacing: -1px;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
         }
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
             margin: 0 auto;
         }
         .feature-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 0px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
             transition: all 0.3s ease;
         }
         .feature-card:hover {
-            transform: translateY(-5px);
-            background: rgba(0, 208, 255, 0.05);
-            border-color: #00d0ff;
-            box-shadow: 0 10px 30px rgba(0, 208, 255, 0.1);
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #7d2ae8;
+            box-shadow: 0 10px 30px rgba(125, 42, 232, 0.2);
         }
-        .feature-card h3 {
-            color: #00d0ff;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-        }
-        .feature-card p {
-            color: #cccccc;
-            line-height: 1.6;
+        .section {
+            padding: 100px 10%;
+            text-align: center;
         }
     </style>
     <div class="section-dark">
@@ -509,63 +462,49 @@ def home_page():
         <div class="feature-grid">
             <div class="feature-card">
                 <h3>🧠 Visual Thinking</h3>
-                <p>Turn abstract topics into navigable, interconnected galaxies. Stop reading lists and start seeing the architecture of knowledge.</p>
+                <p>Turn abstract topics into navigable, interconnected galaxies of information.</p>
             </div>
             <div class="feature-card">
                 <h3>⚡ AI Architect</h3>
-                <p>Powered by Gemini, we generate instant, structured learning paths tailored to your specific goals and subject targets.</p>
+                <p>Generate instant, structured learning paths tailored to your specific goals.</p>
             </div>
-            <div class="feature-card">
-                <h3>🌌 Scalable Depth</h3>
-                <p>Customize the resolution of your learning. Move from high-level reconnaissance to deep-dive technical extraction seamlessly.</p>
-            </div>
-            <div class="feature-card">
-                <h3>🔒 Archive Protocol</h3>
-                <p>Your intellectual journey is preserved. Securely store and redeploy any generated map from your private system logs.</p>
-            </div>
+            <div class="feature-card"><h3>🌌 Scalable Knowledge</h3><p>Seamlessly bridge the gap between absolute beginner and true mastery.</p></div>
+            <div class="feature-card"><h3>🔒 Personal System</h3><p>Your data is yours. Secure, private, and hosted within your own universe.</p></div>
         </div>
     </div>
     """, unsafe_allow_html=True)
+    # ... rest of philosophy and FAQ ...
 
-    # --- 5. PHILOSOPHY SECTION (RESTORED MISSION STATEMENT) ---
+    # PHILOSOPHY SECTION
     st.markdown("""
-        <div style="padding: 100px 10%; text-align: center;">
-            <h2 style="font-size: 46px; font-weight: 900; margin-bottom: 40px;">PHILOSOPHY</h2>
-            <div style="max-width: 800px; margin: 0 auto;">
-                <p style="color:#ffffff; font-size:28px; line-height: 1.4; font-weight: 300;">
-                    In an age of infinite information, 
-                    <span style="color:#00d0ff; font-weight: 700;">knowing what to learn is often harder than the learning itself.</span>
-                </p>
-                <div style="margin: 40px auto; width: 50px; height: 2px; background: #00d0ff;"></div>
-                <p style="color:#00d0ff; font-size:32px; font-family: monospace;">“BUILD SYSTEMS. NOT NOTES.”</p>
-                <p style="color:#00d0ff; font-size:32px; font-family: monospace;">“CLARITY IS ENGINEERED.”</p>
-            </div>
+        <div class="section">
+            <h2 style="font-size: 46px;">Our Mission</h2>
+            <p style="color:#88ccff; font-size:30px; margin-top:30px;">“In the age of information overload, knowing what to learn is often harder than the learning itself. Nebula acts as your intellectual architect, engineering structured pathways out of the chaotic 'information fog' of the modern web. We transform vast, fragmented data into navigable knowledge galaxies, allowing you to stop searching for the path and start walking it.”</p>
         </div>
     """, unsafe_allow_html=True)
 
-    # --- 6. FAQ SECTION ---
+    # FAQ SECTION
     st.markdown("""
-        <div class="section-dark" style="margin-top: 50px;">
-            <h2 style="text-align: center;">FAQ</h2>
-            <div style="max-width: 800px; margin: 40px auto; text-align: left;">
-                <h4 style="color:#00d0ff;">❓ What is Nebula?</h4>
-                <p>Nebula is an AI-powered architect for your intellectual journey. It transforms the chaotic "information fog" of any topic into a structured, navigable galaxy of nodes and connections.</p>
-                <br>
-                <h4 style="color:#00d0ff;">❓ Who is it for?</h4>
-                <p>Architects of their own education: students, researchers, and self-learners who want to build systems, not just take notes.</p>
-                <br>
-                <h4 style="color:#00d0ff;">❓ Can I customize the complexity?</h4>
-                <p>Yes. Using the <b>Intel Depth</b> slider, you can dictate the resolution of your map. Level 1 offers high-level reconnaissance, while Level 3 generates a deep-dive extraction for complex mastery.</p>
-                <br>
-                <h4 style="color:#00d0ff;">❓ Why a visual map instead of notes?</h4>
-                <p>Because knowing <i>what</i> to learn is often harder than the learning itself. Visualizing the hierarchy helps you see the pillars that support a subject before diving into the details.</p>
-                <br>
-                <h4 style="color:#00d0ff;">❓ Can I save my maps?</h4>
-                <p>Yes. Every map generated is logged in your Archive Logs. You can instantly redeploy any previous subject target from the sidebar.</p>
-            </div>
+    <div class="section-dark" style="margin-top: 50px;">
+        <h2 style="text-align: center;">Frequently Asked Questions</h2>
+        <div style="max-width: 800px; margin: 40px auto; text-align: left;">
+            <h4 style="color:#00d0ff;">❓ What is Nebula?</h4>
+            <p>Nebula is an AI-powered architect for your intellectual journey. It transforms the chaotic "information fog" of any topic into a structured, navigable galaxy of nodes and connections.</p>
+            <br>
+            <h4 style="color:#00d0ff;">❓ Who is it for?</h4>
+            <p>Architects of their own education: students, researchers, and self-learners who want to build systems, not just take notes.</p>
+            <br>
+            <h4 style="color:#00d0ff;">❓ Can I customize the complexity?</h4>
+            <p>Yes. Using the <b>Intel Depth</b> slider, you can dictate the resolution of your map. <b>Level 1</b> offers a high-level reconnaissance, while <b>Level 3</b> generates a deep-dive technical extraction for complex mastery.</p>
+            <br>
+            <h4 style="color:#00d0ff;">❓ Why a visual map instead of notes?</h4>
+            <p>Because knowing <i>what</i> to learn is often harder than the learning itself. Visualizing the hierarchy of information helps you see the pillars that support a subject before you dive into the details.</p>
+            <br>
+            <h4 style="color:#00d0ff;">❓ Can I save my maps?</h4>
+            <p>Yes. Every map generated is logged in your <b>Archive Logs</b>. You can instantly redeploy any previous subject target from the sidebar at any time.</p>
         </div>
-        <br><br>
-    """, unsafe_allow_html=True)
+    </div>
+""", unsafe_allow_html=True)
 
 # --- UPDATED PERSISTENCE HELPERS ---
 def load_users():
