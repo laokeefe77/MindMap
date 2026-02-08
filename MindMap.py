@@ -68,148 +68,51 @@ def load_css():
     st.markdown(
         """
         <style>
-        /* ===== GLOBAL BACKGROUND ===== */
-        .stApp {
-            background: #000000;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+        /* GLOBAL BACKGROUND */
+        .stApp { background: #000000; color: #ffffff; overflow-x: hidden; }
 
-        /* ===== PARTICLE CONTAINER ===== */
-        #bubble-bg {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-        }
+        #bubble-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+        canvas#bubble-canvas { width: 100vw; height: 100vh; display: block; }
 
-        canvas#bubble-canvas {
-            width: 100vw;
-            height: 100vh;
-            display: block;
-        }
+        .landing-container { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 90vh; }
+        .main-title { font-size: clamp(50px, 10vw, 120px); font-weight: 900; letter-spacing: -2px; line-height: 0.9; color: #ffffff; text-shadow: 10px 10px 0px rgba(0,0,0,0.6); }
+        .subtitle { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 12px; margin-top: 20px; margin-bottom: 60px; }
 
-        /* ===== LANDING ===== */
-        .landing-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            min-height: 90vh;
-        }
+        .info-section { max-width: 1100px; margin: 120px auto; padding: 80px; background: #000000; border: 4px solid white; box-shadow: 20px 20px 0px rgba(255,255,255,0.3); }
+        .info-section h2 { font-size: 48px; font-weight: 900; margin-bottom: 30px; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .info-card { border: 2px solid white; padding: 25px; background: black; }
 
-        .main-title {
-            font-size: clamp(50px, 10vw, 120px);
-            font-weight: 900;
-            letter-spacing: -2px;
-            line-height: 0.9;
-            color: #ffffff;
-            text-shadow: 10px 10px 0px rgba(0,0,0,0.6);
-        }
-
-        .subtitle {
-            font-size: 16px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 12px;
-            margin-top: 20px;
-            margin-bottom: 60px;
-        }
-
-        /* ===== INFO SECTION ===== */
-        .info-section {
-            max-width: 1100px;
-            margin: 120px auto 120px auto;
-            padding: 80px;
-            background: #000000;
-            border: 4px solid white;
-            box-shadow: 20px 20px 0px rgba(255,255,255,0.3);
-        }
-
-        .info-section h2 {
-            font-size: 48px;
-            font-weight: 900;
-            margin-bottom: 30px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .info-card {
-            border: 2px solid white;
-            padding: 25px;
-            background: black;
-        }
-
-        /* ===== ENHANCED BRUTALIST GLASS CARD ===== */
+        /* ===== BLUE BRUTALIST GLASS CARD ===== */
         .glass-card { 
-            background: linear-gradient(135deg, #000 0%, #0a0a0a 100%); 
-            border: 1px solid rgba(0, 255, 0, 0.3); 
+            background: linear-gradient(135deg, #000 0%, #050a10 100%); 
+            border: 1px solid rgba(0, 180, 255, 0.3); /* Blue Border */
             padding: 40px; 
             border-radius: 4px; 
-            /* Layered Brutalist Shadow */
             box-shadow: 10px 10px 0px rgba(0, 0, 0, 1), 
-                        12px 12px 0px rgba(0, 255, 0, 0.2); 
+                        12px 12px 0px rgba(0, 100, 255, 0.2); /* Blue Layered Shadow */
             position: relative;
             overflow: hidden;
             margin-bottom: 20px;
         }
 
-        /* Cyber-Grid Overlay */
+        /* Blue Cyber-Grid Overlay */
         .glass-card::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px);
+            background-image: radial-gradient(rgba(0, 150, 255, 0.1) 1px, transparent 1px);
             background-size: 30px 30px;
             pointer-events: none;
             z-index: 0;
         }
 
-        /* Ensure content inside card sits above the grid */
-        .glass-card > * {
-            position: relative;
-            z-index: 1;
-        }
+        .glass-card > * { position: relative; z-index: 1; }
 
-        /* ===== BUTTONS ===== */
-        .stButton > button {
-            background: #ffffff !important;
-            color: #000000 !important;
-            border: none;
-            padding: 18px 70px;
-            font-size: 20px;
-            font-weight: 900;
-            border-radius: 0px;
-            width: 100%;
-            transition: 0.1s ease-in-out;
-        }
+        .stButton > button { background: #ffffff !important; color: #000000 !important; border: none; padding: 18px 70px; font-size: 20px; font-weight: 900; border-radius: 0px; width: 100%; transition: 0.1s; }
+        .stButton > button:hover { background: #0088ff !important; color: #ffffff !important; transform: translate(-3px, -3px); box-shadow: 6px 6px 0px #ffffff; }
 
-        .stButton > button:hover {
-            background: #00ff00 !important; /* Neon Green on hover */
-            color: #000000 !important;
-            transform: translate(-3px, -3px);
-            box-shadow: 6px 6px 0px #ffffff;
-        }
-
-        .back-btn-container > div > button {
-            background: #000000 !important;
-            color: #ffffff !important;
-            border: 2px solid #ffffff !important;
-            margin-top: 20px;
-        }
-
-        /* Inputs */
-        .stTextInput label, .stSelectbox label {
-            color: #ffffff !important;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
+        .stTextInput label { color: #ffffff !important; font-weight: bold; font-size: 18px; }
         header, footer, #MainMenu {visibility: hidden;}
         </style>
         """,
@@ -241,12 +144,12 @@ def load_bubble_background():
     )
 
 def render_force_graph(data):
-    """Noir-Cyber Stylized Physics Engine with Enhanced Aesthetics."""
+    """Noir-Cyber Physics Engine: Deep Sea Blue Theme."""
     cy_nodes = [{"data": n} for n in data["nodes"]]
     cy_edges = [{"data": {"id": f"e{i}", "source": e["source"], "target": e["target"]}} for i, e in enumerate(data["edges"])]
     
     html_code = f"""
-    <div id="cy" style="width: 100%; height: 650px; background: #050505; border: 1px solid #333; border-radius: 4px;"></div>
+    <div id="cy" style="width: 100%; height: 650px; background: transparent;"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
     
     <script>
@@ -259,41 +162,42 @@ def render_force_graph(data):
                     style: {{
                         'background-color': '#fff',
                         'label': 'data(label)',
-                        'color': '#00ff00', /* Neon Green Label */
+                        'color': '#00d0ff', /* Electric Blue Label */
                         'width': 'data(size)',
                         'height': 'data(size)',
-                        'font-size': '11px',
+                        'font-size': '12px',
                         'text-valign': 'center',
                         'text-halign': 'right',
-                        'text-margin-x': '10px',
-                        'font-family': '"Courier New", Courier, monospace',
+                        'text-margin-x': '12px',
+                        'font-family': '"Courier New", monospace',
                         'font-weight': 'bold',
                         'text-transform': 'uppercase',
                         'border-width': 2,
-                        'border-color': '#00ff00', /* Neon Border */
+                        'border-color': '#00a0ff', /* Blue Border */
+                        /* Blue Glow Effect */
                         'shadow-blur': 15,
-                        'shadow-color': '#00ff00',
+                        'shadow-color': '#0088ff',
                         'shadow-opacity': 0.8
                     }}
                 }},
                 {{
                     selector: 'edge',
                     style: {{
-                        'width': 1,
-                        'line-color': 'rgba(0, 255, 0, 0.2)', /* Ghost Green Edges */
+                        'width': 1.5,
+                        'line-color': 'rgba(0, 150, 255, 0.2)', /* Ghost Blue Lines */
                         'curve-style': 'bezier',
                         'target-arrow-shape': 'triangle',
-                        'target-arrow-color': 'rgba(0, 255, 0, 0.4)',
+                        'target-arrow-color': 'rgba(0, 150, 255, 0.4)',
                         'arrow-scale': 0.8
                     }}
                 }},
                 {{
                     selector: ':selected',
                     style: {{
-                        'background-color': '#ff0055', /* Hot Pink selection */
-                        'border-color': '#ff0055',
-                        'color': '#ff0055',
-                        'shadow-color': '#ff0055',
+                        'background-color': '#00ffff', /* Cyan selection */
+                        'border-color': '#ffffff',
+                        'color': '#ffffff',
+                        'shadow-color': '#00ffff',
                         'shadow-blur': 25
                     }}
                 }}
@@ -301,22 +205,12 @@ def render_force_graph(data):
             layout: {{
                 name: 'cose',
                 animate: true,
-                refresh: 20,
                 fit: true,
                 padding: 60,
-                nodeRepulsion: 100000, 
-                idealEdgeLength: 120,
-                edgeElasticity: 100,
-                nodeOverlap: 50
+                nodeRepulsion: 120000, 
+                idealEdgeLength: 140,
+                edgeElasticity: 100
             }}
-        }});
-
-        /* Subtle interactvity: Node expands on click */
-        cy.on('tap', 'node', function(evt){{
-            var node = evt.target;
-            node.animate({{
-                style: {{ 'width': 60, 'height': 60 }}
-            }}, {{ duration: 200 }});
         }});
     </script>
     """
