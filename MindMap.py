@@ -441,7 +441,9 @@ def save_user(username, password):
 
 # --- REFACTORED SIGNUP/LOGIN PAGE ---
 def signup_page():
-    col1, col2, col3 = st.columns([1, 1.2, 1])
+    # Make sure this line is on its own line and indented correctly
+    col1, col2, col3 = st.columns([1, 1.2, 1]) 
+    
     with col2:
         st.markdown('<br><br><div class="glass-card">', unsafe_allow_html=True)
         st.markdown("<h1 style='text-align:center; font-weight:900;'>ACCESS</h1>", unsafe_allow_html=True)
@@ -452,26 +454,20 @@ def signup_page():
         btn_col1, btn_col2 = st.columns(2)
         
         with btn_col1:
-            # This button now acts as a "Smart Login/Signup"
             if st.button("INITIALIZE SESSION", use_container_width=True):
                 if u and p:
                     users = load_users()
-                    
                     if u in users:
-                        # Existing User: Check Password
                         if users[u] == p:
                             st.session_state.user = {"name": u}
                             st.session_state.page = "generator"
                             st.rerun()
                         else:
-                            st.error("CREDENTIAL MISMATCH. ACCESS DENIED.")
+                            st.error("CREDENTIAL MISMATCH")
                     else:
-                        # New User: Create Account
                         save_user(u, p)
                         st.session_state.user = {"name": u}
                         st.session_state.page = "generator"
-                        st.success("NEW PROFILE ENCRYPTED AND SAVED.")
-                        time.sleep(1) # Brief pause so they see the success message
                         st.rerun()
                 else:
                     st.error("INPUT REQUIRED")
@@ -481,34 +477,7 @@ def signup_page():
                 st.session_state.page = "home"
                 st.rerun()
 
-        st.markdown('</div>', unsafe_allow_html=True)   col1, col2, col3 = st.columns([1, 1.2, 1])
-    with col2:
-        st.markdown('<br><br><div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("<h1 style='text-align:center; font-weight:900;'>ACCESS</h1>", unsafe_allow_html=True)
-        
-        u = st.text_input("USER ID")
-        p = st.text_input("PASSWORD", type="password")
-        
-        # Create two columns for the buttons
-        btn_col1, btn_col2 = st.columns(2)
-        
-        with btn_col1:
-            if st.button("CREATE PROFILE", use_container_width=True):
-                if u and p:
-                    st.session_state.user = {"name": u}
-                    st.session_state.page = "generator"
-                    st.rerun()
-                else:
-                    st.error("Please fill in both fields.")
-
-        with btn_col2:
-            if st.button("BACK TO MAIN PAGE", use_container_width=True):
-                # Go back to MAIN PAGE (home)
-                st.session_state.page = "home"
-                st.rerun()
-
         st.markdown('</div>', unsafe_allow_html=True)
-
 
 def generator_page():
     st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
