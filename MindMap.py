@@ -530,8 +530,8 @@ with col2:
 
 
     # Centering the button using Streamlit columns
-    _, col2, _ = st.columns([1, 0.6, 1])
-    with col2:
+_, col2, _ = st.columns([1, 0.6, 1])
+with col2:
         if st.button("LAUNCH ARCHITECT"): 
             st.session_state.page = "signup"
             st.rerun()
