@@ -210,14 +210,37 @@ def render_force_graph(data):
     cy_edges = [{"data": {"id": f"e{i}", "source": e["source"], "target": e["target"]}} for i, e in enumerate(data["edges"])]
     
     html_code = f"""
-    <div id="cy" style="
-        width: 100%; 
-        height: 800px; 
-        background: #000; 
-        border: 2px solid #0088ff; 
-        box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
-        border-radius: 8px;
-    "></div>
+    <div style="position: relative;">
+        <div id="node-info" style="
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 250px;
+            background: rgba(0, 20, 40, 0.85);
+            border-left: 4px solid #00d0ff;
+            color: #00d0ff;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            z-index: 10;
+            pointer-events: none;
+            display: none;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        ">
+            <div style="font-weight: bold; text-decoration: underline; margin-bottom: 5px;" id="info-title"></div>
+            <div id="info-desc" style="color: #fff; opacity: 0.9;"></div>
+        </div>
+
+        <div id="cy" style="
+            width: 100%; 
+            height: 800px; 
+            background: #000; 
+            border: 2px solid #0088ff; 
+            box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
+            border-radius: 8px;
+        "></div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
     <script>
         var cy = cytoscape({{
@@ -249,7 +272,12 @@ def render_force_graph(data):
                     'target-arrow-color': 'rgba(0, 150, 255, 0.4)',
                     'arrow-scale': 1.2
                 }} }},
-                {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 25 }} }}
+                {{ selector: ':selected', style: {{ 
+                    'background-color': '#00ffff', 
+                    'shadow-blur': 25,
+                    'border-color': '#fff',
+                    'border-width': 4
+                }} }}
             ],
             layout: {{ 
                 name: 'cose', 
@@ -257,18 +285,38 @@ def render_force_graph(data):
                 refresh: 20,
                 fit: true, 
                 padding: 60,
-                
-                /* COMPACT PHYSICS SETTINGS */
-                nodeOverlap: 150,            // Reduced to allow tighter packing
-                nodeRepulsion: 4000000,      // Cut in half to let them get closer
-                idealEdgeLength: 50,         // Cut in half to pull nodes together
-                edgeElasticity: 150,         // Increased "snap" to pull edges tight
+                nodeOverlap: 150,
+                nodeRepulsion: 4000000,
+                idealEdgeLength: 50,
+                edgeElasticity: 150,
                 nestingFactor: 0.1, 
-                gravity: 0.35,               // Doubled gravity to pull everything toward the center
-                numIter: 2500,
-                initialTemp: 1000,
-                coolingFactor: 0.99
+                gravity: 0.35,
+                numIter: 2500
             }}
+        }});
+
+        // INTERACTION LOGIC
+        const infoBox = document.getElementById('node-info');
+        const infoTitle = document.getElementById('info-title');
+        const infoDesc = document.getElementById('info-desc');
+
+        cy.on('mouseover', 'node', function(evt){{
+            var node = evt.target;
+            infoTitle.innerText = node.data('label');
+            infoDesc.innerText = node.data('description') || 'No description available.';
+            infoBox.style.display = 'block';
+        }});
+
+        cy.on('mouseout', 'node', function(evt){{
+            infoBox.style.display = 'none';
+        }});
+        
+        // Ensure description stays if clicked
+        cy.on('select', 'node', function(evt){{
+            var node = evt.target;
+            infoTitle.innerText = node.data('label');
+            infoDesc.innerText = node.data('description') || 'No description available.';
+            infoBox.style.display = 'block';
         }});
     </script>
     """
