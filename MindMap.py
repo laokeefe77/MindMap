@@ -133,7 +133,20 @@ def render_force_graph(data):
                 {{ selector: 'edge', style: {{ 'width': 1.5, 'line-color': 'rgba(0, 150, 255, 0.2)', 'curve-style': 'bezier', 'target-arrow-shape': 'triangle', 'target-arrow-color': 'rgba(0, 150, 255, 0.4)' }} }},
                 {{ selector: ':selected', style: {{ 'background-color': '#00ffff', 'shadow-blur': 25 }} }}
             ],
-            layout: {{ name: 'cose', animate: true, fit: true, padding: 50, nodeRepulsion: 120000, idealEdgeLength: 140 }}
+            layout: {{ 
+                name: 'cose', 
+                animate: true, 
+                fit: true, 
+                padding: 100,
+                /* --- PHYSICS TUNING --- */
+                nodeRepulsion: 8000000,      // Massive increase to stop clumping
+                idealEdgeLength: 200,      // Longer 'springs' between nodes
+                edgeElasticity: 0.45,      // Makes the edges less 'tight'
+                nestingFactor: 0.1,        // Pushes nested nodes further apart
+                gravity: 0.15,             // Weak gravity to allow maximum spread
+                numIter: 1500,             // More time to find the perfect positions
+                initialTemp: 300           // High initial energy to shake them out of clumps
+            }}
         }});
     </script>
     """
