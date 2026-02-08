@@ -113,14 +113,13 @@ def load_bubble_background():
     )
 
 def render_force_graph(data):
-    """The Physics Engine: Set to 'continuous' mode for dynamic movement."""
+    """The Physics Engine: Stable COSE with a continuous animation loop."""
     cy_nodes = [{"data": n} for n in data["nodes"]]
     cy_edges = [{"data": {"id": f"e{i}", "source": e["source"], "target": e["target"]}} for i, e in enumerate(data["edges"])]
     
     html_code = f"""
     <div id="cy" style="width: 100%; height: 650px; background: transparent;"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cytoscape-cola@2.4.0/cytoscape-cola.min.js"></script>
     
     <script>
         var cy = cytoscape({{
@@ -142,7 +141,9 @@ def render_force_graph(data):
                         'font-family': 'monospace',
                         'font-weight': 'bold',
                         'text-outline-width': 2,
-                        'text-outline-color': '#000000'
+                        'text-outline-color': '#000000',
+                        'transition-property': 'background-color, line-color',
+                        'transition-duration': '0.3s'
                     }}
                 }},
                 {{
@@ -150,33 +151,47 @@ def render_force_graph(data):
                     style: {{
                         'width': 1.5,
                         'line-color': 'rgba(255,255,255,0.3)',
-                        'curve-style': 'haystack', /* Faster rendering for movement */
+                        'curve-style': 'bezier',
+                        'target-arrow-shape': 'vee',
+                        'target-arrow-color': 'rgba(255,255,255,0.3)'
                     }}
                 }},
                 {{
-                    selector: ':active', /* Highlight node when grabbed */
-                    style: {{ 'background-color': '#ff0000' }}
+                    selector: ':selected',
+                    style: {{
+                        'background-color': '#ff0000',
+                        'line-color': '#ff0000'
+                    }}
                 }}
             ],
             layout: {{
-                name: 'cola',
-                infinite: true,      /* Keep the simulation running forever */
-                fit: true,
-                padding: 50,
-                nodeSpacing: 80,     /* Space between 'electrons' */
-                edgeLength: 150,     /* Tension of the 'strings' */
+                name: 'cose',
                 animate: true,
-                randomize: false,
-                maxSimulationTime: 9999999, /* Effectively never stops */
-                ungrabifyWhileSimulating: false
+                animationDuration: 1000,
+                refresh: 20,
+                fit: true,
+                padding: 40,
+                randomize: true,
+                nodeRepulsion: 80000, 
+                idealEdgeLength: 100,
+                edgeElasticity: 100,
+                nodeOverlap: 20
             }}
         }});
 
-        /* Add a 'pulse' effect or slight jitter manually if you want it to never sit still */
-        cy.on('tap', 'node', function(evt){{
-            var node = evt.target;
-            console.log('Target deconstructed: ' + node.id());
-        }});
+        // --- THE "ALIVE" LOOP ---
+        // This periodically nudges the layout so it stays dynamic
+        setInterval(() => {{
+            cy.layout({{
+                name: 'cose',
+                animate: true,
+                fit: false, // Don't snap the zoom back every time
+                randomize: false,
+                maxSimulationTime: 500,
+                nodeRepulsion: 80000
+            }}).run();
+        }}, 3000); // Re-calculates forces every 3 seconds to keep it 'shifting'
+
     </script>
     """
     components.html(html_code, height=660)
