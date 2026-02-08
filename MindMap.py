@@ -428,7 +428,7 @@ def signup_page():
         u = st.text_input("USER ID")
         p = st.text_input("PASSWORD", type="password")
         
-        # Create two columns for the buttons to sit side-by-side
+        # Create two columns for the buttons
         btn_col1, btn_col2 = st.columns(2)
         
         with btn_col1:
@@ -442,10 +442,12 @@ def signup_page():
 
         with btn_col2:
             if st.button("BACK TO LOGIN", use_container_width=True):
-                st.session_state.page = "login"  # Change "login" to whatever your main page key is
+                # Go back to MAIN PAGE (home)
+                st.session_state.page = "home"
                 st.rerun()
 
         st.markdown('</div>', unsafe_allow_html=True)
+
 
 def generator_page():
     st.markdown(f"### SYSTEM LOG: {st.session_state.user['name'].upper()}")
